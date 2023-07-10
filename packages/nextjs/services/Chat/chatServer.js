@@ -1,7 +1,6 @@
 const Server = require("socket.io");
 const pinataSDK = require('@pinata/sdk');
 require('dotenv').config;
-const pinata = new pinataSDK(process.env.PINATA_API_KEY, process.env.PINATA_SECRET_KEY);
 const { MongoClient, ServerApiVersion, Timestamp } = require('mongodb');
 const uri = "mongodb+srv://admin:admin@cluster0.ainnpst.mongodb.net/?retryWrites=true&w=majority";
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version

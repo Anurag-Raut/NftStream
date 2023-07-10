@@ -11,7 +11,7 @@ function HlsConversion(inputFilePath, outputFilePath,outputDirectory) {
   outputFilePath = '../VOD/' + outputFilePath;
   let outputDirectoryName=outputDirectory;
   outputDirectory='../VOD/output/'+outputDirectory
-  console.log(inputFilePath," ",outputDirectory," ");
+  console.log(inputFilePath," ",outputDirectory,' ',outputFilePath);
 
   ffmpeg(inputFilePath)
     .output(outputFilePath)
