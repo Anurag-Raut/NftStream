@@ -3,7 +3,7 @@ import {read} from '../../services/stream_functions/read'
 
 import { useEffect, useState } from 'react';
 import Chat from '../../components/chat/chat';
-import { joinRoom,getMessage } from '../../services/Chat/chat';
+// import { joinRoom,getMessage } from '../../services/Chat/chat';
 import dynamic from 'next/dynamic';
 const { File } = require('web3.storage');
 const { createClient } = require('web3.storage');
@@ -13,15 +13,16 @@ function View(){
     const router=useRouter();
 	
     const {id} = router.query
+    console.log(id);
    
   
 
     return (
-        <div className='flex '>
+        <div className='flex m-8 '>
 			
-            {/* <video src="" id='receive-video' ></video> */}
-			<ReactPlayer url={`http://localhost:8888/${id}/stream.m3u8`}  playing={true} controls={true} />
-			{/* <Chat id={id} /> */}
+         
+			<ReactPlayer url={`https://streamvault.site:8000/${id}/stream.m3u8`} className='m-2'  playing={true} controls={true} />
+			<Chat id={id}  />
         </div>
 
     )

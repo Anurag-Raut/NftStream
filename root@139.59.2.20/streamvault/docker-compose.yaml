@@ -7,13 +7,10 @@ services:
       - '5672:5672'
   mediamtx:
     image: bluenviron/mediamtx
-    
-    # environment:
-      # - MTX_PROTOCOLS=tcp
+    environment:
+      - MTX_PROTOCOLS=tcp
     ports:
       - '8554:8554'
       - '1935:1935'
       - '8888:8888'
       - '8889:8889'
-    # volumes:
-    # - ./custom.yml:./mediamtx.yml

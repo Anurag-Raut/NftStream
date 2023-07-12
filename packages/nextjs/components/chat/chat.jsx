@@ -16,7 +16,7 @@ function Chat({id}){
 
         join()
        
-        // 
+   
     },[id])
     
     getMessage((msg)=>{
@@ -24,7 +24,7 @@ function Chat({id}){
         if(queue.length>30){
             queue.shift();
         }
-        // console.log(queue.length,'length')
+       
 		setQueue([...queue,msg]);
 
 	})

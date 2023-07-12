@@ -10,7 +10,7 @@ const client = new Web3Storage({token:token});
 
 async function HLSconversion(queueName,inputFilePath,outputFilePath,outputDirectory){
 
-    const connection= await amqp.connect('amqp://localhost:5672');
+    const connection= await amqp.connect('amqp://167.71.230.42:5672');
     // console.log(connection);
     const channel = await connection.createChannel();
     const queue = queueName;

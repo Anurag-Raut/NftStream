@@ -1,3 +1,4 @@
+const ethers = require('ethers');
 const INITIALIZING = 0;
 const DEVICE = 1;
 const TRANSMITTING = 2;
@@ -199,12 +200,12 @@ class Transmitter {
 		this.start();
     }
 
-   
+  
     start() {
-        console.log(`http://localhost:8889/${this.publishId}/publish`);
+        console.log(`https://streamvault.site:8001/${this.publishId}/publish`);
         console.log("requesting ICE servers");
 
-        fetch(new URL('whip', `http://localhost:8889/${this.publishId}/publish`) , {
+        fetch(new URL('whip', `https://streamvault.site:8001/${this.publishId}/publish`) , {
             method: 'OPTIONS',
         })
             .then((res) => this.onIceServers(res))
@@ -215,8 +216,9 @@ class Transmitter {
     }
 
     onIceServers(res) {
+        console.log(res.headers.get('Link'),'lINKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKk');
         this.pc = new RTCPeerConnection({
-            iceServers: linkToIceServers(res.headers.get('Link')),
+            iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
         });
 
         this.pc.onicecandidate = (evt) => this.onLocalCandidate(evt);
@@ -236,7 +238,7 @@ class Transmitter {
 
         console.log("sending offer");
 
-        fetch(new URL('whip', `http://localhost:8889/${this.publishId}/publish`) , {
+        fetch(new URL('whip', `https://streamvault.site:8001/${this.publishId}/publish`) , {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/sdp',
@@ -290,7 +292,7 @@ class Transmitter {
                 answer.sdp,
                 'h264/90000',
                 'OPUS',
-                '50000',
+                '20000',
                 32,
                 true,
             ),
@@ -319,7 +321,7 @@ class Transmitter {
     }
 
     sendLocalCandidates(candidates) {
-        fetch(new URL('whip', `http://localhost:8889/${this.publishId}/publish`) , {
+        fetch(new URL('whip', `https://streamvault.site:8001/${this.publishId}/publish`) , {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/trickle-ice-sdpfrag',
@@ -366,7 +368,7 @@ const onTransmit = (stream,publishId) => {
 };
 
 const onPublish = (publishId) => {
-    const videoId = 'camera';
+    const videoId = 'screen';
     const audioId = 'none';
 
     if (videoId !== 'screen') {
@@ -493,13 +495,71 @@ const  initialize = async () => {
         });
 };
 
-export function publish(publishId){
+const serverUrl='http://localhost:3500'
+
+async function signMessageWithMetaMask(message) {
+    // Prompt user to connect to MetaMask
+    await window.ethereum.enable();
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    
   
+  const signer = await provider.getSigner();
+  const selectedAddress = await signer.getAddress();
+  
+    const signature = await signer.signMessage(message);
+    return {signature,selectedAddress};
+  }
+
+  async function sendVerificationRequest( message) {
+    const {selectedAddress,signature}= await signMessageWithMetaMask(message)
+    console.log(selectedAddress,signature)
+    const payload = {
+      publicAddress: selectedAddress,
+      message: message,
+      signature:signature
+    };
+  
+    try {
+      const response = await fetch(`${serverUrl}/verify`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+  
+      const result = await response.json();
+      console.log('Verification result:', result);
+      return result
+    } catch (error) {
+        return Promise.reject(error);
+    }
+  }
+  
+
+export function publish(publishId){
+
+    try{
+        sendVerificationRequest('anurag').then((result)=>{
+            if(!result){
+                console.error('not verified');
+                return;
+            }
+            initialize().then(()=>{
+                onPublish(publishId)
+            })
+               
+    
+        })
+
+
+    }
+    catch(error){
+        console.error(error);
+    }
+   
      
-    initialize().then(()=>{
-        onPublish(publishId)
-    })
-       
+   
 
    
 }

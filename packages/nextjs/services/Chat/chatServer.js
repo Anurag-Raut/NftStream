@@ -1,5 +1,5 @@
 const Server = require("socket.io");
-const pinataSDK = require('@pinata/sdk');
+
 require('dotenv').config;
 const { MongoClient, ServerApiVersion, Timestamp } = require('mongodb');
 const uri = "mongodb+srv://admin:admin@cluster0.ainnpst.mongodb.net/?retryWrites=true&w=majority";

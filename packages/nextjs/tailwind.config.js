@@ -34,9 +34,9 @@ module.exports = {
       },
       {
         scaffoldEthDark: {
-          primary: "#212638",
+          primary: "#6527BE",
           "primary-content": "#F9FBFF",
-          secondary: "#323f61",
+          secondary: "#6527BE",
           "secondary-content": "#F9FBFF",
           accent: "#4969A6",
           "accent-content": "#F9FBFF",
@@ -46,10 +46,10 @@ module.exports = {
           "base-200": "#0f0f0f",
           "base-300": "#FFFFFF",
           "base-content": "#FFFFFF",
-          info: "#385183",
-          success: "#34EEB6",
-          warning: "#FFCF72",
-          error: "#FF8863",
+          info: "#6527BE",
+          success: "#6527BE",
+          warning: "#6527BE",
+          error: "#6527BE",
 
           "--rounded-btn": "9999rem",
 
