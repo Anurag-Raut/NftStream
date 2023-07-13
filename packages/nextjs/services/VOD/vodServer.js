@@ -56,6 +56,7 @@ app.post('/upload', (req, res) => {
       if(!fs.existsSync('./output/'+outputDirectory)){
         fs.mkdirSync('./output/'+outputDirectory, { recursive: true })
        };
+       console.log(inputFilePath,outputFilePath);
        HLSconversion('HLS',inputFilePath,outputFilePath,outputDirectory);
 
 

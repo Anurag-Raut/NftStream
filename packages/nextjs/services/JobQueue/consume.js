@@ -76,6 +76,7 @@ amqp.connect('amqp://localhost:5672', function (error0, connection) {
   });
 });
 
+
 // Start consuming paths from the queue when the server starts
 app.listen(4500, () => {
   console.log('Server started on port 4500');
