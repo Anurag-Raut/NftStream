@@ -9,7 +9,7 @@ const path = require('path');
 const {HLSconversion} = require('../JobQueue/queue')
 const { Web3Storage  ,getFilesFromPath ,File } = require('web3.storage');
 app.use(cors());
-app.options('*', cors())
+
 
 
 
@@ -28,7 +28,7 @@ const storage = multer.diskStorage({
 app.get('/', (req, res) => {
     res.send('Hello, World!');
 });
-app.post('/upload', upload.single('video'),  (req, res) => {
+app.post('/upload', upload.single('video'),cors(),  (req, res) => {
     if (!req.file) {
       return res.status(400).send('No video file provided');
     }
