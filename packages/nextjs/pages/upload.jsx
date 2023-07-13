@@ -15,6 +15,7 @@ function Upload(){
         const xhr = new XMLHttpRequest();
       
         xhr.open("POST", "https://streamvault.site:8003/upload");
+        xhr.setRequestHeader("enctype", "multipart/form-data");
       
         xhr.upload.addEventListener("progress", (event) => {
           if (event.lengthComputable) {

@@ -15,6 +15,7 @@ app.use(cors());
 
 
 
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, 'uploads/');
@@ -28,7 +29,7 @@ const storage = multer.diskStorage({
 app.get('/', (req, res) => {
     res.send('Hello, World!');
 });
-app.post('/upload', upload.single('video'),cors(),  (req, res) => {
+app.post('/upload', upload.single('video'),  (req, res) => {
     if (!req.file) {
       return res.status(400).send('No video file provided');
     }
