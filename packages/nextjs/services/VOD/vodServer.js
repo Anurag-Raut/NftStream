@@ -48,6 +48,19 @@ app.post('/upload', (req, res) => {
     // Handle the completion of the file upload
     writeStream.on('finish', () => {
       console.log('File uploaded successfully');
+
+
+      const inputFilePath = saveTo;
+      const outputDirectory = path.parse(filename.filename).name;
+      const outputFilePath = `output/${outputDirectory}/${outputDirectory}.m3u8`;
+      if(!fs.existsSync('./output/'+outputDirectory)){
+        fs.mkdirSync('./output/'+outputDirectory, { recursive: true })
+       };
+       HLSconversion('HLS',inputFilePath,outputFilePath,outputDirectory);
+
+
+
+
       // Perform additional processing as needed
     });
   });
