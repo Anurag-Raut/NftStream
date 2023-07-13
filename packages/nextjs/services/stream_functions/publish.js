@@ -5,23 +5,6 @@ const TRANSMITTING = 2;
 
 let state = INITIALIZING;
 
-const setState = (newState) => {
-    state = newState;
-
-    switch (state) {
-    case DEVICE:
-        // document.getElementById("initializing").style.display = 'none';
-        // document.getElementById("device").style.display = 'flex';
-        // document.getElementById("transmitting").style.display = 'none';
-        break;
-
-    case TRANSMITTING:
-        // document.getElementById("initializing").style.display = 'none';
-        // document.getElementById("device").style.display = 'none';
-        // document.getElementById("transmitting").style.display = 'flex';
-        break;
-    }
-};
 
 const restartPause = 2000;
 
@@ -284,7 +267,7 @@ class Transmitter {
 		if (this.restartTimeout !== null) {
 			return;
 		}
-        console.log(  document.getElementById('video_codec').value,'vvvvvvvvvvvvvvvvaaaalllllllluuuuuuuuuuuuueeeeeeeeeeeee');
+        // console.log(  document.getElementById('video_codec').value,'vvvvvvvvvvvvvvvvaaaalllllllluuuuuuuuuuuuueeeeeeeeeeeee');
 
         answer = new RTCSessionDescription({
             type: 'answer',
@@ -361,15 +344,15 @@ class Transmitter {
 }
 
 const onTransmit = (stream,publishId) => {
-    setState(TRANSMITTING);
+
     
-    document.getElementById('publish-video').srcObject = stream;
+  
     new Transmitter(stream,publishId);
 };
 
-const onPublish = (publishId) => {
-    const videoId = 'screen';
-    const audioId = 'none';
+const onPublish = (_video,_audio,setStream) => {
+    const videoId = _video;
+    const audioId = _audio;
 
     if (videoId !== 'screen') {
         let video = false;
@@ -386,17 +369,19 @@ const onPublish = (publishId) => {
                 deviceId: audioId,
             };
 
-            const voice = document.getElementById('audio_voice').checked;
-            if (!voice) {
-                audio.autoGainControl = false;
-                audio.echoCancellation = false;
-                audio.noiseSuppression = false;
-            }
+            // const voice = document.getElementById('audio_voice').checked;
+            // if (!voice) {
+            //     audio.autoGainControl = false;
+            //     audio.echoCancellation = false;
+            //     audio.noiseSuppression = false;
+            // }
         }
 
         navigator.mediaDevices.getUserMedia({ video, audio })
         .then((stream)=>{
-            onTransmit(stream,publishId)
+            setStream(stream);
+            document.getElementById('publish-video').srcObject = stream;
+     
         });
     } else {
         navigator.mediaDevices.getDisplayMedia({
@@ -409,49 +394,12 @@ const onPublish = (publishId) => {
             audio: false,
         })
             .then((stream)=>{
-                onTransmit(stream,publishId)
+                setStream(stream);
+                document.getElementById('publish-video').srcObject = stream;
+             
             });
     }
 };
-
-// const populateDevices = () => {
-//     return navigator.mediaDevices.enumerateDevices()
-//         .then((devices) => {
-//             for (const device of devices) {
-//                 switch (device.kind) {
-//                 case 'videoinput':
-//                     {
-//                         const opt = document.createElement('option');
-//                         opt.value = device.deviceId;
-//                         opt.text = device.label;
-//                         document.getElementById('video_device').appendChild(opt);
-//                     }
-//                     break;
-
-//                 case 'audioinput':
-//                     {
-//                         const opt = document.createElement('option');
-//                         opt.value = device.deviceId;
-//                         opt.text = device.label;
-//                         document.getElementById('audio_device').appendChild(opt);
-//                     }
-//                     break;
-//                 }
-//             }
-
-//             // add screen
-//             const opt = document.createElement('option');
-//             opt.value = "screen";
-//             opt.text = "screen";
-//             document.getElementById('video_device').appendChild(opt);
-
-//             // set default
-//             document.getElementById('video_device').value = document.getElementById('video_device').children[1].value;
-//             if (document.getElementById('audio_device').children.length > 1) {
-//                 document.getElementById('audio_device').value = document.getElementById('audio_device').children[1].value;
-//             }
-//         });
-// };
 
 const populateCodecs = () => {
     const pc = new RTCPeerConnection({});
@@ -460,24 +408,6 @@ const populateCodecs = () => {
 
     return pc.createOffer()
         .then((desc) => {
-            const sdp = desc.sdp.toLowerCase();
-
-            // for (const codec of ['h264/90000']) {
-            //     if (sdp.includes(codec)) {
-            //         // const opt = document.createElement('option');
-            //         // opt.value = codec;
-            //         // opt.text = codec.split('/')[0].toUpperCase();
-            //         // document.getElementById('video_codec').appendChild(opt);
-            //     }
-            // }
-            // for (const codec of ['opus/48000', 'g722/8000', 'pcmu/8000', 'pcma/8000']) {
-            //         if (sdp.includes(codec)) {
-            //             // const opt = document.createElement('option');
-            //             // opt.value = codec;
-            //             // opt.text = codec.split('/')[0].toUpperCase();
-            //             // document.getElementById('audio_codec').appendChild(opt);
-            //         }
-            //     }
 
           
 
@@ -490,9 +420,7 @@ const  initialize = async () => {
             // populateDevices(),
             populateCodecs(),
         ]))
-        .then(() => {
-            setState(DEVICE);
-        });
+      
 };
 
 const serverUrl='http://localhost:3500'
@@ -535,9 +463,40 @@ async function signMessageWithMetaMask(message) {
         return Promise.reject(error);
     }
   }
+
+  async function getDevices(){
+    var audioDevices = [];
+    var videoDevices = [];
+    if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+        // Enumerate devices
+        const devices =await navigator.mediaDevices.enumerateDevices()
+         
+            
+           
+      
+            // Iterate over the list of devices
+            devices.forEach(function(device) {
+              if (device.kind === 'audioinput') {
+                audioDevices.push(device.label);
+              } else if (device.kind === 'videoinput') {
+                videoDevices.push(device.label);
+              }
+            });
+           
+      
+          
+  
+        
+ 
+      } 
+      console.log(audioDevices)
+   
+
+      return {audioDevices:audioDevices,videoDevices:videoDevices};
+  }
   
 
-export function publish(publishId){
+ function publish(stream,publishId){
 
     try{
         sendVerificationRequest('anurag').then((result)=>{
@@ -545,9 +504,9 @@ export function publish(publishId){
                 console.error('not verified');
                 return;
             }
-            initialize().then(()=>{
-                onPublish(publishId)
-            })
+          
+                onTransmit(stream,publishId)
+        
                
     
         })
@@ -563,4 +522,23 @@ export function publish(publishId){
 
    
 }
-export {initialize};
+
+ function init(video,audio,setStream){
+
+    try{
+        initialize().then(()=>{
+            onPublish(video,audio,setStream)
+        })
+
+
+    }
+    catch(error){
+        console.error(error);
+    }
+   
+     
+   
+
+   
+}
+export {getDevices,publish,init};

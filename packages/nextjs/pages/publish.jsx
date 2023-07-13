@@ -1,27 +1,64 @@
-import { useEffect } from 'react';
-import {publish} from '../services/stream_functions/publish'
-import { initialize } from '../services/stream_functions/publish';
+import { useEffect, useState } from 'react';
+import {getDevices, init, publish} from '../services/stream_functions/publish'
+
+import InputBox from '../components/custom-Components/inputBox';
+import { Button } from '../components/custom-Components/button';
+import { InputFile } from '../components/custom-Components/InputFile';
+import { Select } from '../components/custom-Components/select';
 
 function Publish(){
+    const [stream,setStream]=useState(null)
+    const [audioDevices,setAudioDevices]=useState(['screen']);
+    const [videoDevices,setVideoDevices]=useState(['none']);
 
+
+    useEffect(()=>{
+        async function get(){
+            const {audioDevices,videoDevices}=await getDevices();
+            if(audioDevices){
+                setAudioDevices([...audioDevices,'none']);
+            }
+            if(videoDevices){
+                setVideoDevices([...videoDevices,'screen']);
+            }
+            
+        }
+       get();
+        
+       
+       
+        // setVideoDevices([...videoDevices]);
+    },[])
+    console.log(stream);
    
     
     return (
-        <div className='flex h-full w-full'>
+        <div className='flex h-full  m-6  flex justify-around '>
              <video id='publish-video' autoPlay controls className="h-[65vh] w-[60vw]" > </video>
-            <div>
-                <label for="small-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Small input</label>
-                <input type="text" id="video-id" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
-            </div>
-            <select className='h-[70px] w-[100px]'  id="video_codec">video</select>
+             <div className='w-full m-10' >
+             <InputBox label={'Enter Title '} id={'PublishId'} />
+             
+             <InputFile />
+             <Select label={'select Video device'} id={'videoId'} options={videoDevices} />
+             <Select label={'select audio device'} id={'audioId'} options={audioDevices} />
+             {
+                !stream?
+                <Button label={'Preview'} onClick={()=>{init(document.getElementById('videoId').value,document.getElementById('audioId').value,setStream)}} />
+                :
+                <Button label={'Go Live'} onClick={()=>{publish(stream,document.getElementById('PublishId').value)}} />
+               
+             }
+            
 
-            <select className='h-[70px] w-[100px]'  id="audio_codec">audio</select>
+             </div>
+          
 
+            
             
 
            
             
-            <button className='' onClick={()=>{publish(document.getElementById('video-id').value)}} > publish</button>
+           
         </div>
     );
 

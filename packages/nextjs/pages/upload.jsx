@@ -14,7 +14,7 @@ function Upload(){
       
         const xhr = new XMLHttpRequest();
       
-        xhr.open("POST", "http://localhost:4000/upload");
+        xhr.open("POST", "https://streamvault.site:8003/upload");
       
         xhr.upload.addEventListener("progress", (event) => {
           if (event.lengthComputable) {
