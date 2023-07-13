@@ -1,46 +1,38 @@
 import { useState } from "react";
-
+import axios from 'axios'
 
 function Upload(){
 
     const [selectedFile, setSelectedFile] = useState(null);
-
+    console.log(selectedFile);
     const handleFileChange = (event) => {
       setSelectedFile(event.target.files[0]);
     };
-    const handleUpload = () => {
-        const formData = new FormData();
-        formData.append("video", selectedFile);
-      
-        const xhr = new XMLHttpRequest();
-      
-        xhr.open("POST", "https://streamvault.site:8003/upload");
-        xhr.setRequestHeader("enctype", "multipart/form-data");
-      
-        xhr.upload.addEventListener("progress", (event) => {
-          if (event.lengthComputable) {
-            const percentage = (event.loaded / event.total) * 100;
-            console.log(`Upload progress: ${percentage.toFixed(2)}%`);
-          }
+    const handleUpload = async() => {
+      const formData = new FormData();
+      formData.append('video', selectedFile);
+      try {
+        const response = await fetch('http://localhost:4000/upload', {
+          method: 'POST',
+          body: formData,
         });
-      
-        xhr.onreadystatechange = () => {
-          if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-              console.log("Upload complete");
-              // Handle successful upload
-            } else {
-              console.error("Upload failed");
-              // Handle upload failure
-            }
-          }
-        };
-      
-        xhr.send(formData);
-      };
+    
+        if (response.ok) {
+          console.log('Upload successful');
+          // Handle successful upload
+        } else {
+          console.error('Upload failed');
+          // Handle upload failure
+        }
+      } catch (error) {
+        console.error('Upload error:', error);
+        // Handle error
+      }
+    };
   
     return (
       <div>
+        
         <input type="file" onChange={handleFileChange} />
         <button onClick={handleUpload}>Upload</button>
       </div>

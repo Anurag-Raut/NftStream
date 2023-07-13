@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const multer = require('multer');
+const busboy = require('connect-busboy');
 const cors=require('cors');
 const port = 4000;
 const ffmpeg = require('fluent-ffmpeg');
@@ -11,7 +12,7 @@ const { Web3Storage  ,getFilesFromPath ,File } = require('web3.storage');
 app.use(cors());
 
 
-
+app.use(busboy());
 
 
 
@@ -29,28 +30,35 @@ const storage = multer.diskStorage({
 app.get('/', (req, res) => {
     res.send('Hello, World!');
 });
-app.post('/upload', upload.single('video'),  (req, res) => {
-    if (!req.file) {
-      return res.status(400).send('No video file provided');
-    }
-    
-    console.log('done');
-    const inputFilePath = `uploads/${req.file.originalname}`;
-    
-    const outputDirectory = path.parse(req.file.originalname).name;
-    // const outputDirectory=req.file.originalname
-    const outputFilePath = `output/${outputDirectory}/${outputDirectory}.m3u8`;
-    if(!fs.existsSync('./output/'+outputDirectory)){
-       fs.mkdirSync('./output/'+outputDirectory, { recursive: true })
-      };
-    console.log(inputFilePath,outputFilePath)
-    // HlsConversion(inputFilePath,outputFilePath)
-    HLSconversion('HLS',inputFilePath,outputFilePath,outputDirectory);
-   
+app.post('/upload', (req, res) => {
+  const file = req.busboy;
 
+  // Listen for file events
+  file.on('file', (fieldname, fileStream, filename, encoding, mimetype) => {
+    // Specify the path to save the uploaded file
+    console.log(filename.filename);
+    const saveTo = `uploads/${filename.filename}`;
 
-  
-    res.status(200).send('Video file uploaded successfully');
+    // Create a write stream to save the file
+    const writeStream = fs.createWriteStream(saveTo);
+
+    // Pipe the file stream to the write stream
+    fileStream.pipe(writeStream);
+
+    // Handle the completion of the file upload
+    writeStream.on('finish', () => {
+      console.log('File uploaded successfully');
+      // Perform additional processing as needed
+    });
+  });
+
+  // Listen for finish event when all files are uploaded
+  file.on('finish', () => {
+    res.status(200).send('All files uploaded successfully');
+  });
+
+  // Pipe the incoming request stream to Busboy
+  req.pipe(req.busboy);
 });
 
 app.use(express.static('./output/anurag'));
