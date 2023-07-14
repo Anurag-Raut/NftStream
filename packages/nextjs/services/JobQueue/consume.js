@@ -8,10 +8,14 @@ const {UploadToIPFS} =require('./queue');
 
 function HlsConversion(inputFilePath, outputFilePath,outputDirectory) {
   inputFilePath = '../VOD/' + inputFilePath;
-  outputFilePath = '../VOD/' + outputFilePath;
+  outputFilePath = '/var/www/' + outputDirectory+'/'+outputDirectory+'.m3u8';
   let outputDirectoryName=outputDirectory;
-  outputDirectory='../VOD/output/'+outputDirectory
+  outputDirectory='/var/www/'+outputDirectory
   console.log(inputFilePath," ",outputDirectory,' ',outputFilePath);
+
+        if(!fs.existsSync(outputDirectory)){
+        fs.mkdirSync(outputDirectory, { recursive: true })
+       };
 
   ffmpeg(inputFilePath)
     .output(outputFilePath)
@@ -31,10 +35,10 @@ function HlsConversion(inputFilePath, outputFilePath,outputDirectory) {
         console.log('deleted file');
       });
 
-      UploadToIPFS(outputDirectory,outputDirectoryName)
-      .then(()=>{
-        fs.rmSync(outputDirectory,{recursive:true,force:true})
-      })
+      // UploadToIPFS(outputDirectory,outputDirectoryName)
+      // .then(()=>{
+      //   fs.rmSync(outputDirectory,{recursive:true,force:true})
+      // })
 
 
 
