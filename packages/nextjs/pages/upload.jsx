@@ -13,11 +13,15 @@ function Upload(){
     const handleUpload = async() => {
       const formData = new FormData();
       formData.append('video', selectedFile);
-      try {
+      
         //
-        const response = axios.post(`https://streamvault.site:8003/upload`, formData, {
-         
-        });
+        try {
+          const response = await axios.post(`https://streamvault.site:8003/upload`, formData, {
+            onUploadProgress: (progressEvent) => {
+              const percentage = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+              console.log(`Upload Progress: ${percentage}%`);
+            },
+          });
     
         if (response.ok) {
           console.log('Upload successful');
