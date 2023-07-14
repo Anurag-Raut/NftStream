@@ -448,7 +448,7 @@ const  initialize = async () => {
       
 };
 
-const serverUrl='http://localhost:3500'
+const serverUrl='https://streamvault.site:3499'
 
 async function signMessageWithMetaMask(message) {
     // Prompt user to connect to MetaMask
