@@ -37,6 +37,7 @@
     "@types/fluent-ffmpeg": "^2",
     "@types/multer": "^1",
     "@types/react": "^18.0.9",
+    "@types/uniqid": "^5",
     "concurrently": "^8.2.0",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3"
@@ -62,6 +63,7 @@
     "react-player": "^2.12.0",
     "socket.io": "^4.7.1",
     "socket.io-client": "^4.7.1",
+    "uniqid": "^5.4.0",
     "web3.storage": "^4.5.4"
   }
 }

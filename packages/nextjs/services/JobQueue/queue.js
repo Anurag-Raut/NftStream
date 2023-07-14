@@ -4,7 +4,7 @@ const amqp = require('amqplib');
 const { Web3Storage  ,getFilesFromPath ,File } = require('web3.storage');
 
 const token = process.env.WEB3STOJ_TOKEN;
-// console.log(process.env.WEB3STOJ_TOKEN)
+
 const client = new Web3Storage({token:token});
 
 

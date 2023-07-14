@@ -1,3 +1,11 @@
+
+const axios =require('axios');
+var uniqid = require('uniqid'); 
+require('dotenv').config()
+const { Web3Storage  ,getFilesFromPath ,File } = require('web3.storage');
+const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDY2MmMzMzA3OTkxRmM0Nzg0NzNmMmMwMDFmNzBCMGFFQTE2ZjM0NzEiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NzczNDIxNDI0NTAsIm5hbWUiOiJzdG9yZTIifQ.K2OCaGVt86PlyD7Tyq71NMCrxwuxK9xmflbYNe0_cIo";
+
+const web3Client = new Web3Storage({token:token});
 const ethers = require('ethers');
 const INITIALIZING = 0;
 const DEVICE = 1;
@@ -11,6 +19,23 @@ const restartPause = 2000;
 const unquoteCredential = (v) => (
     JSON.parse(`"${v}"`)
 );
+
+
+async function UploadToIPFS(files){
+  
+
+
+ 
+   
+    // const fileInput = document.querySelector('input[type="file"]')
+    console.log(files,'abbbbbeeeeeeeee');
+    // Pack files into a CAR and send to web3.storage
+    const cid = await web3Client.put(files) 
+    return 'https://'+cid+'.ipfs.w3s.link/';  
+
+}
+
+
 
 const linkToIceServers = (links) => (
     (links !== null) ? links.split(', ').map((link) => {
@@ -438,27 +463,30 @@ async function signMessageWithMetaMask(message) {
     return {signature,selectedAddress};
   }
 
-  async function sendVerificationRequest( message) {
+  async function sendVerificationRequestAndPost( message,title,thumbnail,publishId) {
     const {selectedAddress,signature}= await signMessageWithMetaMask(message)
     console.log(selectedAddress,signature)
-    const payload = {
-      publicAddress: selectedAddress,
-      message: message,
-      signature:signature
-    };
+    let thumbnail_url=await UploadToIPFS(thumbnail)
+
+
+
+  
+const payload = {
+    publishId: publishId,
+    live: true,
+    creator: selectedAddress,
+    thumbnail: thumbnail_url,
+    title: title,
+    signature: signature,
+    message: message
+  };
   
     try {
-      const response = await fetch(`${serverUrl}/verify`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      });
-  
-      const result = await response.json();
+        const response=await axios.post(`${serverUrl}/publish`, payload)
+       
+      const result = response.data;
       console.log('Verification result:', result);
-      return result
+      return {result:result.verified,address:selectedAddress}
     } catch (error) {
         return Promise.reject(error);
     }
@@ -496,16 +524,18 @@ async function signMessageWithMetaMask(message) {
   }
   
 
- function publish(stream,publishId){
-
+  function publish(stream,title,thumbnail){
+    let id= uniqid();
+    console.log(thumbnail);
     try{
-        sendVerificationRequest('anurag').then((result)=>{
+        sendVerificationRequestAndPost('anurag',title,thumbnail,id).then(async ({result,address})=>{
             if(!result){
                 console.error('not verified');
                 return;
             }
+            
           
-                onTransmit(stream,publishId)
+                onTransmit(stream,address+'/'+id);
         
                
     

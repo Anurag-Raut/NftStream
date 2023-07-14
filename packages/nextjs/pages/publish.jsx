@@ -38,14 +38,14 @@ function Publish(){
              <div className='w-full m-10' >
              <InputBox label={'Enter Title '} id={'PublishId'} />
              
-             <InputFile />
+             <InputFile id={'thumbnail'} />
              <Select label={'select Video device'} id={'videoId'} options={videoDevices} />
              <Select label={'select audio device'} id={'audioId'} options={audioDevices} />
              {
                 !stream?
                 <Button label={'Preview'} onClick={()=>{init(document.getElementById('videoId').value,document.getElementById('audioId').value,setStream)}} />
                 :
-                <Button label={'Go Live'} onClick={()=>{publish(stream,document.getElementById('PublishId').value)}} />
+                <Button label={'Go Live'} onClick={()=>{publish(stream,document.getElementById('PublishId')?.value,document?.getElementById('thumbnail')?.files)}} />
                
              }
             

@@ -4929,6 +4929,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/uniqid@npm:^5":
+  version: 5.3.2
+  resolution: "@types/uniqid@npm:5.3.2"
+  checksum: 001e0b03f29ee2e25729451a0012707e929a01ee06b092d23d1219d083dfeed556d2e119442f9e996414a77cdf99021230eb318ab4ed7f3bc5db46077cb54ff7
+  languageName: node
+  linkType: hard
+
 "@types/unist@npm:*":
   version: 3.0.0
   resolution: "@types/unist@npm:3.0.0"
@@ -18149,6 +18156,7 @@ __metadata:
     "@types/fluent-ffmpeg": ^2
     "@types/multer": ^1
     "@types/react": ^18.0.9
+    "@types/uniqid": ^5
     amqplib: ^0.10.3
     axios: ^1.4.0
     busboy: ^1.6.0
@@ -18168,6 +18176,7 @@ __metadata:
     react-player: ^2.12.0
     socket.io: ^4.7.1
     socket.io-client: ^4.7.1
+    uniqid: ^5.4.0
     web3.storage: ^4.5.4
   languageName: unknown
   linkType: soft
@@ -20130,6 +20139,13 @@ __metadata:
     trough: ^2.0.0
     vfile: ^5.0.0
   checksum: 053e7c65ede644607f87bd625a299e4b709869d2f76ec8138569e6e886903b6988b21cd9699e471eda42bee189527be0a9dac05936f1d069a5e65d0125d5d756
+  languageName: node
+  linkType: hard
+
+"uniqid@npm:^5.4.0":
+  version: 5.4.0
+  resolution: "uniqid@npm:5.4.0"
+  checksum: 69fc28e7b2b5b24227b4295e51aa7c1d4085a60655ad071db8fc350876cc9044d68ee0781c0d27c2c98691380aa418970e0d1b02a1e4564480f9d19b0dc1707b
   languageName: node
   linkType: hard
 
