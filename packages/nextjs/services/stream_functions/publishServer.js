@@ -39,7 +39,7 @@ let db;
 // });
 
 
-app.post('/publish',async (req,res)=>{
+app.post('http:localhost:3500/publish',async (req,res)=>{
   const {publishId,live,creator,thumbnail,title ,signature,message} = req.body;
   const isVerified = verifySignature(creator, message, signature);
   
