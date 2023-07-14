@@ -9,7 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const {HLSconversion} = require('../JobQueue/queue')
 const { Web3Storage  ,getFilesFromPath ,File } = require('web3.storage');
-app.use(cors());
+
 
 
 app.use(busboy());
