@@ -23,13 +23,13 @@ function Upload(){
             },
           });
     
-        if (response.ok) {
-          console.log('Upload successful');
-          // Handle successful upload
-        } else {
-          console.error('Upload failed');
-          // Handle upload failure
-        }
+          if (response.status === 200) {
+            console.log('Upload successful');
+            // Handle successful upload
+          } else {
+            console.error('Upload failed');
+            // Handle upload failure
+          }
       } catch (error) {
         console.error('Upload error:', error);
         // Handle error
