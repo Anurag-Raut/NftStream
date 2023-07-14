@@ -37,5 +37,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 
-/services/VOD/output
-/services/VOD/uploads
+/packages/nextjs/services/VOD/output
+/packages/nextjs/services/VOD/uploads
