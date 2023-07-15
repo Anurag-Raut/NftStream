@@ -3,6 +3,7 @@ const amqp = require('amqplib/callback_api');
 const ffmpeg = require('fluent-ffmpeg');
 const fs=require('fs');
 const app = express();
+const cors=require('cors');
 app.use(cors());
 
 
