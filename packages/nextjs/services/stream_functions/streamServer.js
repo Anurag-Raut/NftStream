@@ -19,24 +19,24 @@ const { Web3Storage  ,getFilesFromPath ,File } = require('web3.storage');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const {publishId,live,creator,thumbnail,title ,signature,message} =JSON.parse(req.body.payload);
-    console.log(creator,'creator');
-    const id = creator ;
-    // if(!fs.existsSync('./uploads/'+id)){
-    //   console.log('making direstory'," ",'./uploads/'+id)
-    //   fs.mkdirSync('./uploads/'+id, { recursive: true })
-    //  };
+    // const {publishId,live,creator,thumbnail,title ,signature,message} =JSON.parse(req.body.payload);
+    // console.log(creator,'creator');
+ 
     
     const saveTo = `uploads/`;
-    cb(null, saveTo);
+    cb(null, 'uploads/');
   },
   filename: (req, file, cb) => {
-    const {publishId,live,creator,thumbnail,title ,signature,message} =JSON.parse(req.body.payload);
-    cb(null, publishId);
+   
+    cb(null, file.originalname);
   }
 });
 
-const upload = multer( storage);
+// const upload = multer({ storage: storage })
+const upload = multer({
+  storage:storage,
+  // dest:'uploads/'
+})
 
 const uri = "mongodb+srv://admin:admin@cluster0.ainnpst.mongodb.net/?retryWrites=true&w=majority";
 const token = process.env.WEB3STOJ_TOKEN;
@@ -98,7 +98,7 @@ app.post('/getVideos',async (req,res)=>{
 
 app.post('/upload',upload.single('video'), (req, res) => {
   const {publishId,live,creator,thumbnail,title ,signature,message} =JSON.parse(req.body.payload);
-  console.log(req.body.payload,)
+  // console.log(req.body.payload);
   // const payload = JSON.parse(req.body.payload);
   
   // 
