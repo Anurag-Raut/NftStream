@@ -96,7 +96,7 @@ app.post('/getVideos',async (req,res)=>{
 
 app.post('/upload',upload.single('video'), (req, res) => {
   const {publishId,live,creator,thumbnail,title ,signature,message} =JSON.parse(req.body.payload);
-
+  console.log(req.body.payload)
   // const payload = JSON.parse(req.body.payload);
   
   // 

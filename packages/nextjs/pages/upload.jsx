@@ -18,7 +18,7 @@ function Upload(){
       var id=uniqid();
         //
         try {
-          const serverurl='http://localhost:3500'
+          const serverurl='https://streamvault.site:3499'
 
           const payload = await sendVerificationRequestAndPost('anurag',document.getElementById('upload-title').value,document.getElementById('upload-thumbnail').files,id,false)
           formData.append('video', selectedFile);
