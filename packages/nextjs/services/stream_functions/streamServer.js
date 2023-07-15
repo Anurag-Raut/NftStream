@@ -38,8 +38,7 @@ const upload = multer({
   // dest:'uploads/'
 })
 
-const uri = "mongodb+srv://admin:admin@cluster0.ainnpst.mongodb.net/?retryWrites=true&w=majority";
-const token = process.env.WEB3STOJ_TOKEN;
+const uri=
 
 const web3Client = new Web3Storage({token:token});
 const client = new MongoClient(uri, {
@@ -114,7 +113,7 @@ app.post('/upload',upload.single('video'), (req, res) => {
   // file.on('file', (fieldname, fileStream, filename, encoding, mimetype) => {
     // Specify the path to save the uploaded file
     // console.log(fieldname,'field nameeeeeeeeeeeeee');
-    const saveTo = `./uploads/${publishId}`;
+    const saveTo = `uploads/${publishId}`;
 
     // Create a write stream to save the file
     // const writeStream = fs.createWriteStream(saveTo);
