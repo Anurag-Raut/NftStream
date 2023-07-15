@@ -23,8 +23,8 @@ const storage = multer.diskStorage({
     // console.log(creator,'creator');
  
     
-    const saveTo = `uploads/`;
-    cb(null, 'uploads/');
+    const saveTo = `./uploads/`;
+    cb(null, './uploads/');
   },
   filename: (req, file, cb) => {
    
