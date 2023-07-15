@@ -18,7 +18,7 @@ function Upload(){
         //
         try {
 
-          const payload = await sendVerificationRequestAndPost('anurag',document.getElementById('upload-title').value,document.getElementById('upload-thumbnail').files[0],id,false)
+          const payload = await sendVerificationRequestAndPost('anurag',document.getElementById('upload-title').value,document.getElementById('upload-thumbnail').files,id,false)
           formData.append('payload',JSON.stringify(payload));
           const response = await axios.post(`https://streamvault.site:3499/upload`, formData, {
             onUploadProgress: (progressEvent) => {

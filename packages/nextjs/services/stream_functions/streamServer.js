@@ -52,7 +52,7 @@ app.post('/publish',async (req,res)=>{
     res.status(400).json({ verified: false });
     return;
   } 
-  console.log('yayyyy')
+  
   const result =await addVideoToDb(publishId,live,creator,thumbnail,title);
   if(result){
     res.status(200).json({verified:result});
@@ -100,7 +100,7 @@ app.post('/upload',busboy(), (req, res) => {
   let id=creator+'/'+publishId;
   file.on('file', (fieldname, fileStream, filename, encoding, mimetype) => {
     // Specify the path to save the uploaded file
-    console.log(id);
+    console.log(fieldname,'field nameeeeeeeeeeeeee');
     const saveTo = `uploads/${id}`;
 
     // Create a write stream to save the file
