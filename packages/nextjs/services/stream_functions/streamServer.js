@@ -9,7 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const {HLSconversion} = require('../JobQueue/queue')
 const multer =require('multer')
-
+app.use(cors());
 const { MongoClient, ServerApiVersion, Timestamp } = require('mongodb');
 
 const { Web3Storage  ,getFilesFromPath ,File } = require('web3.storage');
