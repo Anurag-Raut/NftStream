@@ -42,7 +42,7 @@ async function updateStatus(id){
 
   const collection = db.collection('videos');
 
-  const filter = { _id: ObjectId(id) };
+  const filter = { _id: new ObjectId(id) };
   const update = {
     $set: {
      uploaded:true
