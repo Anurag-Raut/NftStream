@@ -21,8 +21,9 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const {publishId,live,creator,thumbnail,title ,signature,message} =JSON.parse(req.body.payload);
     const id = creator ;
-    if(!fs.existsSync('./upload/'+id)){
-      fs.mkdirSync('./upload/'+id, { recursive: true })
+    if(!fs.existsSync('./uploads/'+id)){
+      console.log('making direstory'," ",'./uploads/'+id)
+      fs.mkdirSync('./uploads/'+id, { recursive: true })
      };
     
     const saveTo = `uploads/${id}`;
@@ -34,7 +35,7 @@ const storage = multer.diskStorage({
   }
 });
 
-const upload = multer(storage);
+const upload = multer({ storage: storage });
 
 const uri = "mongodb+srv://admin:admin@cluster0.ainnpst.mongodb.net/?retryWrites=true&w=majority";
 const token = process.env.WEB3STOJ_TOKEN;
