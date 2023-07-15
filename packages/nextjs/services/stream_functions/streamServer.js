@@ -35,7 +35,7 @@ const storage = multer.diskStorage({
   }
 });
 
-const upload = multer({ storage: storage });
+const upload = multer( {dest:'uploads/'});
 
 const uri = "mongodb+srv://admin:admin@cluster0.ainnpst.mongodb.net/?retryWrites=true&w=majority";
 const token = process.env.WEB3STOJ_TOKEN;
@@ -97,7 +97,7 @@ app.post('/getVideos',async (req,res)=>{
 
 app.post('/upload',upload.single('video'), (req, res) => {
   const {publishId,live,creator,thumbnail,title ,signature,message} =JSON.parse(req.body.payload);
-  console.log(req.body.payload)
+  console.log(req.body.payload,)
   // const payload = JSON.parse(req.body.payload);
   
   // 
