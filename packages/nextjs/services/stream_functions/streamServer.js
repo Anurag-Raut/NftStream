@@ -4,7 +4,7 @@ const cors=require('cors');
 const app = express();
 app.use(express.json());
 const axios = require('axios');
-app.use(cors());
+
 const fs = require('fs');
 const path = require('path');
 const {HLSconversion} = require('../JobQueue/queue')
