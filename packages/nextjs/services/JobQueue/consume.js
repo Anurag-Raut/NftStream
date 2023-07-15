@@ -3,7 +3,7 @@ const amqp = require('amqplib/callback_api');
 const ffmpeg = require('fluent-ffmpeg');
 const fs=require('fs');
 const app = express();
-
+app.use(cors());
 
 
 const {UploadToIPFS} =require('./queue');
@@ -76,7 +76,7 @@ function HlsConversion(inputFilePath, outputFilePath,outputDirectory,id) {
     .outputOptions([
       '-c:v libx264',
       '-c:a aac',
-      '-hls_time 10',
+      '-hls_time 3',
       '-hls_segment_type mpegts',
       '-hls_list_size 0',
       '-map 0:v', // Include only video stream
