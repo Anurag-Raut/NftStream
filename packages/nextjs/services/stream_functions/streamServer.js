@@ -38,7 +38,8 @@ const upload = multer({
   // dest:'uploads/'
 })
 
-const uri=
+const uri = "mongodb+srv://admin:admin@cluster0.ainnpst.mongodb.net/?retryWrites=true&w=majority";
+const token = process.env.WEB3STOJ_TOKEN;
 
 const web3Client = new Web3Storage({token:token});
 const client = new MongoClient(uri, {
