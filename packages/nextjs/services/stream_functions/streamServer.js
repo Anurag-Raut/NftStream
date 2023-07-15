@@ -8,12 +8,33 @@ app.use(cors());
 const fs = require('fs');
 const path = require('path');
 const {HLSconversion} = require('../JobQueue/queue')
+const multer =require('multer')
 
 const { MongoClient, ServerApiVersion, Timestamp } = require('mongodb');
 
 const { Web3Storage  ,getFilesFromPath ,File } = require('web3.storage');
-const busboy = require('connect-busboy');
 
+// const busboy = require('connect-busboy');
+
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const {publishId,live,creator,thumbnail,title ,signature,message} =JSON.parse(req.body.payload);
+    const id = creator ;
+    if(!fs.existsSync('./upload/'+id)){
+      fs.mkdirSync('./upload/'+id, { recursive: true })
+     };
+    
+    const saveTo = `uploads/${id}`;
+    cb(null, saveTo);
+  },
+  filename: (req, file, cb) => {
+    const {publishId,live,creator,thumbnail,title ,signature,message} =JSON.parse(req.body.payload);
+    cb(null, publishId);
+  }
+});
+
+const upload = multer(storage);
 
 const uri = "mongodb+srv://admin:admin@cluster0.ainnpst.mongodb.net/?retryWrites=true&w=majority";
 const token = process.env.WEB3STOJ_TOKEN;
@@ -28,19 +49,6 @@ const client = new MongoClient(uri, {
 });
 let db;
 
-// app.post('/verify', (req, res) => {
-//   const { publicAddress, message, signature } = req.body;
- 
-
-
-//   const isVerified = verifySignature(publicAddress, message, signature);
-
-//   if (isVerified) {
-//     res.status(200).json({ verified: true });
-//   } else {
-//     res.status(400).json({ verified: false });
-//   }
-// });
 
 
 app.post('/publish',async (req,res)=>{
@@ -86,11 +94,13 @@ app.post('/getVideos',async (req,res)=>{
 
 
 
-app.post('/upload',busboy(), (req, res) => {
-  const file = req.busboy;
-  console.log(req.body);
+app.post('/upload',upload.single('video'), (req, res) => {
+  const {publishId,live,creator,thumbnail,title ,signature,message} =JSON.parse(req.body.payload);
+
+  // const payload = JSON.parse(req.body.payload);
   
-  // const {publishId,live,creator,thumbnail,title ,signature,message} =JSON.parse(req.body.payload);
+  // 
+  
   const isVerified = verifySignature(creator, message, signature);
   if(!isVerified){
     res.status(400).json({verified:false});
@@ -99,49 +109,55 @@ app.post('/upload',busboy(), (req, res) => {
 
   // Listen for file events
   let id=creator+'/'+publishId;
-  file.on('file', (fieldname, fileStream, filename, encoding, mimetype) => {
+  // file.on('file', (fieldname, fileStream, filename, encoding, mimetype) => {
     // Specify the path to save the uploaded file
-    console.log(fieldname,'field nameeeeeeeeeeeeee');
+    // console.log(fieldname,'field nameeeeeeeeeeeeee');
     const saveTo = `uploads/${id}`;
 
     // Create a write stream to save the file
-    const writeStream = fs.createWriteStream(saveTo);
+    // const writeStream = fs.createWriteStream(saveTo);
 
     // Pipe the file stream to the write stream
-    fileStream.pipe(writeStream);
+    // fileStream.pipe(writeStream);
 
     // Handle the completion of the file upload
-    writeStream.on('finish', () => {
+    // writeStream.on('finish', () => {
       console.log('File uploaded successfully');
-
+    filename=req.file
 
       
       const inputFilePath = saveTo;
-      const outputDirectory = path.parse(filename.filename).name;
+      const outputDirectory = publishId;
       const outputFilePath = `output/${outputDirectory}/${outputDirectory}.m3u8`;
-      // if(!fs.existsSync('./output/'+outputDirectory)){
-      //   fs.mkdirSync('./output/'+outputDirectory, { recursive: true })
-      //  };
+      if(!fs.existsSync('./output/'+outputDirectory)){
+        fs.mkdirSync('./output/'+outputDirectory, { recursive: true })
+       };
        console.log(inputFilePath,outputFilePath);
-       addVideoToDb(publishId,false,creator,thumbnail,title,false);
+      
        HLSconversion('HLS',inputFilePath,outputFilePath,outputDirectory,id);
 
+       addVideoToDb(publishId,false,creator,thumbnail,title,false);
 
 
-
-      // Perform additional processing as needed
-    });
-  });
+      
+    // });
+  // });
 
   // Listen for finish event when all files are uploaded
-  file.on('finish', () => {
-    res.status(200).send('All files uploaded successfully');
-  });
+  // file.on('finish', () => {
+  //   res.status(200).send('All files uploaded successfully');
+  // });
 
-  // Pipe the incoming request stream to Busboy
-  req.pipe(req.busboy);
+  // // Pipe the incoming request stream to Busboy
+  // req.pipe(req.busboy);
 });
 
+
+app.post('/saveVODToDB',(req,res)=>{
+
+  
+
+})
 
 
 

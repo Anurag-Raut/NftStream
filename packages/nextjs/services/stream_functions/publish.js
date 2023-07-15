@@ -1,4 +1,4 @@
-import { ServerResponse } from 'http';
+
 
 const axios =require('axios');
 var uniqid = require('uniqid'); 
@@ -590,4 +590,4 @@ const payload = {
    
 }
 
-export {getDevices,publish,init,sendVerificationRequestAndPost};
+export  {getDevices,publish,init,sendVerificationRequestAndPost};

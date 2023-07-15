@@ -4,6 +4,7 @@ import { InputFile } from "../components/custom-Components/InputFile";
 import InputBox from "../components/custom-Components/inputBox";
 import {sendVerificationRequestAndPost} from '../services/stream_functions/publish';
 import uniqid from 'uniqid'
+
 function Upload(){
  
     const [selectedFile, setSelectedFile] = useState(null);
@@ -13,19 +14,24 @@ function Upload(){
     };
     const handleUpload = async() => {
       const formData = new FormData();
-      formData.append('video', selectedFile);
+      
       var id=uniqid();
         //
         try {
+          const serverurl='http://localhost:3500'
 
           const payload = await sendVerificationRequestAndPost('anurag',document.getElementById('upload-title').value,document.getElementById('upload-thumbnail').files,id,false)
-          formData.append('payload',JSON.stringify(payload));
-          const response = await axios.post(`https://streamvault.site:3499/upload`, formData, {
+          formData.append('video', selectedFile);
+          formData.append('payload', JSON.stringify(payload));
+          const response = await axios.post(serverurl+'/upload', formData, {
             onUploadProgress: (progressEvent) => {
               const percentage = Math.round((progressEvent.loaded * 100) / progressEvent.total);
               console.log(`Upload Progress: ${percentage}%`);
             },
           });
+
+          // const dbResponse=await axios.post(serverurl+'/saveToDB',payload);
+
     
           if (response.status === 200) {
             console.log('Upload successful');
