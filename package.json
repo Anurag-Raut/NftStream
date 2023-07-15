@@ -20,7 +20,7 @@
     "hardhat:lint-staged": "yarn workspace @se-2/hardhat lint-staged",
     "hardhat:test": "yarn workspace @se-2/hardhat test",
     "start": "yarn workspace @se-2/nextjs dev",
-    "backend": "yarn workspace @se-2/nextjs concurrently \"cd services/Chat && node chatServer.js \" \"cd services/JobQueue && node consume.js\"  \"cd services/stream_functions && node publishServer.js\"   ",
+    "backend": "yarn workspace @se-2/nextjs concurrently \"cd services/Chat && node chatServer.js \" \"cd services/JobQueue && node consume.js\"  \"cd services/stream_functions && node streamServer.js\"   ",
     "next:lint": " yarn workspace @se-2/nextjs lint",
     "next:format": "yarn workspace @se-2/nextjs format",
     "next:check-types": "yarn workspace @se-2/nextjs check-types",
