@@ -20,6 +20,7 @@ const { Web3Storage  ,getFilesFromPath ,File } = require('web3.storage');
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const {publishId,live,creator,thumbnail,title ,signature,message} =JSON.parse(req.body.payload);
+    console.log(creator,'creator');
     const id = creator ;
     if(!fs.existsSync('./uploads/'+id)){
       console.log('making direstory'," ",'./uploads/'+id)
