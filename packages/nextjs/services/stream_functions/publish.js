@@ -1,3 +1,4 @@
+import { ServerResponse } from 'http';
 
 const axios =require('axios');
 var uniqid = require('uniqid'); 
@@ -31,7 +32,7 @@ async function UploadToIPFS(files){
     console.log(files,'abbbbbeeeeeeeee');
     // Pack files into a CAR and send to web3.storage
     const cid = await web3Client.put(files) 
-    return 'https://'+cid+'.ipfs.w3s.link/';  
+    return 'https://'+cid+'.ipfs.w3s.link/'+files[0].name;  
 
 }
 
@@ -448,7 +449,7 @@ const  initialize = async () => {
       
 };
 
-const serverUrl='https://streamvault.site:3499'
+
 
 async function signMessageWithMetaMask(message) {
     // Prompt user to connect to MetaMask
@@ -463,33 +464,28 @@ async function signMessageWithMetaMask(message) {
     return {signature,selectedAddress};
   }
 
-  async function sendVerificationRequestAndPost( message,title,thumbnail,publishId) {
+  async function sendVerificationRequestAndPost( message,title,thumbnail,publishId,live) {
     const {selectedAddress,signature}= await signMessageWithMetaMask(message)
     console.log(selectedAddress,signature)
     let thumbnail_url=await UploadToIPFS(thumbnail)
+
+   
 
 
 
   
 const payload = {
     publishId: publishId,
-    live: true,
+    live: live,
     creator: selectedAddress,
     thumbnail: thumbnail_url,
     title: title,
     signature: signature,
     message: message
   };
-  
-    try {
-        const response=await axios.post(`${serverUrl}/publish`, payload)
-       
-      const result = response.data;
-      console.log('Verification result:', result);
-      return {result:result.verified,address:selectedAddress}
-    } catch (error) {
-        return Promise.reject(error);
-    }
+
+  return payload;
+ 
   }
 
   async function getDevices(){
@@ -522,20 +518,42 @@ const payload = {
 
       return {audioDevices:audioDevices,videoDevices:videoDevices};
   }
+
+  async function publishHelper(payload){
+    let url;
+   url='https://streamvault.site:3499/publish';
+    
+      try {
+          const response=await axios.post(url, payload)
+         
+        const result = response.data;
+        console.log('Verification result:', result);
+        return {result:result.verified,address:selectedAddress}
+      } catch (error) {
+          return Promise.reject(error);
+      }
+   
+
+  }
   
 
   function publish(stream,title,thumbnail){
     let id= uniqid();
     console.log(thumbnail);
     try{
-        sendVerificationRequestAndPost('anurag',title,thumbnail,id).then(async ({result,address})=>{
-            if(!result){
-                console.error('not verified');
-                return;
-            }
-            
-          
-                onTransmit(stream,address+'/'+id);
+        sendVerificationRequestAndPost('anurag',title,thumbnail,id,true).then(async (payload)=>{
+            publishHelper(payload).then(({result,address})=>{
+
+                if(!result){
+                    console.error('not verified');
+                    return;
+                }
+                
+              
+                    onTransmit(stream,address+'/'+id);
+
+            })
+           
         
                
     
@@ -571,4 +589,5 @@ const payload = {
 
    
 }
-export {getDevices,publish,init};
+
+export {getDevices,publish,init,sendVerificationRequestAndPost};

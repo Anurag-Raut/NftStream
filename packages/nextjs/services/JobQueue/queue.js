@@ -8,7 +8,7 @@ const token = process.env.WEB3STOJ_TOKEN;
 const client = new Web3Storage({token:token});
 
 
-async function HLSconversion(queueName,inputFilePath,outputFilePath,outputDirectory){
+async function HLSconversion(queueName,inputFilePath,outputFilePath,outputDirectory,id){
 
     const connection= await amqp.connect('amqp://localhost:5672');
     // console.log(connection);
@@ -16,7 +16,7 @@ async function HLSconversion(queueName,inputFilePath,outputFilePath,outputDirect
     const queue = queueName;
     console.log(queue)
     await channel.assertQueue(queue, { durable: true });
-    channel.sendToQueue(queue, Buffer.from(JSON.stringify({inputFilePath,outputFilePath,outputDirectory})), { persistent: true });
+    channel.sendToQueue(queue, Buffer.from(JSON.stringify({inputFilePath,outputFilePath,outputDirectory,id})), { persistent: true });
     await channel.close(); 
     await connection.close(); 
 

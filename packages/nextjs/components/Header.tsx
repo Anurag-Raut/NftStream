@@ -97,6 +97,10 @@ export const Header = () => {
         <ul className="hidden lg:flex lg:flex-nowrap menu menu-horizontal px-1 gap-2">{navLinks}</ul>
       </div>
       <div className="navbar-end flex-grow mr-4">
+      <NavLink href="/publish">Stream</NavLink>
+     
+        <NavLink href="/upload">Upload</NavLink>
+    
         <RainbowKitCustomConnectButton />
         <FaucetButton />
       </div>

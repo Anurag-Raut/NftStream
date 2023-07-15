@@ -3,11 +3,65 @@ const amqp = require('amqplib/callback_api');
 const ffmpeg = require('fluent-ffmpeg');
 const fs=require('fs');
 const app = express();
+
+
+
 const {UploadToIPFS} =require('./queue');
+const { MongoClient, ServerApiVersion, Timestamp } = require('mongodb');
+const uri = "mongodb+srv://admin:admin@cluster0.ainnpst.mongodb.net/?retryWrites=true&w=majority";
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+
+let db;
 
 
-function HlsConversion(inputFilePath, outputFilePath,outputDirectory) {
-  inputFilePath = '../VOD/' + inputFilePath;
+async function connectDB(){
+
+  try {
+      // Connect the client to the server	(optional starting in v4.7)
+      await client.connect();
+      // Send a ping to confirm a successful connection
+    db = client.db('Streamvault_videos');
+    
+      console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    } 
+    catch(error){
+      throw error;
+    }
+  
+}
+
+async function updateStatus(id){
+
+  try{
+
+  const collection = db.collection('videos');
+
+  const filter = { _id: ObjectId(id) };
+  const update = {
+    $set: {
+     uploaded:true
+    }
+  };
+
+  const result = await collection.updateOne(filter, update);
+
+  }
+  catch(error){
+    throw error;
+  }
+
+}
+
+
+
+function HlsConversion(inputFilePath, outputFilePath,outputDirectory,id) {
+  inputFilePath = '../stream_functions/' + inputFilePath;
   outputFilePath = '/var/www/' + outputDirectory+'/'+outputDirectory+'.m3u8';
   let outputDirectoryName=outputDirectory;
   outputDirectory='/var/www/'+outputDirectory
@@ -28,18 +82,15 @@ function HlsConversion(inputFilePath, outputFilePath,outputDirectory) {
       '-map 0:v', // Include only video stream
       '-map 0:a'  // Include only audio stream
     ])
-    .on('end', () => {
+    .on('end', async () => {
       console.log('Conversion to HLS completed');
       //remove input file 
       fs.rm(inputFilePath,()=>{
         console.log('deleted file');
       });
 
-      // UploadToIPFS(outputDirectory,outputDirectoryName)
-      // .then(()=>{
-      //   fs.rmSync(outputDirectory,{recursive:true,force:true})
-      // })
 
+      await updateStatus(id);
 
 
     })
@@ -68,11 +119,11 @@ amqp.connect('amqp://localhost:5672', function (error0, connection) {
     channel.consume(queue, function (msg) {
       // console.log('Received message:', msg.content.toString());
 
-      let {inputFilePath,outputFilePath,outputDirectory} = JSON.parse(msg.content);
+      let {inputFilePath,outputFilePath,outputDirectory,id} = JSON.parse(msg.content);
 
 
       // Trigger HLS conversion
-      HlsConversion(inputFilePath, outputFilePath,outputDirectory);
+      HlsConversion(inputFilePath, outputFilePath,outputDirectory,id);
 
     }, {
       noAck: true
@@ -80,7 +131,7 @@ amqp.connect('amqp://localhost:5672', function (error0, connection) {
   });
 });
 
-
+connectDB();
 // Start consuming paths from the queue when the server starts
 app.listen(4500, () => {
   console.log('Server started on port 4500');

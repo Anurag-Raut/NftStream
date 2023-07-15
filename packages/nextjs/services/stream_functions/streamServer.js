@@ -5,10 +5,14 @@ const app = express();
 app.use(express.json());
 const axios = require('axios');
 app.use(cors());
+const fs = require('fs');
+const path = require('path');
+const {HLSconversion} = require('../JobQueue/queue')
 
 const { MongoClient, ServerApiVersion, Timestamp } = require('mongodb');
 
 const { Web3Storage  ,getFilesFromPath ,File } = require('web3.storage');
+const busboy = require('connect-busboy');
 
 
 const uri = "mongodb+srv://admin:admin@cluster0.ainnpst.mongodb.net/?retryWrites=true&w=majority";
@@ -66,7 +70,7 @@ app.post('/getVideos',async (req,res)=>{
   const {live,creator,currentPage,pageSize } = req.body;
  
 
-  const result=await fetchFromDB(creator,live,currentPage,pageSize=10);
+  const result=await fetchFromDB(creator,live,currentPage,pageSize);
 
   if(result){
     res.status(200).json({result:result});
@@ -79,6 +83,69 @@ app.post('/getVideos',async (req,res)=>{
 
 
 })
+
+
+
+app.post('/upload',busboy(), (req, res) => {
+  const file = req.busboy;
+  
+  const {publishId,live,creator,thumbnail,title ,signature,message} =JSON.parse(req.body.payload);
+  const isVerified = verifySignature(creator, message, signature);
+  if(!isVerified){
+    res.status(400).json({verified:false});
+    return ;
+  }
+
+  // Listen for file events
+  let id=creator+'/'+publishId;
+  file.on('file', (fieldname, fileStream, filename, encoding, mimetype) => {
+    // Specify the path to save the uploaded file
+    console.log(id);
+    const saveTo = `uploads/${id}`;
+
+    // Create a write stream to save the file
+    const writeStream = fs.createWriteStream(saveTo);
+
+    // Pipe the file stream to the write stream
+    fileStream.pipe(writeStream);
+
+    // Handle the completion of the file upload
+    writeStream.on('finish', () => {
+      console.log('File uploaded successfully');
+
+
+      
+      const inputFilePath = saveTo;
+      const outputDirectory = path.parse(filename.filename).name;
+      const outputFilePath = `output/${outputDirectory}/${outputDirectory}.m3u8`;
+      // if(!fs.existsSync('./output/'+outputDirectory)){
+      //   fs.mkdirSync('./output/'+outputDirectory, { recursive: true })
+      //  };
+       console.log(inputFilePath,outputFilePath);
+       addVideoToDb(publishId,false,creator,thumbnail,title,false);
+       HLSconversion('HLS',inputFilePath,outputFilePath,outputDirectory,id);
+
+
+
+
+      // Perform additional processing as needed
+    });
+  });
+
+  // Listen for finish event when all files are uploaded
+  file.on('finish', () => {
+    res.status(200).send('All files uploaded successfully');
+  });
+
+  // Pipe the incoming request stream to Busboy
+  req.pipe(req.busboy);
+});
+
+
+
+
+
+
 
 // Verify the message signature with a public address
 function verifySignature(publicAddress, message, signature) {
@@ -109,7 +176,7 @@ async function connectDB(){
 
 
 
-async function addVideoToDb(publishId,live,creator,thumbnail,title) {
+async function addVideoToDb(publishId,live,creator,thumbnail,title,uploaded) {
 
   if(!db){
       connectDB();
@@ -126,6 +193,7 @@ async function addVideoToDb(publishId,live,creator,thumbnail,title) {
   if(thumbnail){
       thumbnail_image_url= thumbnail;
   }
+ 
 
   const result=myColl.insertOne({
       _id:creator+'/'+publishId,
@@ -134,9 +202,13 @@ async function addVideoToDb(publishId,live,creator,thumbnail,title) {
       thumbnail:thumbnail_image_url,
       timestamp:new Timestamp(),
       title:title,
+      uploaded:live?true:uploaded,
+      
+
 
   })
-
+  
+  
   if(result){
 
       return true;
@@ -182,7 +254,7 @@ async function fetchFromDB(creator,live,currentPage,pageSize=10){
       query.live=live;
 
 
-      const result = await collection.find()
+      const result = await myColl.find()
           .skip(skip)
           .limit(pageSize)
           .toArray();
