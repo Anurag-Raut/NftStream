@@ -60,7 +60,7 @@ async function fetchFromDB(live,currentPage,pageSize=10){
 
     try{
 
-        const result=await axios.post('http://localhost:3500/getVideos',payload);
+        const result=await axios.post('https://streamvault.site:3499/getVideos',payload);
         console.log(result);
         return result ;
   
