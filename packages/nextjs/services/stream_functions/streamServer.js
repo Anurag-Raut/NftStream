@@ -88,8 +88,9 @@ app.post('/getVideos',async (req,res)=>{
 
 app.post('/upload',busboy(), (req, res) => {
   const file = req.busboy;
+  console.log(req.body);
   
-  const {publishId,live,creator,thumbnail,title ,signature,message} =JSON.parse(req.body.payload);
+  // const {publishId,live,creator,thumbnail,title ,signature,message} =JSON.parse(req.body.payload);
   const isVerified = verifySignature(creator, message, signature);
   if(!isVerified){
     res.status(400).json({verified:false});
