@@ -22,12 +22,12 @@ const storage = multer.diskStorage({
     const {publishId,live,creator,thumbnail,title ,signature,message} =JSON.parse(req.body.payload);
     console.log(creator,'creator');
     const id = creator ;
-    if(!fs.existsSync('./uploads/'+id)){
-      console.log('making direstory'," ",'./uploads/'+id)
-      fs.mkdirSync('./uploads/'+id, { recursive: true })
-     };
+    // if(!fs.existsSync('./uploads/'+id)){
+    //   console.log('making direstory'," ",'./uploads/'+id)
+    //   fs.mkdirSync('./uploads/'+id, { recursive: true })
+    //  };
     
-    const saveTo = `uploads/${id}`;
+    const saveTo = `uploads/`;
     cb(null, saveTo);
   },
   filename: (req, file, cb) => {
@@ -36,7 +36,7 @@ const storage = multer.diskStorage({
   }
 });
 
-const upload = multer( {dest:'uploads/'});
+const upload = multer( storage);
 
 const uri = "mongodb+srv://admin:admin@cluster0.ainnpst.mongodb.net/?retryWrites=true&w=majority";
 const token = process.env.WEB3STOJ_TOKEN;
