@@ -114,7 +114,7 @@ app.post('/upload',upload.single('video'), (req, res) => {
   // file.on('file', (fieldname, fileStream, filename, encoding, mimetype) => {
     // Specify the path to save the uploaded file
     // console.log(fieldname,'field nameeeeeeeeeeeeee');
-    const saveTo = `uploads/${publishId}`;
+    const saveTo = `./uploads/${publishId}`;
 
     // Create a write stream to save the file
     // const writeStream = fs.createWriteStream(saveTo);
