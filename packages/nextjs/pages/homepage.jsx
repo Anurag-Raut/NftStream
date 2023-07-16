@@ -5,11 +5,10 @@ import { BugAntIcon, MagnifyingGlassIcon, SparklesIcon } from "@heroicons/react/
 import { MetaHeader } from "~~/components/MetaHeader";
 import { useLocalStorage } from 'usehooks-ts'
 import { useEffect, useState } from "react";
-import HomePage from './homepage'
 import VideoCard from '../components/custom-Components/videoCard'
 
-const SideBar = dynamic(() => import("../components/custom-Components/SideBar/sidebar"), { ssr: false });
-const Home = () => {
+// const SideBar = dynamic(() => import("../components/custom-Components/SideBar/sidebar"), { ssr: false });
+const HomePage = () => {
   const[videos,setVideos]=useState([]);
 
   useEffect(()=>{
@@ -29,11 +28,21 @@ const Home = () => {
    
   },[])
   return (
-    <div className="flex">
-    <SideBar Home={<HomePage />} />
-    
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
+
+    {
+      videos.map((video)=>{
+
+        return (
+      
+          <VideoCard key={video._id} image={video?.thumbnail} title={video?.title} />
+        )
+
+      })
+    }
+
     </div>
   );
 };
 
-export default Home;
+export default HomePage;

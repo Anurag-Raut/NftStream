@@ -13,6 +13,7 @@ const NavLink = ({ href, children }: { href: string; children: React.ReactNode }
   return (
     <Link
       href={href}
+    
       passHref
       className={`${
         isActive ? "bg-secondary shadow-md" : ""
@@ -63,7 +64,7 @@ export const Header = () => {
   return (
     <div className="sticky lg:static top-0 navbar bg-base-100 min-h-0 flex-shrink-0 justify-between z-20  shadow-secondary px-0 sm:px-2">
       <div className="navbar-start w-auto lg:w-1/2">
-        <div className="lg:hidden dropdown" ref={burgerMenuRef}>
+        <div className=" dropdown" ref={burgerMenuRef}>
           <label
             tabIndex={0}
             className={`ml-1 btn btn-ghost ${isDrawerOpen ? "hover:bg-secondary" : "hover:bg-transparent"}`}
@@ -71,30 +72,20 @@ export const Header = () => {
               setIsDrawerOpen(prevIsOpenState => !prevIsOpenState);
             }}
           >
-            <Bars3Icon className="h-1/2" />
+            <Bars3Icon data-te-sidenav-toggle-ref
+    data-te-target="#sidenav-2"
+    aria-controls="#sidenav-2"
+    aria-haspopup="true"   className="h-1/2" />
           </label>
-          {isDrawerOpen && (
-            <ul
-              tabIndex={0}
-              className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
-              onClick={() => {
-                setIsDrawerOpen(false);
-              }}
-            >
-              {navLinks}
-            </ul>
-          )}
+
         </div>
-        <Link href="/" passHref className="hidden lg:flex items-center gap-2 ml-4 mr-6">
-          <div className="flex relative w-10 h-10">
-            <Image alt="SE2 logo" className="cursor-pointer" fill src="/logo.svg" />
-          </div>
-          <div className="flex flex-col">
-            <span className="font-bold leading-tight">Scaffold-eth</span>
-            <span className="text-xs">Ethereum dev stack</span>
-          </div>
-        </Link>
-        <ul className="hidden lg:flex lg:flex-nowrap menu menu-horizontal px-1 gap-2">{navLinks}</ul>
+        <button   data-te-sidenav-toggle-ref
+    data-te-target="#sidenav-2"
+    aria-controls="#sidenav-2"
+    aria-haspopup="true"   className="">
+          Streamvault
+        </button>
+       
       </div>
       <div className="navbar-end flex-grow mr-4">
       <NavLink href="/publish">Stream</NavLink>

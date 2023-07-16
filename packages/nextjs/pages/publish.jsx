@@ -9,6 +9,7 @@ import axios from 'axios'
 import { useLocalStorage } from 'usehooks-ts'
 function Publish(){
     let id= uniqid();
+    const [thumbnail,setThumbnail]=useState(null);
     const [ID, setID] = useLocalStorage('ID', '')
     const [stream,setStream]=useState(null)
     const [audioDevices,setAudioDevices]=useState(['screen']);
@@ -63,14 +64,19 @@ function Publish(){
     
     return (
         <div className='flex h-full  m-6  flex justify-around '>
-             <video id='publish-video' autoPlay controls className="min-h-[65vh] min-w-[60vw]" > </video>
+            <div>
+            <video id='publish-video' autoPlay controls className="h-[55vh] min-w-[45vw]" > </video>
+            <div className='flex'>
+            <Select label={'select Video device'} id={'videoId'} options={videoDevices} />
+                    <Select label={'select audio device'} id={'audioId'} options={audioDevices} />
+
+            </div>
+           
+            </div>
              <div className='w-full m-10' >
                     <InputBox label={'Enter Title '} id={'PublishId'} />
-                    
-                    <InputFile id={'thumbnail'} />
-                    <Select label={'select Video device'} id={'videoId'} options={videoDevices} />
-                    <Select label={'select audio device'} id={'audioId'} options={audioDevices} />
-                    <button onClick={()=>{hello()}}>abbbbbbeeeeeee</button>
+                    <div className=' flex justify-around'>
+                    <InputFile label={'Thumbnail'} id={'thumbnail'} file={thumbnail} onChange={setThumbnail}  />
                     {
                         !stream?
                         <Button label={'Preview'} onClick={()=>{init(document.getElementById('videoId').value,document.getElementById('audioId').value,setStream)}} />
@@ -86,6 +92,12 @@ function Publish(){
                     
                     }
             
+
+                    </div>
+                    
+                    
+                   
+                  
 
              </div>
           
