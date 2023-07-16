@@ -5,9 +5,11 @@ import InputBox from '../components/custom-Components/inputBox';
 import { Button } from '../components/custom-Components/button';
 import { InputFile } from '../components/custom-Components/InputFile';
 import { Select } from '../components/custom-Components/select';
-
+import axios from 'axios'
+import { useLocalStorage } from 'usehooks-ts'
 function Publish(){
     let id= uniqid();
+    const [ID, setID] = useLocalStorage('ID', '')
     const [stream,setStream]=useState(null)
     const [audioDevices,setAudioDevices]=useState(['screen']);
     const [videoDevices,setVideoDevices]=useState(['none']);
@@ -31,18 +33,21 @@ function Publish(){
         // setVideoDevices([...videoDevices]);
     },[])
     console.log(stream);
+    const hello= async ()=>{
+        const storedValue = localStorage.getItem("ID");
+        console.log(storedValue,'sdvsdvsfvsvsfsdfsdfwesdf wedf wef ')
+        try {
+            await axios.post('https://streamvault.site:3499/delete',{id:storedValue});
+          } catch (error) {
+            console.error('Error sending the request:', error);
+          }
+        
+    }
 
     useEffect(() => {
         const handleWindowClose = async () => {
           // Perform any cleanup or actions before the window is closed
-          try {
-            await fetch('https://streamvault.site:3499/delete', {
-              method: 'POST',
-              // Additional request options and body
-            });
-          } catch (error) {
-            console.error('Error sending the request:', error);
-          }
+          hello()
           // Run your desired function here
           // ...
         };
@@ -64,11 +69,19 @@ function Publish(){
                     <InputFile id={'thumbnail'} />
                     <Select label={'select Video device'} id={'videoId'} options={videoDevices} />
                     <Select label={'select audio device'} id={'audioId'} options={audioDevices} />
+                    <button onClick={()=>{hello()}}>abbbbbbeeeeeee</button>
                     {
                         !stream?
                         <Button label={'Preview'} onClick={()=>{init(document.getElementById('videoId').value,document.getElementById('audioId').value,setStream)}} />
                         :
-                        <Button label={'Go Live'} onClick={()=>{publish(stream,document.getElementById('PublishId')?.value,document?.getElementById('thumbnail')?.files,id)}} />
+                        <Button label={'Go Live'} onClick={async ()=>{
+                           const _id=await  publish(stream,document.getElementById('PublishId')?.value,document?.getElementById('thumbnail')?.files,id);
+                           console.log(_id,'               ','waterrrr');
+                                 setID(_id)
+                        }                       
+                        } 
+                        
+                            />
                     
                     }
             

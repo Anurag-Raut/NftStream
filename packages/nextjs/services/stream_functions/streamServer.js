@@ -75,8 +75,11 @@ app.post('/publish',async (req,res)=>{
 
 })
 
-app.post('/detete',(req,res)=>{
-  console.log('deleteddddd')
+app.post('/delete',(req,res)=>{
+  console.log(req.body,'body')
+  const {id}=req.body;
+  deleteFromDB(id);
+
 })
 
 
@@ -248,6 +251,33 @@ async function addVideoToDb(publishId,live,creator,thumbnail,title,uploaded) {
 
 
 
+
+
+}
+
+async function deleteFromDB(id){
+console.log(id);
+try{
+
+  if(!db){
+    connectDB();
+}
+
+
+
+    let myColl = db.collection('videos');
+    const filter = { _id: id };
+    const result = await myColl.deleteOne(filter);
+    if(result){
+      console.log('deleted');
+    }
+
+
+}
+catch(error){
+  console.error(error);
+
+}
 
 
 }

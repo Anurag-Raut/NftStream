@@ -537,39 +537,30 @@ const payload = {
   }
   
 
-  function publish(stream,title,thumbnail,id){
-    
+  async function publish(stream, title, thumbnail, id) {
     console.log(thumbnail);
-    try{
-        sendVerificationRequestAndPost('anurag',title,thumbnail,id,true).then(async (payload)=>{
-            publishHelper(payload).then(({result,address})=>{
-
-                if(!result){
-                    console.error('not verified');
-                    return;
-                }
-                
-              
-                    onTransmit(stream,address+'/'+id);
-
-            })
-           
-        
-               
-    
-        })
-
-
+    try {
+      const payload = await sendVerificationRequestAndPost(
+        'anurag',
+        title,
+        thumbnail,
+        id,
+        true
+      );
+      
+      const { result, address } = await publishHelper(payload);
+      
+      if (!result) {
+        console.error('not verified');
+        return;
+      }
+  
+      onTransmit(stream, `${address}/${id}`);
+      return `${address}/${id}`;
+    } catch (error) {
+      console.error(error);
     }
-    catch(error){
-        console.error(error);
-    }
-   
-     
-   
-
-   
-}
+  }
 
  function init(video,audio,setStream){
 
