@@ -528,7 +528,7 @@ const payload = {
          
         const result = response.data;
         console.log('Verification result:', result);
-        return {result:result.verified,address:selectedAddress}
+        return {result:result.verified,address:payload.creator}
       } catch (error) {
           return Promise.reject(error);
       }
@@ -537,8 +537,8 @@ const payload = {
   }
   
 
-  function publish(stream,title,thumbnail){
-    let id= uniqid();
+  function publish(stream,title,thumbnail,id){
+    
     console.log(thumbnail);
     try{
         sendVerificationRequestAndPost('anurag',title,thumbnail,id,true).then(async (payload)=>{

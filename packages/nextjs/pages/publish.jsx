@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import {getDevices, init, publish} from '../services/stream_functions/publish'
-
+import uniqid from 'uniqid'
 import InputBox from '../components/custom-Components/inputBox';
 import { Button } from '../components/custom-Components/button';
 import { InputFile } from '../components/custom-Components/InputFile';
 import { Select } from '../components/custom-Components/select';
 
 function Publish(){
+    let id= uniqid();
     const [stream,setStream]=useState(null)
     const [audioDevices,setAudioDevices]=useState(['screen']);
     const [videoDevices,setVideoDevices]=useState(['none']);
@@ -30,6 +31,28 @@ function Publish(){
         // setVideoDevices([...videoDevices]);
     },[])
     console.log(stream);
+
+    useEffect(() => {
+        const handleWindowClose = async () => {
+          // Perform any cleanup or actions before the window is closed
+          try {
+            await fetch('https://streamvault.site:3499/delete', {
+              method: 'POST',
+              // Additional request options and body
+            });
+          } catch (error) {
+            console.error('Error sending the request:', error);
+          }
+          // Run your desired function here
+          // ...
+        };
+    
+        window.addEventListener('beforeunload', handleWindowClose);
+    
+        return () => {
+          window.removeEventListener('beforeunload', handleWindowClose);
+        };
+      }, []);
    
     
     return (
@@ -45,7 +68,7 @@ function Publish(){
                         !stream?
                         <Button label={'Preview'} onClick={()=>{init(document.getElementById('videoId').value,document.getElementById('audioId').value,setStream)}} />
                         :
-                        <Button label={'Go Live'} onClick={()=>{publish(stream,document.getElementById('PublishId')?.value,document?.getElementById('thumbnail')?.files)}} />
+                        <Button label={'Go Live'} onClick={()=>{publish(stream,document.getElementById('PublishId')?.value,document?.getElementById('thumbnail')?.files,id)}} />
                     
                     }
             

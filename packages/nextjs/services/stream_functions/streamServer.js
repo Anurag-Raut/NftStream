@@ -75,6 +75,10 @@ app.post('/publish',async (req,res)=>{
 
 })
 
+app.post('/detete',(req,res)=>{
+  console.log('deleteddddd')
+})
+
 
 app.post('/getVideos',async (req,res)=>{
   const {live,creator,currentPage,pageSize } = req.body;
@@ -222,6 +226,7 @@ async function addVideoToDb(publishId,live,creator,thumbnail,title,uploaded) {
       timestamp:new Timestamp(),
       title:title,
       uploaded:live?true:uploaded,
+
       
 
 
