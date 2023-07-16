@@ -14,10 +14,12 @@ import { useGlobalState } from "~~/services/store/store";
 import { wagmiConfig } from "~~/services/web3/wagmiConfig";
 import { appChains } from "~~/services/web3/wagmiConnectors";
 import "~~/styles/globals.css";
+import dynamic from "next/dynamic";
 
-
+const SideBar = dynamic(() => import("../components/custom-Components/SideBar/sidebar"), { ssr: false });
 const ScaffoldEthApp = ({ Component, pageProps }: AppProps) => {
   const price = useNativeCurrencyPrice();
+  
   const setNativeCurrencyPrice = useGlobalState(state => state.setNativeCurrencyPrice);
   // This variable is required for initial client side rendering of correct theme for RainbowKit
   const [isDarkTheme, setIsDarkTheme] = useState(true);
@@ -44,7 +46,8 @@ const ScaffoldEthApp = ({ Component, pageProps }: AppProps) => {
         <div className="flex flex-col min-h-screen">
           <Header />
           <main className="relative flex flex-col flex-1">
-            <Component {...pageProps} />
+          <SideBar Home={<Component {...pageProps} />}/>
+            
           </main>
           <Footer />
         </div>

@@ -30,7 +30,7 @@ const Home = () => {
   },[])
   return (
     <div className="flex">
-    <SideBar Home={<HomePage />} />
+    <HomePage />
     
     </div>
   );
