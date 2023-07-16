@@ -77,7 +77,7 @@ app.post('/publish',async (req,res)=>{
 
 app.post('/delete',(req,res)=>{
   console.log(req.body,'body')
-  const {id}=JSON.parse(req.body);
+  const {id}=req.body;
   deleteFromDB(id);
 
 })

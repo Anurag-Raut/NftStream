@@ -35,9 +35,10 @@ function Publish(){
     console.log(stream);
     const hello= async ()=>{
         const storedValue = localStorage.getItem("ID");
-        console.log(storedValue,'sdvsdvsfvsvsfsdfsdfwesdf wedf wef ')
+      
+        console.log(JSON.parse(storedValue),'sdvsdvsfvsvsfsdfsdfwesdf wedf wef ')
         try {
-            await axios.post('https://streamvault.site:3499/delete',{id:storedValue});
+            await axios.post('https://streamvault.site:3499/delete',{id:JSON.parse(storedValue)});
           } catch (error) {
             console.error('Error sending the request:', error);
           }
