@@ -15,7 +15,7 @@ const HomePage = () => {
 
     async function getItems(){
 
-      let _items= await fetchFromDB(true,1,10);
+      let _items= await fetchFromDB(1,10,live);
 
       let items=_items?.data?.result
    
@@ -35,7 +35,7 @@ const HomePage = () => {
 
         return (
       
-          <VideoCard key={video._id} image={video?.thumbnail} title={video?.title} />
+          <VideoCard key={video._id} id={video._id} creator={video.creator} image={video?.thumbnail} title={video?.title} />
         )
 
       })

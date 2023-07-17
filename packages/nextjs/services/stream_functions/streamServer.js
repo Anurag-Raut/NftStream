@@ -149,16 +149,7 @@ app.post('/upload',upload.single('video'), (req, res) => {
 
 
       
-    // });
-  // });
-
-  // Listen for finish event when all files are uploaded
-  // file.on('finish', () => {
-  //   res.status(200).send('All files uploaded successfully');
-  // });
-
-  // // Pipe the incoming request stream to Busboy
-  // req.pipe(req.busboy);
+    
 });
 
 
@@ -305,7 +296,10 @@ async function fetchFromDB(creator,live,currentPage,pageSize=10){
       if(creator){
           query.creator=creator
       }
-      query.live=live;
+      if(live){
+        query.live=live;
+      }
+    
 
 
       const result = await myColl.find()
