@@ -64,7 +64,7 @@ app.post('/publish',async (req,res)=>{
     return;
   } 
   
-  const result =await addVideoToDb(publishId,live,creator,thumbnail,title,premiumTokens);
+  const result =await addVideoToDb(publishId,live,creator,thumbnail,title,1,premiumTokens);
   if(result){
     res.status(200).json({verified:result});
   }
