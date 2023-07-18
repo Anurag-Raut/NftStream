@@ -8,6 +8,7 @@ import { Select } from '../components/custom-Components/select';
 import axios from 'axios'
 import { useLocalStorage } from 'usehooks-ts'
 import Premium from '../components/custom-Components/premiumContent';
+import { getTokenAddress } from '../services/web3/creator/creator';
 function Publish(){
     let id= uniqid();
     const [thumbnail,setThumbnail]=useState(null);
@@ -15,6 +16,19 @@ function Publish(){
     const [stream,setStream]=useState(null)
     const [audioDevices,setAudioDevices]=useState(['screen']);
     const [videoDevices,setVideoDevices]=useState(['none']);
+    const [tokenAddress,setTokenAddress]=useState('');
+
+    useEffect(()=>{
+      async function getAdd(){
+          const addr =await getTokenAddress();
+          setTokenAddress(addr);
+      }
+
+      getAdd();
+
+    
+
+  },[])
 
 
     useEffect(()=>{
@@ -93,7 +107,7 @@ function Publish(){
                         <Button label={'Preview'} onClick={()=>{init(document.getElementById('videoId').value,document.getElementById('audioId').value,setStream)}} />
                         :
                         <Button label={'Go Live'} onClick={async ()=>{
-                           const _id=await  publish(stream,document.getElementById('PublishId')?.value,document?.getElementById('thumbnail')?.files,id,document.getElementById('premium-token')?.value);
+                           const _id=await  publish(stream,document.getElementById('PublishId')?.value,document?.getElementById('thumbnail')?.files,id,document.getElementById('premium-token')?.value,tokenAddress);
 
                                  setID(_id)
                         }                       

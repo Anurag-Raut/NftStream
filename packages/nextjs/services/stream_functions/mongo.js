@@ -83,6 +83,25 @@ async function fetchFromDB(currentPage,pageSize=10,live){
 
 
 
+
+}
+
+async function getVideoById(id){
+    try{
+
+        const result=await axios.post('https://streamvault.site:3499/getVideos',{id});
+        console.log(result);
+        return result ;
+  
+
+// Calculate the skip value based on the page size and current page
+      
+
+    }
+    catch(error){
+        console.error(error);
+        return [];
+    }
 }
 
 
@@ -90,4 +109,4 @@ async function fetchFromDB(currentPage,pageSize=10,live){
 
 
 
-export {fetchFromDB,addVideoToDb}
+export {fetchFromDB,addVideoToDb,getVideoById}

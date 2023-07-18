@@ -54,7 +54,7 @@ let db;
 
 
 app.post('/publish',async (req,res)=>{
-  const {publishId,live,creator,thumbnail,title ,signature,message,premiumTokens} = req.body;
+  const {publishId,live,creator,thumbnail,title ,signature,message,premiumTokens,tokenAddress} = req.body;
   
   const isVerified = verifySignature(creator, message, signature);
   
@@ -64,7 +64,7 @@ app.post('/publish',async (req,res)=>{
     return;
   } 
   
-  const result =await addVideoToDb(publishId,live,creator,thumbnail,title,1,premiumTokens);
+  const result =await addVideoToDb(publishId,live,creator,thumbnail,title,1,premiumTokens,tokenAddress);
   if(result){
     res.status(200).json({verified:result});
   }
@@ -103,9 +103,31 @@ app.post('/getVideos',async (req,res)=>{
 })
 
 
+app.post('/getVideoDetails',async (req,res)=>{
+  const {id } = req.body;
+
+  let myColl = db.collection('videos');
+  const filter = { _id: id };
+    const result = await myColl.find(filter);
+
+ 
+
+  if(result){
+    res.status(200).json({result:result});
+  }
+  else{
+    res.status(400).json({result:[]});
+  }
+
+
+
+
+})
+
+
 
 app.post('/upload',upload.single('video'), (req, res) => {
-  const {publishId,live,creator,thumbnail,title ,signature,message,premiumTokens} =JSON.parse(req.body.payload);
+  const {publishId,live,creator,thumbnail,title ,signature,message,premiumTokens,tokenAddress} =JSON.parse(req.body.payload);
   // console.log(req.body.payload);
   // const payload = JSON.parse(req.body.payload);
   
@@ -146,7 +168,7 @@ app.post('/upload',upload.single('video'), (req, res) => {
       
        HLSconversion('HLS',inputFilePath,outputFilePath,outputDirectory,id);
 
-       addVideoToDb(publishId,false,creator,thumbnail,title,false,premiumTokens);
+       addVideoToDb(publishId,false,creator,thumbnail,title,false,premiumTokens,tokenAddress);
 
 
       

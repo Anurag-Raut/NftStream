@@ -5,10 +5,25 @@ import InputBox from "../components/custom-Components/inputBox";
 import {sendVerificationRequestAndPost} from '../services/stream_functions/publish';
 import uniqid from 'uniqid'
 import Premium from "../components/custom-Components/premiumContent";
+import { getTokenAddress } from "../services/web3/creator/creator";
 
 function Upload(){
  
     const [selectedFile, setSelectedFile] = useState(null);
+    const [tokenAddress,setTokenAddress]=useState('')
+
+    useEffect(()=>{
+      async function getAdd(){
+          const addr =await getTokenAddress();
+          setTokenAddress(addr);
+      }
+
+      getAdd();
+
+    
+
+  },[])
+
     console.log(selectedFile);
  
     const handleUpload = async() => {
@@ -22,6 +37,7 @@ function Upload(){
           const payload = await sendVerificationRequestAndPost('anurag',document.getElementById('upload-title').value,document.getElementById('upload-thumbnail').files,id,false)
           console.log(payload,selectedFile)
           payload.premiumTokens=document.getElementById('premium-token').value;
+          payload.tokenAddress=tokenAddress;
           formData.append('video', selectedFile);
           formData.append('payload', JSON.stringify(payload));
           const response = await axios.post(serverurl+'/upload', formData, {

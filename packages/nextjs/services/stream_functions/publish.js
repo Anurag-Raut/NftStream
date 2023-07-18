@@ -538,7 +538,7 @@ const payload = {
   }
   
 
-  async function publish(stream, title, thumbnail, id,premiumTokens) {
+  async function publish(stream, title, thumbnail, id,premiumTokens,tokenAddress) {
     console.log(premiumTokens,'premiumtokens');
     try {
       const payload = await sendVerificationRequestAndPost(
@@ -553,6 +553,9 @@ const payload = {
       if(premiumTokens){
         payload.premiumTokens=Number(premiumTokens);
 
+      }
+      if(tokenAddress){
+        payload.tokenAddress=tokenAddress;
       }
       else{
         payload.premiumTokens=0;

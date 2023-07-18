@@ -31,9 +31,34 @@ async function getTokenAddress(){
 }
 
 
+
+async function getTokenAddressByAddress(_address){
+  const web3 = new Web3(window.ethereum);
+ 
+  const provider = new ethers.BrowserProvider(window.ethereum);
+ 
+ 
+  
+ 
+
+  const contract = new web3.eth.Contract(Factory?.abi, factoryContractAddress, { from:_address });
+  const _tokenAddress=await contract.methods.CreatorAddress(_address).call();
+  console.log(_tokenAddress);
+  if(_tokenAddress==='0x0000000000000000000000000000000000000000'){
+   return ''
+  }
+  else{
+    return _tokenAddress
+  }
+ 
+
+
+}
+
+
 async function getBalance(address){
     if(address==='' || !address){
-      return;
+      return 0;
     }
 
     console.log(address,'adddddddddddddd')
@@ -46,7 +71,7 @@ async function getBalance(address){
     const contract = new web3.eth.Contract(Creator.abi, address, { from:addresses[0] });
 
     const balance=await contract.methods.balanceOf(address).call() 
-    console.log(balance);
+   return balance
   }
 
     async function addTokenContract() {
@@ -88,4 +113,4 @@ async function getBalance(address){
 
 
 
-export {getTokenAddress,addTokenContract,getBalance}
+export {getTokenAddress,addTokenContract,getBalance,getTokenAddressByAddress}
