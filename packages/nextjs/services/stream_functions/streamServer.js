@@ -55,7 +55,7 @@ let db;
 
 app.post('/publish',async (req,res)=>{
   const {publishId,live,creator,thumbnail,title ,signature,message,premiumTokens} = req.body;
-  console.log(req.body);
+  
   const isVerified = verifySignature(creator, message, signature);
   
   if (!isVerified) {
@@ -199,6 +199,7 @@ async function addVideoToDb(publishId,live,creator,thumbnail,title,uploaded,prem
   if(!db){
       connectDB();
   }
+  console.log(premiumTokens,'premiumTokens')
 
   let thumbnail_image_url;
 
