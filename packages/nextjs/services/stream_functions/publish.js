@@ -537,7 +537,7 @@ const payload = {
   }
   
 
-  async function publish(stream, title, thumbnail, id) {
+  async function publish(stream, title, thumbnail, id,premiumTokens) {
     console.log(thumbnail);
     try {
       const payload = await sendVerificationRequestAndPost(
@@ -547,6 +547,15 @@ const payload = {
         id,
         true
       );
+
+      if(premiumTokens){
+        payload.premiumTokens=premiumTokens;
+
+      }
+      else{
+        payload.premiumTokens=0;
+
+      }
       
       const { result, address } = await publishHelper(payload);
       

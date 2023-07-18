@@ -7,6 +7,7 @@ import { InputFile } from '../components/custom-Components/InputFile';
 import { Select } from '../components/custom-Components/select';
 import axios from 'axios'
 import { useLocalStorage } from 'usehooks-ts'
+import Premium from '../components/custom-Components/premiumContent';
 function Publish(){
     let id= uniqid();
     const [thumbnail,setThumbnail]=useState(null);
@@ -36,6 +37,7 @@ function Publish(){
     console.log(stream);
     const hello= async ()=>{
         const storedValue = localStorage.getItem("ID");
+        console.log('helllooooooooooooooo')
       
         console.log(JSON.parse(storedValue),'sdvsdvsfvsvsfsdfsdfwesdf wedf wef ')
         try {
@@ -77,12 +79,18 @@ function Publish(){
                     <InputBox label={'Enter Title '} id={'PublishId'} />
                     <div className=' flex justify-around'>
                     <InputFile label={'Thumbnail'} id={'thumbnail'} file={thumbnail} onChange={setThumbnail}  />
+                    <div>
+
+                      <Premium />
+
+
+
                     {
                         !stream?
                         <Button label={'Preview'} onClick={()=>{init(document.getElementById('videoId').value,document.getElementById('audioId').value,setStream)}} />
                         :
                         <Button label={'Go Live'} onClick={async ()=>{
-                           const _id=await  publish(stream,document.getElementById('PublishId')?.value,document?.getElementById('thumbnail')?.files,id);
+                           const _id=await  publish(stream,document.getElementById('PublishId')?.value,document?.getElementById('thumbnail')?.files,id,document.getElementById('premium-token')?.value);
                            console.log(_id,'               ','waterrrr');
                                  setID(_id)
                         }                       
@@ -91,6 +99,9 @@ function Publish(){
                             />
                     
                     }
+
+                    </div>
+                   
             
 
                     </div>

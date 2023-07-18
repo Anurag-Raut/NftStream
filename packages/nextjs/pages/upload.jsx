@@ -9,9 +9,7 @@ function Upload(){
  
     const [selectedFile, setSelectedFile] = useState(null);
     console.log(selectedFile);
-    const handleFileChange = (event) => {
-      setSelectedFile(event.target.files[0]);
-    };
+ 
     const handleUpload = async() => {
       const formData = new FormData();
       
@@ -50,8 +48,8 @@ function Upload(){
     return (
       <div className='flex m-5 w-[98vw] h-full justify-around'>
         <div className="w-[350px] h-[250px]">
-        <InputFile id='upload-video' onChange={handleFileChange} label={'Select Your Video'}/>
-        <InputFile id='upload-thumbnail' onChange={handleFileChange} label={'Select Thubmbail for this video '}/>
+        <InputFile id='upload-video' onChange={setSelectedFile} label={'Select Your Video'}/>
+        <InputFile id='upload-thumbnail' onChange={()=>{}} label={'Select Thubmbail for this video '}/>
         </div>
 
         <div className="w-[40vw] h-full">

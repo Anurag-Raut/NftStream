@@ -54,7 +54,7 @@ let db;
 
 
 app.post('/publish',async (req,res)=>{
-  const {publishId,live,creator,thumbnail,title ,signature,message} = req.body;
+  const {publishId,live,creator,thumbnail,title ,signature,message,premiumTokens} = req.body;
   const isVerified = verifySignature(creator, message, signature);
   
   if (!isVerified) {
@@ -63,7 +63,7 @@ app.post('/publish',async (req,res)=>{
     return;
   } 
   
-  const result =await addVideoToDb(publishId,live,creator,thumbnail,title);
+  const result =await addVideoToDb(publishId,live,creator,thumbnail,title,premiumTokens);
   if(result){
     res.status(200).json({verified:result});
   }
@@ -193,7 +193,7 @@ async function connectDB(){
 
 
 
-async function addVideoToDb(publishId,live,creator,thumbnail,title,uploaded) {
+async function addVideoToDb(publishId,live,creator,thumbnail,title,uploaded,premiumTokens) {
 
   if(!db){
       connectDB();
@@ -206,6 +206,7 @@ async function addVideoToDb(publishId,live,creator,thumbnail,title,uploaded) {
   if(!myColl){
       myColl=db.createCollection('videos');  
   }
+
 
   if(thumbnail){
       thumbnail_image_url= thumbnail;
@@ -220,6 +221,7 @@ async function addVideoToDb(publishId,live,creator,thumbnail,title,uploaded) {
       timestamp:new Timestamp(),
       title:title,
       uploaded:live?true:uploaded,
+      premiumTokens:premiumTokens,
 
       
 
