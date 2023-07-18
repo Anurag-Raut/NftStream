@@ -6,7 +6,7 @@ import Chat from '../../components/chat/chat';
 // import { joinRoom,getMessage } from '../../services/Chat/chat';
 import dynamic from 'next/dynamic';
 import { getTokenAddressByAddress,getBalance } from '../../services/web3/creator/creator';
-
+import {getVideoById} from '../../services/stream_functions/mongo'
 const { File } = require('web3.storage');
 const { createClient } = require('web3.storage');
 
@@ -39,11 +39,11 @@ function View(){
 
     useState(()=>{
         async function add(){
-
-            const _addr= await getTokenAddressByAddress(creator);
-            const balance= await getBalance(_addr);
+            console.log(ID);
+            // const _addr= await getTokenAddressByAddress(creator);
+            // const balance= await getBalance(_addr);
             const videoData=await getVideoById(ID);
-            console.log(videoData)
+            console.log(videoData?.data?.result)
             
         }
         add()

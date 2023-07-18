@@ -108,7 +108,7 @@ app.post('/getVideoDetails',async (req,res)=>{
 
   let myColl = db.collection('videos');
   const filter = { _id: id };
-    const result = await myColl.find(filter);
+    const result = await myColl.findOne(filter);
 
  
 

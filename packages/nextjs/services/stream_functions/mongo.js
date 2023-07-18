@@ -87,6 +87,7 @@ async function fetchFromDB(currentPage,pageSize=10,live){
 }
 
 async function getVideoById(id){
+    console.log(id,'id')
     try{
 
         const result=await axios.post('https://streamvault.site:3499/getVideos',{id});

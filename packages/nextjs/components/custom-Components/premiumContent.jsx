@@ -10,7 +10,7 @@ function Premium(){
     const [premiumVisible,setPremiumVisible]=useState(0);
     useEffect(()=>{
         async function getAdd(){
-            const addr =await getTokenAddress()
+            const addr =await getTokenAddress();
             setTokenAddress(addr);
         }
 
