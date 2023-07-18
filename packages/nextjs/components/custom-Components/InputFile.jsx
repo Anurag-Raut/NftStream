@@ -1,6 +1,6 @@
 
 export function InputFile({id,onChange,label,file}){
-  console.log(file)
+//   console.log(file)
     return(
    
             

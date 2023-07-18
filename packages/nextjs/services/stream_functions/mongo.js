@@ -64,7 +64,7 @@ async function fetchFromDB(currentPage,pageSize=10,live){
     try{
 
         const result=await axios.post('https://streamvault.site:3499/getVideos',payload);
-        console.log(result);
+        // console.log(result);
         return result ;
   
 
@@ -87,11 +87,11 @@ async function fetchFromDB(currentPage,pageSize=10,live){
 }
 
 async function getVideoById(id){
-    console.log(id,'id')
+    console.log(id,'iddddddddddddddddddddddddddddddddd')
     try{
 
-        const result=await axios.post('https://streamvault.site:3499/getVideos',{id});
-        console.log(result);
+        const result=await axios.post('https://streamvault.site:3499/getVideoDetails',{id:id});
+        // console.log(result);
         return result ;
   
 

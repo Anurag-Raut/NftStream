@@ -112,5 +112,13 @@ async function getBalance(address){
 }
 
 
+const buyTokens= async (tokenAddress,address,amountOfTokens)=>{
+
+
+    
+
+}
+
+
 
 export {getTokenAddress,addTokenContract,getBalance,getTokenAddressByAddress}

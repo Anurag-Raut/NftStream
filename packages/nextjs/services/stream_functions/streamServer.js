@@ -128,10 +128,7 @@ app.post('/getVideoDetails',async (req,res)=>{
 
 app.post('/upload',upload.single('video'), (req, res) => {
   const {publishId,live,creator,thumbnail,title ,signature,message,premiumTokens,tokenAddress} =JSON.parse(req.body.payload);
-  // console.log(req.body.payload);
-  // const payload = JSON.parse(req.body.payload);
-  
-  // 
+
   
   const isVerified = verifySignature(creator, message, signature);
   if(!isVerified){

@@ -11,14 +11,14 @@ import Link from "next/link";
 export default function Sidebar({Home}){
    
     const router = useRouter();
-    console.log(router?.pathname)
+    // console.log(router?.pathname)
    
      
     useEffect(() => {
         if (typeof document !== 'undefined') {
           initTE({ Sidenav });
           const instance = Sidenav.getInstance(document.getElementById("sidenav-2"));
-            console.log(instance,'wattttttttttteeeeeerrrrrrrrr')
+            // console.log(instance,'wattttttttttteeeeeerrrrrrrrr')
         //  instance.hide();
             if(router.pathname!=='/'){
                 // console.log('dononoonnnnonnnnoneee')

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import axios from 'axios'
 import { InputFile } from "../components/custom-Components/InputFile";
 import InputBox from "../components/custom-Components/inputBox";
@@ -24,7 +24,7 @@ function Upload(){
 
   },[])
 
-    console.log(selectedFile);
+    // console.log(selectedFile);
  
     const handleUpload = async() => {
       const formData = new FormData();
@@ -35,7 +35,7 @@ function Upload(){
           const serverurl='https://streamvault.site:3499'
 
           const payload = await sendVerificationRequestAndPost('anurag',document.getElementById('upload-title').value,document.getElementById('upload-thumbnail').files,id,false)
-          console.log(payload,selectedFile)
+          // console.log(payload,selectedFile)
           payload.premiumTokens=document.getElementById('premium-token').value;
           payload.tokenAddress=tokenAddress;
           formData.append('video', selectedFile);
@@ -43,7 +43,7 @@ function Upload(){
           const response = await axios.post(serverurl+'/upload', formData, {
             onUploadProgress: (progressEvent) => {
               const percentage = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-              console.log(`Upload Progress: ${percentage}%`);
+              // console.log(`Upload Progress: ${percentage}%`);
             },
           });
 

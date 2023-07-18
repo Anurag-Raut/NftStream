@@ -7,6 +7,7 @@ import { useLocalStorage } from 'usehooks-ts'
 import { useEffect, useState } from "react";
 import HomePage from './homepage'
 import VideoCard from '../components/custom-Components/videoCard'
+import Toggle from '../components/custom-Components/Modal/toggle'
 
 const SideBar = dynamic(() => import("../components/custom-Components/SideBar/sidebar"), { ssr: false });
 const Home = () => {
@@ -28,9 +29,11 @@ const Home = () => {
     // console.log(_items);
    
   },[])
+
   return (
     <div className="flex">
     <HomePage />
+   
     
     </div>
   );

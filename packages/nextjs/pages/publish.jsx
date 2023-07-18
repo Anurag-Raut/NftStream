@@ -48,12 +48,12 @@ function Publish(){
        
         // setVideoDevices([...videoDevices]);
     },[])
-    console.log(stream);
+    // console.log(stream);
     const hello= async ()=>{
         const storedValue = localStorage.getItem("ID");
-        console.log('helllooooooooooooooo')
+        // console.log('helllooooooooooooooo')
       
-        console.log(JSON.parse(storedValue),'sdvsdvsfvsvsfsdfsdfwesdf wedf wef ')
+        // console.log(JSON.parse(storedValue),'sdvsdvsfvsvsfsdfsdfwesdf wedf wef ')
         try {
             await axios.post('https://streamvault.site:3499/delete',{id:JSON.parse(storedValue)});
           } catch (error) {

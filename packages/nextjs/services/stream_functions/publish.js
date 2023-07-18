@@ -29,7 +29,7 @@ async function UploadToIPFS(files){
  
    
     // const fileInput = document.querySelector('input[type="file"]')
-    console.log(files,'abbbbbeeeeeeeee');
+    // console.log(files,'abbbbbeeeeeeeee');
     // Pack files into a CAR and send to web3.storage
     const cid = await web3Client.put(files) 
     return 'https://'+cid+'.ipfs.w3s.link/'+files[0].name;  
@@ -199,7 +199,7 @@ const editAnswer = (answer, videoCodec, audioCodec, videoBitrate, audioBitrate, 
 class Transmitter {
    
     constructor(stream,publishId) {
-        console.log(publishId);
+        // console.log(publishId);
         this.stream = stream;
 		this.pc = null;
 		this.restartTimeout = null;

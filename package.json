@@ -40,7 +40,8 @@
     "@types/uniqid": "^5",
     "concurrently": "^8.2.0",
     "husky": "^8.0.1",
-    "lint-staged": "^13.0.3"
+    "lint-staged": "^13.0.3",
+    "tailwind-scrollbar": "^3.0.4"
   },
   "resolutions": {
     "usehooks-ts@^2.7.2": "patch:usehooks-ts@npm:^2.7.2#./.yarn/patches/usehooks-ts-npm-2.7.2-fceffe0e43.patch"
@@ -55,6 +56,8 @@
     "dotenv": "^16.3.1",
     "ethers": "^6.6.3",
     "express": "^4.18.2",
+    "flowbite": "^1.7.0",
+    "flowbite-react": "^0.4.11",
     "fluent-ffmpeg": "^2.1.2",
     "googleapis": "^120.0.0",
     "mongodb": "^5.7.0",
