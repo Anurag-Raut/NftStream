@@ -105,7 +105,7 @@ app.post('/getVideos',async (req,res)=>{
 
 
 app.post('/upload',upload.single('video'), (req, res) => {
-  const {publishId,live,creator,thumbnail,title ,signature,message} =JSON.parse(req.body.payload);
+  const {publishId,live,creator,thumbnail,title ,signature,message,premiumTokens} =JSON.parse(req.body.payload);
   // console.log(req.body.payload);
   // const payload = JSON.parse(req.body.payload);
   
@@ -146,7 +146,7 @@ app.post('/upload',upload.single('video'), (req, res) => {
       
        HLSconversion('HLS',inputFilePath,outputFilePath,outputDirectory,id);
 
-       addVideoToDb(publishId,false,creator,thumbnail,title,false);
+       addVideoToDb(publishId,false,creator,thumbnail,title,false,premiumTokens);
 
 
       

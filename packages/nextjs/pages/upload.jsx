@@ -4,6 +4,7 @@ import { InputFile } from "../components/custom-Components/InputFile";
 import InputBox from "../components/custom-Components/inputBox";
 import {sendVerificationRequestAndPost} from '../services/stream_functions/publish';
 import uniqid from 'uniqid'
+import Premium from "../components/custom-Components/premiumContent";
 
 function Upload(){
  
@@ -20,6 +21,7 @@ function Upload(){
 
           const payload = await sendVerificationRequestAndPost('anurag',document.getElementById('upload-title').value,document.getElementById('upload-thumbnail').files,id,false)
           console.log(payload,selectedFile)
+          payload.premiumTokens=document.getElementById('premium-token').value;
           formData.append('video', selectedFile);
           formData.append('payload', JSON.stringify(payload));
           const response = await axios.post(serverurl+'/upload', formData, {
@@ -54,7 +56,7 @@ function Upload(){
 
         <div className="w-[40vw] h-full">
         <InputBox id={'upload-title'} label={'Select title for this video '} />
-
+        <Premium />
 
         <button onClick={handleUpload}>Upload</button>
 
