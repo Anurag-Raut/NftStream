@@ -62,6 +62,9 @@ function Publish(){
           window.removeEventListener('beforeunload', handleWindowClose);
         };
       }, []);
+
+
+     
    
     
     return (
@@ -91,7 +94,7 @@ function Publish(){
                         :
                         <Button label={'Go Live'} onClick={async ()=>{
                            const _id=await  publish(stream,document.getElementById('PublishId')?.value,document?.getElementById('thumbnail')?.files,id,document.getElementById('premium-token')?.value);
-                           console.log(_id,'               ','waterrrr');
+
                                  setID(_id)
                         }                       
                         } 

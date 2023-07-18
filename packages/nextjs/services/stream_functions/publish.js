@@ -520,6 +520,7 @@ const payload = {
   }
 
   async function publishHelper(payload){
+    console.log(payload,'payload')
     let url;
    url='https://streamvault.site:3499/publish';
     
@@ -538,7 +539,7 @@ const payload = {
   
 
   async function publish(stream, title, thumbnail, id,premiumTokens) {
-    console.log(thumbnail);
+    console.log(premiumTokens,'premiumtokens');
     try {
       const payload = await sendVerificationRequestAndPost(
         'anurag',
@@ -548,8 +549,9 @@ const payload = {
         true
       );
 
+
       if(premiumTokens){
-        payload.premiumTokens=premiumTokens;
+        payload.premiumTokens=Number(premiumTokens);
 
       }
       else{

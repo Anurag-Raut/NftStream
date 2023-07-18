@@ -55,6 +55,7 @@ let db;
 
 app.post('/publish',async (req,res)=>{
   const {publishId,live,creator,thumbnail,title ,signature,message,premiumTokens} = req.body;
+  console.log(req.body);
   const isVerified = verifySignature(creator, message, signature);
   
   if (!isVerified) {
