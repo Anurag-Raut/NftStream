@@ -184,12 +184,7 @@ app.post('/getProfileDetails',async (req,res)=>{
 
   
   const result= await myColl.findOne({
-    _id:creatorAddress
-
-    
-
-
-})
+    _id:creatorAddress})
 console.log(result,'result');
 
 const collection = db.collection('videos');
@@ -200,7 +195,7 @@ const totalCount = await collection.countDocuments(query);
 console.log(totalCount,'totalCount')
 
 
-return {result,totalCount};
+return [result,totalCount];
 
 
 })
