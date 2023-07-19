@@ -79,15 +79,7 @@ function View(){
     },[creator,id])
 
 console.log(tokenAddress,'tokenAddress', contracts[80001][0].contracts.Creator.abi)
-    // const { balance, isError, isLoading } =   useContractRead({
-    //     address: '0x7E1596A5370B9ef3865D73efC8203980F24342EE',
-    //     abi: contracts[80001][0].contracts.Creator.abi,
-    //     functionName: 'balanceOf',
-    //     args:['0x7887A48BFf1E07971f912AF1271E3bae2bA278AD'],
-    //    watch:true,
-    //    chainId: 80001,
-        
-    //   })
+   
 
     const { data: balance } = useScaffoldContractRead({
         contractName: "Creator",

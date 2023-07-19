@@ -106,8 +106,58 @@ async function getVideoById(id){
 }
 
 
+const getProfileDetails =async (creatorAddress)=>{
+
+
+    try{
+
+        const result=await axios.post('https://streamvault.site:3499/getProfileDetails',{creatorAddress:creatorAddress});
+        // console.log(result);
+        return result ;
+  
+
+// Calculate the skip value based on the page size and current page
+      
+
+    }
+    catch(error){
+        console.error(error);
+        return [];
+    }
+
+    
+
+
+}
+
+
+const upsertProfileDetails =async (payload)=>{
+
+
+    try{
+
+        const result=await axios.post('https://streamvault.site:3499/getProfileDetails',{payload:payload});
+        // console.log(result);
+        return result ;
+  
+
+// Calculate the skip value based on the page size and current page
+      
+
+    }
+    catch(error){
+        console.error(error);
+        return [];
+    }
+
+    
+
+
+}
 
 
 
 
-export {fetchFromDB,addVideoToDb,getVideoById}
+
+
+export {fetchFromDB,addVideoToDb,getVideoById,getProfileDetails,upsertProfileDetails}

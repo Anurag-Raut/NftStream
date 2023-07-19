@@ -173,11 +173,54 @@ app.post('/upload',upload.single('video'), (req, res) => {
 });
 
 
-app.post('/saveVODToDB',(req,res)=>{
+
+app.post('/getProfileDetails',async (req,res)=>{
+
+  const {creatorAddress}=req.body;
+
+  
+  let myColl = db.collection('Profile');
+
+  
+  const result= await myColl.findOne({
+    _id:creatorAddress
+
+    
+
+
+})
+
+const collection = db.collection('videos');
+
+const query = { creator: creatorAddress };
+
+const totalCount = await collection.countDocuments(query);
+
+return {result,totalCount};
+
+
+})
+
+
+app.post('/upsertProfileDetails',async (req,res)=>{
+  const {payload}=req.body;
+
+  const options = { upsert: true }; 
+
+
+  const filter = { _id: payload.creatorAddress }; 
+
+  
+  const updateOperation = { $set: payload }; 
+
+  
+  const result = await collection.updateOne(filter, updateOperation, options);
+  return result;
+})
+
 
   
 
-})
 
 
 

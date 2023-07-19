@@ -16,4 +16,18 @@ contract Creator is ERC20, ERC20Burnable, Ownable {
         require(msg.value>=(amount*priceOfOneToken),'insufficient eth send');
         _mint(to, amount);
     }
+
+
+    function withdraw(uint256 amount) public onlyOwner {
+        require(amount > 0, "Amount must be greater than zero.");
+        require(address(this).balance >= amount, "Insufficient balance.");
+
+       
+        (bool success, ) = owner().call{value: amount}("");
+        require(success, "Withdrawal failed.");
+
+        
+    }
+
+
 }
