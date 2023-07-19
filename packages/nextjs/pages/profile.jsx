@@ -10,6 +10,7 @@ import { useAccount, useBalance } from 'wagmi';
 import Button from '../components/custom-Components/button'
 import InputBox from '../components/custom-Components/inputBox'
 import { getProfileDetails ,upsertProfileDetails} from '../services/stream_functions/mongo';
+import { UploadToIPFS } from '../services/stream_functions/publish';
 function Profile(){
   const {address}=useAccount();
   const [tokenAddress,setTokenAddress]=useState('');
@@ -46,6 +47,12 @@ function Profile(){
     address: tokenAddress,
   })
 
+  async function channelImageSave(channelImage){
+    const ChannelImageURL=await UploadToIPFS(channelImage);
+    upsertProfileDetails({channelImage:ChannelImageURL,creatorAddress:address,_id:address},setEditMode)
+
+  }
+
  
 
  
@@ -64,16 +71,20 @@ function Profile(){
 
                       channelImage?
                       <div>
-                          <img className='w-[18vw] h-[18vw] rounded-full	mb-3' src={URL.createObjectURL(channelImage)} alt="" />
+                          <img className='w-[18vw] h-[18vw] rounded-full	mb-3' src={URL.createObjectURL(channelImage[0])} alt="" />
                           <div className='flex w-full justify-around'>
                           <Button onClick={()=>{setChannelImage(null)}} label={'Cancel'} />
-                          <Button onClick={()=>upsertProfileDetails({channelImage:channelImage,creatorAddress:address,_id:address},setEditMode)}  label={'save'} />
+                          <Button onClick={()=>channelImageSave(channelImage)}  label={'save'} />
                           </div>
                          
                         
                       </div>
 
                       :
+                      profileData.channelImage?
+                       <img className='w-[18vw] h-[18vw] rounded-full	mb-3' src={profileData.channelImage} alt="" />
+                      :
+
                       <BlockieAvatar address={address} size={'50'}  />
 
                     }
@@ -84,7 +95,7 @@ function Profile(){
                     </div>
                     
                     
-                    <input id={'channel-image'} type="file" className="hidden" onChange={(event)=>{setChannelImage(event.target.files[0])}} />
+                    <input id={'channel-image'} type="file" className="hidden" onChange={(event)=>{setChannelImage(event.target.files)}} />
                 </label>
   
 

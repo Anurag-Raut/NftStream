@@ -598,4 +598,4 @@ const payload = {
    
 }
 
-export  {getDevices,publish,init,sendVerificationRequestAndPost};
+export  {getDevices,publish,init,sendVerificationRequestAndPost,UploadToIPFS};

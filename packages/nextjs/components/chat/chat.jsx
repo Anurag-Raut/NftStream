@@ -47,6 +47,7 @@ function Chat({id}){
             <div  className="h-full w-[30vw] no-scrollbar overflow-x-hidden break-words  ">
             {
 			queue?.map((data)=>{
+                
 				return (
                 <div className='flex mb-3'>
                     <BlockieAvatar address={data.senderId} />
