@@ -538,7 +538,7 @@ const payload = {
   }
   
 
-  async function publish(stream, title, thumbnail, id,premiumTokens,tokenAddress) {
+  async function publish(stream, title, thumbnail, id,premiumTokens,tokenAddress,OBS) {
     console.log(premiumTokens,'premiumtokens');
     try {
       const payload = await sendVerificationRequestAndPost(
@@ -568,8 +568,11 @@ const payload = {
         console.error('not verified');
         return;
       }
+      if(!OBS){
+        onTransmit(stream, `${address}/${id}`);
+      }
   
-      onTransmit(stream, `${address}/${id}`);
+      
       return `${address}/${id}`;
     } catch (error) {
       console.error(error);

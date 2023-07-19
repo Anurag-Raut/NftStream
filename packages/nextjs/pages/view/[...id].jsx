@@ -1,143 +1,146 @@
-// import { useEffect, useState } from 'react';
-// import {getDevices, init, publish} from '../services/stream_functions/publish'
-// import uniqid from 'uniqid'
-// import InputBox from '../components/custom-Components/inputBox';
-// import { Button } from '../components/custom-Components/button';
-// import { InputFile } from '../components/custom-Components/InputFile';
-// import { Select } from '../components/custom-Components/select';
-// import axios from 'axios'
-// import { useLocalStorage } from 'usehooks-ts'
-// import Premium from '../components/custom-Components/premiumContent';
-// import { getTokenAddress } from '../services/web3/creator/creator';
-function Publish(){
-//     let id= uniqid();
-//     const [thumbnail,setThumbnail]=useState(null);
-//     const [ID, setID] = useLocalStorage('ID', '')
-//     const [stream,setStream]=useState(null)
-//     const [audioDevices,setAudioDevices]=useState(['screen']);
-//     const [videoDevices,setVideoDevices]=useState(['none']);
-//     const [tokenAddress,setTokenAddress]=useState('');
+import  { useRouter } from 'next/router';
+import {read} from '../../services/stream_functions/read'
+import { useIsMounted } from 'usehooks-ts'
+import { useContractRead } from 'wagmi'
+import { useEffect, useState } from 'react';
+import Chat from '../../components/chat/chat';
+import contracts from '../../generated/deployedContracts'
+// import { joinRoom,getMessage } from '../../services/Chat/chat';
+import dynamic from 'next/dynamic';
+import { useAccount } from 'wagmi'
+import { getTokenAddressByAddress,getBalance } from '../../services/web3/creator/creator';
+import {getVideoById} from '../../services/stream_functions/mongo'
+import Toggle from '../../components/custom-Components/Modal/toggle';
+import Modal from '../../components/custom-Components/Modal/Modal';
+import {useScaffoldContractRead} from '../../hooks/scaffold-eth/useScaffoldContractRead'
+const { File } = require('web3.storage');
+const { createClient } = require('web3.storage');
 
-//     useEffect(()=>{
-//       async function getAdd(){
-//           const addr =await getTokenAddress();
-//           setTokenAddress(addr);
-//       }
-
-//       getAdd();
-
+const ReactPlayer = dynamic(() => import('react-player/lazy'), { ssr: false });
+function View(){
+    const { address, isConnecting, isDisconnected } = useAccount();
+    console.log(address,'address')
+    // const [ID,setID]=useState
+    const router=useRouter();
+    const [visible,setVisible]=useState(0);
+    const [videoData,setVideoData]=useState({});
+    const [tokenAddress,setTokenAddress]=useState('');
     
+    const [mute,setMuted]=useState(true);
+    
+	
+    const {id,live,creator} = router.query
+    console.log(id)
 
-//   },[])
+    let ID='';
+    if(id){
+        ID=id[0]+'/'+id[1];
+    }
+    // ID=_id[0]+_id[1];
+    console.log(ID);
+    var url='';
+    if(live==='true' && id){
+        url = `https://streamvault.site:8000/${ID}/${'stream'}.m3u8`;
+    }
+    else if(id){
+        url = `https://streamvault.site/${id[1]}/${id[1]}.m3u8`;
+    }
+    console.log(videoData,url);
 
+    useState(()=>{
+       
+        async function add(){
+            if(id){
+                ID=id[0]+'/'+id[1];
+            }
+            // console.log(ID,"IDDDDDDDD");
+          
+            const videoData=await getVideoById(ID);
+          
+            const data=videoData?.data?.result;
+            if(!data){
+                return
+            }
+            console.log(data,'data');
+              const _addr= await getTokenAddressByAddress(data?.creator);
+              setTokenAddress(_addr);
+              setVideoData(data);
+            const balance= await getBalance(_addr);
+            console.log(balance);
+            if(balance && balance>=Number(videoData.premiumTokens)){
+                setVisible(true);
+            }
 
-//     useEffect(()=>{
-//         async function get(){
-//             const {audioDevices,videoDevices}=await getDevices();
-//             if(audioDevices){
-//                 setAudioDevices([...audioDevices,'none']);
-//             }
-//             if(videoDevices){
-//                 setVideoDevices([...videoDevices,'screen']);
-//             }
             
-//         }
-//        get();
-        
+        }
        
+        add()
        
-//         // setVideoDevices([...videoDevices]);
-//     },[])
-//     // console.log(stream);
-//     const hello= async ()=>{
-//         const storedValue = localStorage.getItem("ID");
-//         // console.log('helllooooooooooooooo')
-      
-//         // console.log(JSON.parse(storedValue),'sdvsdvsfvsvsfsdfsdfwesdf wedf wef ')
-//         try {
-//             await axios.post('https://streamvault.site:3499/delete',{id:JSON.parse(storedValue)});
-//           } catch (error) {
-//             console.error('Error sending the request:', error);
-//           }
-        
-//     }
+    },[creator,id])
 
-//     useEffect(() => {
-//         const handleWindowClose = async () => {
-//           // Perform any cleanup or actions before the window is closed
-//           hello()
-//           // Run your desired function here
-//           // ...
-//         };
-    
-//         window.addEventListener('beforeunload', handleWindowClose);
-    
-//         return () => {
-//           window.removeEventListener('beforeunload', handleWindowClose);
-//         };
-//       }, []);
-
-
-     
+console.log(tokenAddress,'tokenAddress', contracts[80001][0].contracts.Creator.abi)
    
-    
+
+    const { data: balance } = useScaffoldContractRead({
+        contractName: "Creator",
+        functionName: "balanceOf",
+        args: [address],
+        address:tokenAddress,
+        watch:true
+      });
+
+      useEffect(()=>{
+        if(balance && balance>=Number(videoData.premiumTokens)){
+            setVisible(true);
+        }
+        else{
+            setVisible(false);
+        }
+      },[balance])
+
+      console.log(balance,'balance',videoData.premiumTokens)
+
+
+
+  
+
     return (
-        <div className='flex h-full  m-6  flex justify-around '>
-            {/* <div>
-            <video id='publish-video' autoPlay controls className="h-[55vh] min-w-[45vw]" > </video>
-            <div className='flex'>
-            <Select label={'select Video device'} id={'videoId'} options={videoDevices} />
-                    <Select label={'select audio device'} id={'audioId'} options={audioDevices} />
-
-            </div>
+        <div className=' '>
            
-            </div>
-             <div className='w-full m-10' >
-                    <InputBox label={'Enter Title '} id={'PublishId'} />
-                    <div className=' flex justify-around'>
-                    <InputFile label={'Thumbnail'} id={'thumbnail'} file={thumbnail} onChange={setThumbnail}  />
-                    <div>
-
-                      <Premium />
-
-
-
+              
+                <div  className='flex ml-3 mt-0  flex justify-between
+                '>
+                    <>
                     {
-                        !stream?
-                        <Button label={'Preview'} onClick={()=>{init(document.getElementById('videoId').value,document.getElementById('audioId').value,setStream)}} />
-                        :
-                        <Button label={'Go Live'} onClick={async ()=>{
-                           const _id=await  publish(stream,document.getElementById('PublishId')?.value,document?.getElementById('thumbnail')?.files,id,document.getElementById('premium-token')?.value,tokenAddress);
-
-                                 setID(_id)
-                        }                       
-                        } 
-                        
-                            />
-                    
-                    }
-
-                    </div>
-                   
-            
-
-                    </div>
-                    
-                    
-                   
-                  
-
-             </div>
+                          visible?
+                       <ReactPlayer width={'62vw'} height={'75vh'} muted={mute} autoplay={true} url={url} className='m-2'  playing={true} controls={true} onBufferEnd={() => {
+                        setMuted(false)
+                    }} /> : 
+                   <Modal RemainingBalance={videoData.premiumTokens-Number(balance)} tokenAddress={tokenAddress} address={address} />
           
 
-            
-            
+                   
+            }
+                    
+                    
+                    
+                    </>
+                    
+                        <Chat id={ID}  />
+                </div>
 
-            */}
-            
-           
+
+               
+             
+               
+                
+   
+			
+         
+		
         </div>
-    );
+
+    )
 
 }
-export default Publish;
+export default View;

@@ -5,7 +5,6 @@ import Web3  from 'web3'
 import factory from '../../hardhat/artifacts/contracts/Factory.sol/Factory.json';
 import {useBurnerWallet} from '../hooks/scaffold-eth/useBurnerWallet'
 import {BlockieAvatar} from '../components/scaffold-eth'
-import creator from '../../hardhat/artifacts/contracts/Creator.sol/Creator.json'
 import {addTokenContract,getBalance,getTokenAddress} from '../services/web3/creator/creator'
 import { useAccount, useBalance } from 'wagmi';
 import Button from '../components/custom-Components/button'
