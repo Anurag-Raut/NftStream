@@ -195,7 +195,7 @@ const totalCount = await collection.countDocuments(query);
 console.log(totalCount,'totalCount')
 
 
-return [result,totalCount];
+res.json({ result, totalCount });
 
 
 })
@@ -216,7 +216,7 @@ app.post('/upsertProfileDetails',async (req,res)=>{
   
   const result = await collection.updateOne(filter, updateOperation, options);
   console.log(result);
-  return result;
+  res.json({result})
 })
 
 
