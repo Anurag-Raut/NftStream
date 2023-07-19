@@ -136,7 +136,7 @@ const upsertProfileDetails =async (payload)=>{
 
     try{
 
-        const result=await axios.post('https://streamvault.site:3499/getProfileDetails',{payload:payload});
+        const result=await axios.post('https://streamvault.site:3499/upsertProfileDetails',{payload:payload});
         // console.log(result);
         return result ;
   

@@ -205,6 +205,7 @@ return {result,totalCount};
 
 app.post('/upsertProfileDetails',async (req,res)=>{
   const {payload}=req.body;
+  console.log(payload)
 
   const options = { upsert: true }; 
 
@@ -213,7 +214,7 @@ app.post('/upsertProfileDetails',async (req,res)=>{
 
   
   const updateOperation = { $set: payload }; 
-
+  const collection = db.collection('Profile');
   
   const result = await collection.updateOne(filter, updateOperation, options);
   console.log(result);
