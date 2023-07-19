@@ -112,6 +112,8 @@ const getProfileDetails =async (creatorAddress)=>{
     try{
 
         const res=await axios.post('https://streamvault.site:3499/getProfileDetails',{creatorAddress:creatorAddress});
+       
+        const result={...res.data.result,totalCount:res.data.totalCount}
         console.log(result,'result');
         return result ;
   

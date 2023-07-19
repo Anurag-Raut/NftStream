@@ -16,6 +16,7 @@ function Profile(){
   const [tokenAddress,setTokenAddress]=useState('');
   const [editMode,setEditMode]=useState(0);
   const [channelImage,setChannelImage]=useState(null)
+  const [profileData,setProfileData]=useState({});
   let imgage;
   
 
@@ -36,7 +37,7 @@ function Profile(){
   useEffect(()=>{
     async function getProfile(){
         const res=await getProfileDetails(address);
-        console.log(res,'resss');
+        setProfileData(res)
     }
     getProfile();
   },[])
@@ -90,7 +91,7 @@ function Profile(){
 
       <div className='ml-[100px] flex flex-col justify-center items-start'>
       <div className='flex w-[50vw] justify-between'>
-        <h1>  <span className='text-2xl font-bold'>Channel Name</span> :Anurag </h1>
+        <h1>  <span className='text-2xl font-bold'>Channel Name : </span> {profileData?.channelName? profileData.channelName:address } </h1>
         <div className='flex'>
             <div>
                <Button onClick={()=>{setEditMode(!editMode)}} label={editMode?'Edit':"Cancel"}/>
