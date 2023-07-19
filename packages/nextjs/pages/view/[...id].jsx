@@ -80,7 +80,6 @@ function View(){
 
 console.log(tokenAddress,'tokenAddress', contracts[80001][0].contracts.Creator.abi)
    
-
     const { data: balance } = useScaffoldContractRead({
         contractName: "Creator",
         functionName: "balanceOf",
@@ -93,12 +92,17 @@ console.log(tokenAddress,'tokenAddress', contracts[80001][0].contracts.Creator.a
         if(balance && balance>=Number(videoData.premiumTokens)){
             setVisible(true);
         }
+        else if(!balance){
+            setVisible(true);
+        }
         else{
             setVisible(false);
         }
       },[balance])
 
       console.log(balance,'balance',videoData.premiumTokens)
+      
+  
 
 
 
