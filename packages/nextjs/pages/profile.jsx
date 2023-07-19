@@ -10,11 +10,14 @@ import {addTokenContract,getBalance,getTokenAddress} from '../services/web3/crea
 import { useAccount, useBalance } from 'wagmi';
 import Button from '../components/custom-Components/button'
 import InputBox from '../components/custom-Components/inputBox'
-import { getProfileDetails } from '../services/stream_functions/mongo';
+import { getProfileDetails ,upsertProfileDetails} from '../services/stream_functions/mongo';
 function Profile(){
   const {address}=useAccount();
   const [tokenAddress,setTokenAddress]=useState('');
+  const [editMode,setEditMode]=useState(0);
+  const [channelImage,setChannelImage]=useState(null)
   let imgage;
+  
 
   useEffect(()=>{
     async function getAddress(){
@@ -55,11 +58,48 @@ function Profile(){
          <h1 className='text-4xl font-bold mb-6'> Profile Details
           </h1> 
           <div className=' flex ml-9'>
-          <BlockieAvatar address={address} size={'50'}  />
+          <label for={'channel-image'} className="flex flex-col items-center justify-center w-full h-full   cursor-pointer     ">
+                    <div className="">
+                    {
 
-      <div className='ml-[100px] flex flex-col justify-center'>
+                      channelImage?
+                      <div>
+                          <img className='w-[18vw] h-[18vw] rounded-full	mb-3' src={URL.createObjectURL(channelImage)} alt="" />
+                          <div className='flex w-full justify-around'>
+                          <Button onClick={()=>{setChannelImage(null)}} label={'Cancel'} />
+                          <Button label={'save'} />
+                          </div>
+                         
+                        
+                      </div>
 
-      <h1>  <span className='text-2xl font-bold'>Channel Name</span> :Anurag </h1>
+                      :
+                      <BlockieAvatar address={address} size={'50'}  />
+
+                    }
+                   
+                  
+                       
+                 
+                    </div>
+                    
+                    
+                    <input id={'channel-image'} type="file" className="hidden" onChange={(event)=>{setChannelImage(event.target.files[0])}} />
+                </label>
+  
+
+      <div className='ml-[100px] flex flex-col justify-center items-start'>
+      <div className='flex w-[50vw] justify-between'>
+        <h1>  <span className='text-2xl font-bold'>Channel Name</span> :Anurag </h1>
+        <div className='flex'>
+        <InputBox id={'channel-name'}   />
+      <Button onClick={()=>upsertProfileDetails({channelName:document.getElementById('channel-name').value,creatorAddress:address,_id:address})} label={'Save'}/>
+
+        </div>
+     
+   
+      </div>
+      
           <h1>  <span className='text-2xl font-bold'>Subsribers</span> :200 </h1>
           <h1>  <span className='text-2xl font-bold'>Total videos</span> :200 </h1>
 

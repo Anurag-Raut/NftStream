@@ -216,6 +216,7 @@ app.post('/upsertProfileDetails',async (req,res)=>{
 
   
   const result = await collection.updateOne(filter, updateOperation, options);
+  console.log(result);
   return result;
 })
 
