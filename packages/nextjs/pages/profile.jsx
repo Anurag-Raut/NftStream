@@ -67,7 +67,7 @@ function Profile(){
                           <img className='w-[18vw] h-[18vw] rounded-full	mb-3' src={URL.createObjectURL(channelImage)} alt="" />
                           <div className='flex w-full justify-around'>
                           <Button onClick={()=>{setChannelImage(null)}} label={'Cancel'} />
-                          <Button label={'save'} />
+                          <Button onClick={()=>upsertProfileDetails({channelImage:channelImage,creatorAddress:address,_id:address},setEditMode)}  label={'save'} />
                           </div>
                          
                         
@@ -92,9 +92,24 @@ function Profile(){
       <div className='flex w-[50vw] justify-between'>
         <h1>  <span className='text-2xl font-bold'>Channel Name</span> :Anurag </h1>
         <div className='flex'>
-        <InputBox id={'channel-name'}   />
-      <Button onClick={()=>upsertProfileDetails({channelName:document.getElementById('channel-name').value,creatorAddress:address,_id:address})} label={'Save'}/>
+            <div>
+               <Button onClick={()=>{setEditMode(!editMode)}} label={editMode?'Edit':"Cancel"}/>
+            </div>
+          {
+            !editMode?
+            <div className='flex w-[20vw] justify-between'>
+              <InputBox id={'channel-name'}   />
+              <Button onClick={()=>upsertProfileDetails({channelName:document.getElementById('channel-name').value,creatorAddress:address,_id:address},setEditMode)} label={'Save'}/>
 
+
+            </div>
+
+            :
+            null
+          }
+
+          
+        
         </div>
      
    

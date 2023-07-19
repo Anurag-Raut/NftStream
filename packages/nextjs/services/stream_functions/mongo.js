@@ -131,13 +131,14 @@ const getProfileDetails =async (creatorAddress)=>{
 }
 
 
-const upsertProfileDetails =async (payload)=>{
+const upsertProfileDetails =async (payload,setEditMode)=>{
 
 
     try{
 
         const result=await axios.post('https://streamvault.site:3499/upsertProfileDetails',{payload:payload});
         // console.log(result);
+        setEditMode(false);
         return result ;
   
 

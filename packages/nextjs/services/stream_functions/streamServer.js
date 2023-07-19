@@ -190,12 +190,15 @@ app.post('/getProfileDetails',async (req,res)=>{
 
 
 })
+console.log(result,'result');
 
 const collection = db.collection('videos');
 
 const query = { creator: creatorAddress };
 
 const totalCount = await collection.countDocuments(query);
+console.log(totalCount,'totalCount')
+
 
 return {result,totalCount};
 
