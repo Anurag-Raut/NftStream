@@ -107,12 +107,12 @@ async function getVideoById(id){
 
 
 const getProfileDetails =async (creatorAddress)=>{
-
+    console.log('og hellooo')
 
     try{
 
         const result=await axios.post('https://streamvault.site:3499/getProfileDetails',{creatorAddress:creatorAddress});
-        // console.log(result);
+        console.log(result,result);
         return result ;
   
 

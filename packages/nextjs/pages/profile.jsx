@@ -33,17 +33,17 @@ function Profile(){
   useEffect(()=>{
     async function getProfile(){
         const res=await getProfileDetails(address);
-        console.log(res);
+        console.log(res,'resss');
     }
     getProfile();
-  },[address])
+  },[])
 
 
   const { data:balance, isError, isLoading } = useBalance({
     address: tokenAddress,
   })
 
-  console.log(balance);
+ 
 
  
 

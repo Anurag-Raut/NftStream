@@ -177,6 +177,7 @@ app.post('/upload',upload.single('video'), (req, res) => {
 app.post('/getProfileDetails',async (req,res)=>{
 
   const {creatorAddress}=req.body;
+  console.log(creatorAddress,'hehehheheh')
 
   
   let myColl = db.collection('Profile');
