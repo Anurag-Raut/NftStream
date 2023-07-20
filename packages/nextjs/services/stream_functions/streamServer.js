@@ -204,6 +204,7 @@ res.json({ result, totalCount });
 app.post('/subscribe',async (req,res)=>{
 
   const {creator,subscriber,subscribe}=req.body;
+  console.log(subscribe)
   let result;
   if(subscribe===1){
     result=await subscribeFunc(creator,subscriber)
@@ -213,7 +214,7 @@ app.post('/subscribe',async (req,res)=>{
   }
 
   res.json({result});
-  
+
 
 
 
@@ -223,9 +224,9 @@ app.post('/isSubscribe',async (req,res)=>{
 
   const {creator,subscriber}=req.body;
 
-  let myColl = db.collection(subscriber);
+  let myColl = subDB.collection(subscriber);
   if(!myColl){
-      myColl=db.createCollection(subscriber);  
+      myColl=subDB.createCollection(subscriber);  
 
   }
   
@@ -247,9 +248,9 @@ else{
 })
 async function UnSubscribe(creator,subscriber){
 
-  let myColl = db.collection(subscriber);
+  let myColl = subDB.collection(subscriber);
   if(!myColl){
-      myColl=db.createCollection(subscriber);  
+      myColl=subDB.createCollection(subscriber);  
 
   }
   
@@ -270,9 +271,9 @@ return false;
 }
 
 async function subscribeFunc(creator,subscriber){
-  let myColl = db.collection(subscriber);
+  let myColl = subDB.collection(subscriber);
   if(!myColl){
-      myColl=db.createCollection(subscriber);  
+      myColl=subDB.createCollection(subscriber);  
 
   }
   

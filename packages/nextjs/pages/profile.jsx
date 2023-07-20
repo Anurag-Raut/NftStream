@@ -202,7 +202,7 @@ function Profile() {
           </h1>
           {
             
-            isSubscribe?
+            !isSubscribe?
             <Button label={'Subscribe'} onClick={()=>{Subscribe()}}/>
             :
             <Button label={'UnSubscribe'} onClick={()=>{UnSubscribe()}}/>
