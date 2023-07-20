@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useRouter } from "next/router";
 import Button from "../components/custom-Components/button";
 import InputBox from "../components/custom-Components/inputBox";
@@ -8,15 +7,16 @@ import { useBurnerWallet } from "../hooks/scaffold-eth/useBurnerWallet";
 import { getProfileDetails, upsertProfileDetails } from "../services/stream_functions/mongo";
 import { UploadToIPFS } from "../services/stream_functions/publish";
 import { addTokenContract, getBalance, getTokenAddress } from "../services/web3/creator/creator";
+import { notification } from "../utils/scaffold-eth/notification";
+import HomePage from "./homepage";
+import axios from "axios";
 import { ethers } from "ethers";
 import { useAccount, useBalance } from "wagmi";
-import HomePage from './homepage'
-import { notification } from "../utils/scaffold-eth/notification";
 
 function Profile() {
   const { address } = useAccount();
   const [tokenAddress, setTokenAddress] = useState("");
-  const [isSubscribe,setSubscibe]=useState(0);
+  const [isSubscribe, setSubscibe] = useState(0);
   const [editMode, setEditMode] = useState(1);
   const [channelImage, setChannelImage] = useState(null);
   const [profileData, setProfileData] = useState({});
@@ -43,54 +43,44 @@ function Profile() {
     }
     getProfile();
   }, [creator]);
-  useEffect(()=>{
-    async function get(){
-      try{
-        const result=await axios.post('https://streamvault.site:3499/isSubscribe',{creator,subscriber:address});
-        console.log(result,'rrrrrrrrrrrreeeeeeeeeeessssssssssss');
-  
-          setSubscibe(result.data.result);
+  useEffect(() => {
+    async function get() {
+      try {
+        const result = await axios.post("https://streamvault.site:3499/isSubscribe", { creator, subscriber: address });
+        console.log(result, "rrrrrrrrrrrreeeeeeeeeeessssssssssss");
+
+        setSubscibe(result.data.result);
+      } catch (error) {
+        notification.error(error.message);
       }
-      catch(error){
-        notification.error(error.message)
-      }
-     
     }
-    get()
-  },[creator])
+    get();
+  }, [creator]);
 
-  async function Subscribe(){
-
-    try{
-      const result=await axios.post('https://streamvault.site:3499/subscribe',{creator,subscriber:address,subscribe:1});
+  async function Subscribe() {
+    try {
+      const result = await axios.post("https://streamvault.site:3499/subscribe", {
+        creator,
+        subscriber: address,
+        subscribe: 1,
+      });
       setSubscibe(1);
+    } catch (error) {
+      notification.error(error.message);
     }
-    catch(error){
-      notification.error(error.message)
-    }
-    
-
-
-
-
   }
 
-
-  
-  async function UnSubscribe(){
-
-    try{
-      const result=await axios.post('https://streamvault.site:3499/subscribe',{creator,subscriber:address,subscribe:0});
+  async function UnSubscribe() {
+    try {
+      const result = await axios.post("https://streamvault.site:3499/subscribe", {
+        creator,
+        subscriber: address,
+        subscribe: 0,
+      });
       setSubscibe(0);
+    } catch (error) {
+      notification.error(error.message);
     }
-    catch(error){
-      notification.error(error.message)
-    }
-    
-
-
-
-
   }
 
   const {
@@ -152,45 +142,38 @@ function Profile() {
               <span className="text-2xl font-bold">Channel Name : </span>{" "}
               {profileData?.channelName ? profileData.channelName : address}{" "}
             </h1>
-            {
-              address===creator?
-
+            {address === creator ? (
               <div className="flex">
-              <div>
-                <Button
-                  onClick={() => {
-                    setEditMode(!editMode);
-                  }}
-                  label={editMode ? "Edit" : "Cancel"}
-                />
-              </div>
-              {!editMode ? (
-                <div className="flex w-[20vw] justify-between">
-                  <InputBox id={"channel-name"} />
+                <div>
                   <Button
-                    onClick={() =>
-                      upsertProfileDetails(
-                        {
-                          channelName: document.getElementById("channel-name").value,
-                          creatorAddress: address,
-                          _id: address,
-                        },
-                        setEditMode,
-                      )
-                    }
-                    label={"Save"}
+                    onClick={() => {
+                      setEditMode(!editMode);
+                    }}
+                    label={editMode ? "Edit" : "Cancel"}
                   />
                 </div>
-              ) : null}
-            </div>
-
-
-              :null
-            }
-            
+                {!editMode ? (
+                  <div className="flex w-[20vw] justify-between">
+                    <InputBox id={"channel-name"} />
+                    <Button
+                      onClick={() =>
+                        upsertProfileDetails(
+                          {
+                            channelName: document.getElementById("channel-name").value,
+                            creatorAddress: address,
+                            _id: address,
+                          },
+                          setEditMode,
+                        )
+                      }
+                      label={"Save"}
+                    />
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
           </div>
 
-          
           <h1>
             {" "}
             <span className="text-2xl font-bold">Total videos :</span> {profileData.totalCount}{" "}
@@ -198,18 +181,25 @@ function Profile() {
 
           <h1>
             {" "}
-            <span className="text-2xl font-bold">Subscribers :</span> {profileData?.totalSubs?profileData?.totalSubs:0}{" "}
+            <span className="text-2xl font-bold">Subscribers :</span>{" "}
+            {profileData?.totalSubs ? profileData?.totalSubs : 0}{" "}
           </h1>
-          {
-            
-            !isSubscribe?
-            <Button label={'Subscribe'} onClick={()=>{Subscribe()}}/>
-            :
-            <Button color={'red'} label={'UnSubscribe'} onClick={()=>{UnSubscribe()}}/>
-
-          }
-       
-
+          {!isSubscribe ? (
+            <Button
+              label={"Subscribe"}
+              onClick={() => {
+                Subscribe();
+              }}
+            />
+          ) : (
+            <Button
+              color={"red"}
+              label={"UnSubscribe"}
+              onClick={() => {
+                UnSubscribe();
+              }}
+            />
+          )}
         </div>
       </div>
       {creator === address ? (
@@ -246,11 +236,10 @@ function Profile() {
           )}
         </div>
       ) : null}
-      <div>
-      <h1 className="text-4xl font-bold mb-6 text-left"> Videos - </h1>
-      <HomePage creator={creator} />
+      <div className="w-full">
+        <h1 className="text-4xl font-bold mb-6 text-left"> Videos - </h1>
+        <HomePage creator={creator} />
       </div>
-     
     </div>
   );
 }
