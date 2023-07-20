@@ -45,11 +45,18 @@ function Profile() {
   }, []);
   useEffect(()=>{
     async function get(){
+      try{
+        const result=await axios.post('https://streamvault.site:3499/isSubscribe',{creator,subscriber:address});
+        console.log(result,'rrrrrrrrrrrreeeeeeeeeeessssssssssss');
+  
 
-      const result=await axios.post('https://streamvault.site:3499/isSubscribe',{creator,subscriber:address});
-      console.log(result);
-      
+      }
+      catch(error){
+        notification.error(error.message)
+      }
+     
     }
+    get()
   },[])
 
   async function Subscribe(){

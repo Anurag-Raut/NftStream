@@ -237,7 +237,7 @@ if(result){
   res.status(200).json({result:true})
 } 
 else{
-  res.status(400).json({result:false})
+  res.status(200).json({result:false})
 }
 
 })
