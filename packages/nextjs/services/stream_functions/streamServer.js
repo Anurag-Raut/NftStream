@@ -238,6 +238,7 @@ app.post('/isSubscribe',async (req,res)=>{
 
 
 })
+console.log(result);
 if(result){
   res.status(200).json({result:true})
 } 
