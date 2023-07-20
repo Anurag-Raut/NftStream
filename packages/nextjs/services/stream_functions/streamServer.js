@@ -208,6 +208,7 @@ app.post('/subscribe',async (req,res)=>{
   let result;
   if(subscribe===1){
     result=await subscribeFunc(creator,subscriber)
+    
   }
   else if(subscribe===0){
     result= await UnSubscribe(creator,subscriber)
@@ -288,6 +289,15 @@ async function subscribeFunc(creator,subscriber){
 
 })
 if(result){
+  
+  
+  const collection = db.collection('Profile');
+
+  const filter = { _id: creator }; 
+  const update = { $inc: { totalSubs: 1 } }; 
+
+  const result = await collection.updateMany(filter, update);
+
  return true;
 } 
 else{
@@ -301,7 +311,15 @@ else{
 app.post('/upsertProfileDetails',async (req,res)=>{
   const {payload}=req.body;
   // console.log(payload)
+  const result = await upsertProfileData(payload)
+  // console.log(result);
+  res.json({result})
+})
 
+async function upsertProfileData(payload){
+
+
+  
   const options = { upsert: true }; 
 
 
@@ -309,12 +327,13 @@ app.post('/upsertProfileDetails',async (req,res)=>{
 
   
   const updateOperation = { $set: payload }; 
+  
   const collection = db.collection('Profile');
   
   const result = await collection.updateOne(filter, updateOperation, options);
-  // console.log(result);
-  res.json({result})
-})
+  return result;
+
+}
 
 
   

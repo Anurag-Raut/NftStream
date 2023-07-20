@@ -57,7 +57,7 @@ function Profile() {
      
     }
     get()
-  },[])
+  },[creator])
 
   async function Subscribe(){
 
@@ -205,7 +205,7 @@ function Profile() {
             !isSubscribe?
             <Button label={'Subscribe'} onClick={()=>{Subscribe()}}/>
             :
-            <Button label={'UnSubscribe'} onClick={()=>{UnSubscribe()}}/>
+            <Button color={'red'} label={'UnSubscribe'} onClick={()=>{UnSubscribe()}}/>
 
           }
        
