@@ -223,6 +223,7 @@ app.post('/subscribe',async (req,res)=>{
 app.post('/isSubscribe',async (req,res)=>{
 
   const {creator,subscriber}=req.body;
+  console.log(creator,subscriber)
 
   let myColl = subDB.collection(subscriber);
   if(!myColl){
@@ -238,7 +239,7 @@ app.post('/isSubscribe',async (req,res)=>{
 
 
 })
-console.log(result);
+console.log(result,'ressssss');
 if(result){
   res.status(200).json({result:true})
 } 
