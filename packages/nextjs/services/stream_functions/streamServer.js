@@ -77,7 +77,8 @@ app.post('/publish',async (req,res)=>{
 })
 
 app.post('/delete',(req,res)=>{
-  console.log(req.body,'body')
+  // console.log(req.body,'body')
+
   const {id}=req.body;
   deleteFromDB(id);
 
@@ -185,14 +186,14 @@ app.post('/getProfileDetails',async (req,res)=>{
   
   const result= await myColl.findOne({
     _id:creatorAddress})
-console.log(result,'result');
+// console.log(result,'result');
 
 const collection = db.collection('videos');
 
 const query = { creator: creatorAddress };
 
 const totalCount = await collection.countDocuments(query);
-console.log(totalCount,'totalCount')
+// console.log(totalCount,'totalCount')
 
 
 res.json({ result, totalCount });
@@ -203,7 +204,7 @@ res.json({ result, totalCount });
 
 app.post('/upsertProfileDetails',async (req,res)=>{
   const {payload}=req.body;
-  console.log(payload)
+  // console.log(payload)
 
   const options = { upsert: true }; 
 
@@ -215,7 +216,7 @@ app.post('/upsertProfileDetails',async (req,res)=>{
   const collection = db.collection('Profile');
   
   const result = await collection.updateOne(filter, updateOperation, options);
-  console.log(result);
+  // console.log(result);
   res.json({result})
 })
 
@@ -343,7 +344,7 @@ catch(error){
 
 async function fetchFromDB(creator,live,currentPage,pageSize=10){
 
-
+console.log(creator,'creatorrrrr');
   try{
 
 
