@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import factory from "../../hardhat/artifacts/contracts/Factory.sol/Factory.json";
 import Button from "../components/custom-Components/button";
 import InputBox from "../components/custom-Components/inputBox";
 import { BlockieAvatar } from "../components/scaffold-eth";
