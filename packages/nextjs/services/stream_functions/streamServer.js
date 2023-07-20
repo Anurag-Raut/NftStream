@@ -201,15 +201,19 @@ res.json({ result, totalCount });
 
 })
 
-app.post('/subscribe',(req,res)=>{
+app.post('/subscribe',async (req,res)=>{
 
   const {creator,subscriber,subscribe}=req.body;
+  let result;
   if(subscribe===1){
-    subscribeFunc(creator,subscriber)
+    result=await subscribeFunc(creator,subscriber)
   }
   else if(subscribe===0){
-    UnSubscribe(creator,subscriber)
+    result= await UnSubscribe(creator,subscriber)
   }
+
+  res.json({result});
+  
 
 
 
@@ -258,11 +262,9 @@ async function UnSubscribe(creator,subscriber){
 
 })
 if(result){
-  res.status(200).json({result:true})
-} 
-else{
-  res.status(400).json({result:false})
+  return true;
 }
+return false;
 
 
 }
@@ -283,10 +285,10 @@ async function subscribeFunc(creator,subscriber){
 
 })
 if(result){
-  res.status(200).json({result:true})
+ return true;
 } 
 else{
-  res.status(400).json({result:false})
+  return false;
 }
 
 

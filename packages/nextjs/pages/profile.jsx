@@ -49,7 +49,7 @@ function Profile() {
         const result=await axios.post('https://streamvault.site:3499/isSubscribe',{creator,subscriber:address});
         console.log(result,'rrrrrrrrrrrreeeeeeeeeeessssssssssss');
   
-
+          setSubscibe(result.data.result);
       }
       catch(error){
         notification.error(error.message)
@@ -200,7 +200,15 @@ function Profile() {
             {" "}
             <span className="text-2xl font-bold">Subscribers :</span> {profileData?.subscribers}{" "}
           </h1>
-          <Button label={'Subscribe'} onClick={()=>{Subscribe()}}/>
+          {
+            
+            isSubscribe?
+            <Button label={'Subscribe'} onClick={()=>{Subscribe()}}/>
+            :
+            <Button label={'UnSubscribe'} onClick={()=>{UnSubscribe()}}/>
+
+          }
+       
 
         </div>
       </div>
