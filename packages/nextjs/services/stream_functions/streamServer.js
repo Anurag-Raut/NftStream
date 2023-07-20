@@ -266,6 +266,15 @@ async function UnSubscribe(creator,subscriber){
 
 })
 if(result){
+
+  
+  const collection = db.collection('Profile');
+
+  const filter = { _id: creator }; 
+  const update = { $inc: { totalSubs: -1 } }; 
+
+  const r = await collection.updateOne(filter, update);
+
   return true;
 }
 return false;
@@ -296,7 +305,7 @@ if(result){
   const filter = { _id: creator }; 
   const update = { $inc: { totalSubs: 1 } }; 
 
-  const result = await collection.updateMany(filter, update);
+  const r = await collection.updateOne(filter, update);
 
  return true;
 } 
