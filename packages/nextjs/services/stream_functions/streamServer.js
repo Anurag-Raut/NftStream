@@ -336,7 +336,7 @@ async function getAllSubscribedCannel(subscriber){
 
   }
   
-  const result=await myColl.find()
+  const result=await myColl.find().toArray()
 
   return result;
 

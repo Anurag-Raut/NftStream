@@ -16,11 +16,15 @@ export default function Sidebar({Home}){
     const router = useRouter();
     // console.log(router?.pathname)
     useEffect(()=>{
+
         async function getSubs(){
           const res=await axios.post('https://streamvault.site:3499/getAllSubscribedChannels',{subscriber:address})
-          console.log(res);
+          console.log(res,'rizz');
         }
-        getSubs();
+        if(address){
+
+          getSubs();
+        }
     },[address])
    
      
