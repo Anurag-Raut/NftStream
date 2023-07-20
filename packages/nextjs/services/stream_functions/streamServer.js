@@ -369,7 +369,7 @@ async function fetchFromDB(creator,live,currentPage,pageSize=10){
     
 
 
-      const result = await myColl.find()
+      const result = await myColl.find(query)
           .skip(skip)
           .limit(pageSize)
           .toArray();

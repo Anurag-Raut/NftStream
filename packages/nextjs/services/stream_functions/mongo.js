@@ -48,17 +48,21 @@ async function addVideoToDb(publishId,live,owner,thumbnail,title){
 }
 
 
-async function fetchFromDB(currentPage,pageSize=10,live){
+async function fetchFromDB(currentPage,pageSize=10,creator,live){
+    console.log(creator,'creatorrrrrrrrrrrrr')
     const payload={
         
         
-        creator:null,
+        creator:creator,
         currentPage:currentPage,
         pageSize:pageSize,
 
     }
     if(live){
         payload.live=live;
+    }
+    if(creator){
+        payload.creator=creator
     }
 
     try{

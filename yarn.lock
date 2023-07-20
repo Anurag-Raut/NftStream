@@ -4460,6 +4460,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/bluebird@npm:^3":
+  version: 3.5.38
+  resolution: "@types/bluebird@npm:3.5.38"
+  checksum: 8d1b04261e8e58816ec84ffa616c9e641c9416d0ab10c915ddb9cd8a0e7070af16df4f2eec243a3809cbed8ecee2fb3f45600ae43b3ab0ceea563aa18ceb6ab1
+  languageName: node
+  linkType: hard
+
 "@types/bn.js@npm:^4.11.3":
   version: 4.11.6
   resolution: "@types/bn.js@npm:4.11.6"
@@ -7100,6 +7107,13 @@ __metadata:
     it-take: ^1.0.1
     multiformats: ^9.4.7
   checksum: 164e067c132a7e29e665794a84a1e71d7b959898c7b247ae4446fdbc6a23b08eca35c560a667ff5a53bf034b07acae5b9c0f90c872a22cb2f41729cb4a67fad7
+  languageName: node
+  linkType: hard
+
+"bluebird@npm:^3.7.2":
+  version: 3.7.2
+  resolution: "bluebird@npm:3.7.2"
+  checksum: 869417503c722e7dc54ca46715f70e15f4d9c602a423a02c825570862d12935be59ed9c7ba34a9b31f186c017c23cac6b54e35446f8353059c101da73eac22ef
   languageName: node
   linkType: hard
 
@@ -18484,6 +18498,7 @@ __metadata:
   dependencies:
     "@openzeppelin/contracts": ^4.9.2
     "@pinata/sdk": ^2.1.0
+    "@types/bluebird": ^3
     "@types/busboy": ^1
     "@types/connect-busboy": ^1
     "@types/express": ^4
@@ -18493,6 +18508,7 @@ __metadata:
     "@types/uniqid": ^5
     amqplib: ^0.10.3
     axios: ^1.4.0
+    bluebird: ^3.7.2
     busboy: ^1.6.0
     concurrently: ^8.2.0
     connect-busboy: ^1.0.0
