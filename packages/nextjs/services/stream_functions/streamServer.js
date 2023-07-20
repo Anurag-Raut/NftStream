@@ -87,7 +87,7 @@ app.post('/delete',(req,res)=>{
 
 app.post('/getVideos',async (req,res)=>{
   const {live,creator,currentPage,pageSize } = req.body;
- 
+  console.log(creator,'creatorrrrrr')
 
   const result=await fetchFromDB(creator,live,currentPage,pageSize);
 
