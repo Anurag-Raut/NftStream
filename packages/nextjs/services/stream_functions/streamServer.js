@@ -240,6 +240,17 @@ app.post('/isSubscribe',async (req,res)=>{
 
 
 })
+
+app.post('/getAllSubscribedChannels',async (req,res)=>{
+  const {subscriber}= req.body;
+
+  const result=await getAllSubscribedCannel(subscriber);
+  res.json({result});
+  
+
+
+})
+
 console.log(result,'ressssss');
 if(result){
   res.status(200).json({result:true})
@@ -312,6 +323,22 @@ if(result){
 else{
   return false;
 }
+
+
+}
+
+async function getAllSubscribedCannel(subscriber){
+
+  
+  let myColl = subDB.collection(subscriber);
+  if(!myColl){
+      myColl=subDB.createCollection(subscriber);  
+
+  }
+  
+  const result=await myColl.find()
+
+  return result;
 
 
 }

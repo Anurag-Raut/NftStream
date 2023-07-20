@@ -42,7 +42,7 @@ function Profile() {
       setProfileData(res);
     }
     getProfile();
-  }, []);
+  }, [creator]);
   useEffect(()=>{
     async function get(){
       try{
@@ -198,7 +198,7 @@ function Profile() {
 
           <h1>
             {" "}
-            <span className="text-2xl font-bold">Subscribers :</span> {profileData?.subscribers}{" "}
+            <span className="text-2xl font-bold">Subscribers :</span> {profileData?.totalSubs?profileData?.totalSubs:0}{" "}
           </h1>
           {
             

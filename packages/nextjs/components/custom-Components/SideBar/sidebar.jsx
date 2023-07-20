@@ -6,6 +6,7 @@ import {
   } from "tw-elements";
 import Link from "next/link";
 import { useAccount } from "wagmi";
+import axios from "axios";
 
   
 
@@ -14,6 +15,13 @@ export default function Sidebar({Home}){
    
     const router = useRouter();
     // console.log(router?.pathname)
+    useEffect(()=>{
+        async function getSubs(){
+          const res=await axios.post('https://streamvault.site:3499/getAllSubscribedChannels',{subscriber:address})
+          console.log(res);
+        }
+        getSubs();
+    },[address])
    
      
     useEffect(() => {
