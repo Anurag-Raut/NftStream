@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 import { useRouter } from "next/router";
 import Button from "../components/custom-Components/button";
 import InputBox from "../components/custom-Components/inputBox";
@@ -10,10 +11,12 @@ import { addTokenContract, getBalance, getTokenAddress } from "../services/web3/
 import { ethers } from "ethers";
 import { useAccount, useBalance } from "wagmi";
 import HomePage from './homepage'
+import { notification } from "../utils/scaffold-eth/notification";
 
 function Profile() {
   const { address } = useAccount();
   const [tokenAddress, setTokenAddress] = useState("");
+  const [isSubscribe,setSubscibe]=useState(0);
   const [editMode, setEditMode] = useState(1);
   const [channelImage, setChannelImage] = useState(null);
   const [profileData, setProfileData] = useState({});
@@ -35,11 +38,53 @@ function Profile() {
 
   useEffect(() => {
     async function getProfile() {
-      const res = await getProfileDetails(address);
+      const res = await getProfileDetails(creator);
       setProfileData(res);
     }
     getProfile();
   }, []);
+  useEffect(()=>{
+    async function get(){
+
+      const result=await axios.post('https://streamvault.site:3499/isSubscribe',{creator,subscriber:address});
+      console.log(result);
+      
+    }
+  },[])
+
+  async function Subscribe(){
+
+    try{
+      const result=await axios.post('https://streamvault.site:3499/subscribe',{creator,subscriber:address,subscribe:1});
+      setSubscibe(1);
+    }
+    catch(error){
+      notification.error(error.message)
+    }
+    
+
+
+
+
+  }
+
+
+  
+  async function UnSubscribe(){
+
+    try{
+      const result=await axios.post('https://streamvault.site:3499/subscribe',{creator,subscriber:address,subscribe:0});
+      setSubscibe(0);
+    }
+    catch(error){
+      notification.error(error.message)
+    }
+    
+
+
+
+
+  }
 
   const {
     data: balance,
@@ -100,7 +145,10 @@ function Profile() {
               <span className="text-2xl font-bold">Channel Name : </span>{" "}
               {profileData?.channelName ? profileData.channelName : address}{" "}
             </h1>
-            <div className="flex">
+            {
+              address===creator?
+
+              <div className="flex">
               <div>
                 <Button
                   onClick={() => {
@@ -128,16 +176,25 @@ function Profile() {
                 </div>
               ) : null}
             </div>
+
+
+              :null
+            }
+            
           </div>
 
-          <h1>
-            {" "}
-            <span className="text-2xl font-bold">Subsribers :</span> 200{" "}
-          </h1>
+          
           <h1>
             {" "}
             <span className="text-2xl font-bold">Total videos :</span> {profileData.totalCount}{" "}
           </h1>
+
+          <h1>
+            {" "}
+            <span className="text-2xl font-bold">Subscribers :</span> {profileData?.subscribers}{" "}
+          </h1>
+          <Button label={'Subscribe'} onClick={()=>{Subscribe()}}/>
+
         </div>
       </div>
       {creator === address ? (

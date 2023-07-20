@@ -16,7 +16,7 @@ export function InputFile({id,onChange,label,file}){
                     {
                         file?
                         <div>
-                            <img className="w-full h-full " src={URL.createObjectURL(file)} alt="" /> 
+                          {" selected file name - "+ file.name }
                             </div>
                         :
                         null

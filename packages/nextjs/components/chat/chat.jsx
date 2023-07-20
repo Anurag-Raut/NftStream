@@ -76,7 +76,7 @@ function Chat({id}){
                         <BlockieAvatar address={data.senderId} />
                     }
                           </Link>
-                    <h5 className='text-purple-500 text-lg'>{data.channelName? data.channelName:data.senderId.slice(0,5)+'...'}</h5>
+                    <h5 className='text-purple-500 text-lg'>{data.channelName? data.channelName:data?.senderId?.slice(0,5)+'...'}</h5>
                    
                     
 

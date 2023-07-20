@@ -1,3 +1,5 @@
+import { notification } from '~~/utils/scaffold-eth';
+
 const axios =require('axios');
 
 async function addVideoToDb(publishId,live,owner,thumbnail,title){
@@ -75,6 +77,7 @@ async function fetchFromDB(currentPage,pageSize=10,creator,live){
 
     }
     catch(error){
+        notification.error(error.message)
         console.error(error);
         return [];
     }
@@ -85,6 +88,14 @@ async function fetchFromDB(currentPage,pageSize=10,creator,live){
 
 
 
+
+}
+
+async function subscribe(creator,subscriber){
+
+    
+    const result=await axios.post('https://streamvault.site:3499/subscribe',{creator,subscriber});
+    // console.log(result);
 
 }
 
@@ -102,6 +113,7 @@ async function getVideoById(id){
 
     }
     catch(error){
+        notification.error(error.message)
         console.error(error);
         return [];
     }
@@ -125,6 +137,7 @@ const getProfileDetails =async (creatorAddress)=>{
 
     }
     catch(error){
+       notification.error(error.message)
         console.error(error);
         return [];
     }
@@ -151,6 +164,7 @@ const upsertProfileDetails =async (payload,setEditMode)=>{
 
     }
     catch(error){
+       notification.error(error.message)
         console.error(error);
         return [];
     }

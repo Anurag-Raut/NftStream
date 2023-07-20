@@ -1,3 +1,4 @@
+import { notification } from '../../utils/scaffold-eth/notification';
 
 
 const axios =require('axios');
@@ -220,6 +221,7 @@ class Transmitter {
             .then((res) => this.onIceServers(res))
             .catch((err) => {
                 console.log('error: ' + err);
+             notification.error(err.message)
                 this.scheduleRestart();
             });
     }
@@ -272,6 +274,7 @@ class Transmitter {
             }))})
             .catch((err) => {
                 console.error('error: ' + err);
+             notification.error(err.message)
                 this.scheduleRestart();
             });
     }
@@ -345,6 +348,7 @@ class Transmitter {
             })
             .catch((err) => {
                 console.log('error: ' + err);
+             notification.error(err.message)
                 this.scheduleRestart();
             });
     }
@@ -531,6 +535,7 @@ const payload = {
         console.log('Verification result:', result);
         return {result:result.verified,address:payload.creator}
       } catch (error) {
+        notification.error(error.message)
           return Promise.reject(error);
       }
    
@@ -575,6 +580,7 @@ const payload = {
       
       return `${address}/${id}`;
     } catch (error) {
+        notification.error(error.message)
       console.error(error);
     }
   }
@@ -589,6 +595,7 @@ const payload = {
 
     }
     catch(error){
+        notification.error(error.message)
         console.error(error);
     }
    

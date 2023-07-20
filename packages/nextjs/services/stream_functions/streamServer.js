@@ -16,7 +16,7 @@ const { Web3Storage  ,getFilesFromPath ,File } = require('web3.storage');
 
 // const busboy = require('connect-busboy');
 
-
+let subDB;
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     // const {publishId,live,creator,thumbnail,title ,signature,message} =JSON.parse(req.body.payload);
@@ -201,6 +201,97 @@ res.json({ result, totalCount });
 
 })
 
+app.post('/subscribe',(req,res)=>{
+
+  const {creator,subscriber,subscribe}=req.body;
+  if(subscribe===1){
+    subscribeFunc(creator,subscriber)
+  }
+  else if(subscribe===0){
+    UnSubscribe(creator,subscriber)
+  }
+
+
+
+
+})
+app.post('/isSubscribe',async (req,res)=>{
+
+  const {creator,subscriber}=req.body;
+
+  let myColl = db.collection(subscriber);
+  if(!myColl){
+      myColl=db.createCollection(subscriber);  
+
+  }
+  
+  const result=await myColl.findOne({
+    _id:creator,
+  
+
+    
+
+
+})
+if(result){
+  res.status(200).json({result:true})
+} 
+else{
+  res.status(400).json({result:false})
+}
+
+})
+async function UnSubscribe(creator,subscriber){
+
+  let myColl = db.collection(subscriber);
+  if(!myColl){
+      myColl=db.createCollection(subscriber);  
+
+  }
+  
+  const result=await myColl.deleteOne({
+    _id:creator,
+  
+
+    
+
+
+})
+if(result){
+  res.status(200).json({result:true})
+} 
+else{
+  res.status(400).json({result:false})
+}
+
+
+}
+
+async function subscribeFunc(creator,subscriber){
+  let myColl = db.collection(subscriber);
+  if(!myColl){
+      myColl=db.createCollection(subscriber);  
+
+  }
+  
+  const result=await myColl.insertOne({
+    _id:creator,
+    creator:creator
+
+    
+
+
+})
+if(result){
+  res.status(200).json({result:true})
+} 
+else{
+  res.status(400).json({result:false})
+}
+
+
+}
+
 
 app.post('/upsertProfileDetails',async (req,res)=>{
   const {payload}=req.body;
@@ -246,7 +337,7 @@ async function connectDB(){
       await client.connect();
       // Send a ping to confirm a successful connection
     db = client.db('Streamvault_videos');
-    
+    subDB=client.db('Streamvault_subs')
       console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } 
     catch(error){
@@ -313,6 +404,7 @@ async function addVideoToDb(publishId,live,creator,thumbnail,title,uploaded,prem
 
 
 }
+
 
 async function deleteFromDB(id){
 console.log(id);

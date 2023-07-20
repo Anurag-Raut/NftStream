@@ -1,3 +1,7 @@
+// import { notification } from '../../../utils/scaffold-eth/notification';
+
+import { notification } from '../../../utils/scaffold-eth/notification';
+
 const { Web3 } = require('web3');
 const { ethers } = require('ethers');
 const contracts = require('../../../generated/deployedContracts')
@@ -7,23 +11,32 @@ const Factory = contracts.default[80001][0].contracts.Factory
 const factoryContractAddress = Factory.address;
 
 async function getTokenAddress(){
-  const web3 = new Web3(window.ethereum);
+  try{
+    const web3 = new Web3(window.ethereum);
  
-  const provider = new ethers.BrowserProvider(window.ethereum);
- 
-  const address = await provider.send("eth_requestAccounts", []);
-  console.log(address[0])
+    const provider = new ethers.BrowserProvider(window.ethereum);
+   
+    const address = await provider.send("eth_requestAccounts", []);
+    console.log(address[0])
+    
+   
   
- 
+    const contract = new web3.eth.Contract(Factory?.abi, factoryContractAddress, { from:address[0] });
+    const _tokenAddress=await contract.methods.CreatorAddress(address[0]).call();
+    console.log(_tokenAddress);
+    if(_tokenAddress==='0x0000000000000000000000000000000000000000'){
+     return ''
+    }
+    else{
+      return _tokenAddress
+    }
+   
 
-  const contract = new web3.eth.Contract(Factory?.abi, factoryContractAddress, { from:address[0] });
-  const _tokenAddress=await contract.methods.CreatorAddress(address[0]).call();
-  console.log(_tokenAddress);
-  if(_tokenAddress==='0x0000000000000000000000000000000000000000'){
-   return ''
+
   }
-  else{
-    return _tokenAddress
+  catch(error){
+    console.log(error)
+    notification.error('Connect to metamask');
   }
  
 
@@ -104,6 +117,7 @@ async function getBalance(address){
     return _addr;
 
         } catch (error) {
+         notification.error(error.message)
         console.error('Error connecting to Metamask:', error);
         }
     } else {

@@ -6,11 +6,15 @@ import {sendVerificationRequestAndPost} from '../services/stream_functions/publi
 import uniqid from 'uniqid'
 import Premium from "../components/custom-Components/premiumContent";
 import { getTokenAddress } from "../services/web3/creator/creator";
+import { notification } from "../utils/scaffold-eth/notification";
+import Button from "../components/custom-Components/button";
+import Progress from "../components/custom-Components/progess";
 
 function Upload(){
- 
+  const [progress,setProgress]=useState(0);
     const [selectedFile, setSelectedFile] = useState(null);
     const [tokenAddress,setTokenAddress]=useState('')
+    const [selectedThumbnail,setselectedThumbnail]=useState(null)
 
     useEffect(()=>{
       async function getAdd(){
@@ -43,6 +47,7 @@ function Upload(){
           const response = await axios.post(serverurl+'/upload', formData, {
             onUploadProgress: (progressEvent) => {
               const percentage = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+              setProgress(percentage);
               // console.log(`Upload Progress: ${percentage}%`);
             },
           });
@@ -58,23 +63,33 @@ function Upload(){
             // Handle upload failure
           }
       } catch (error) {
-        console.error('Upload error:', error);
+       notification.error(error.message)
         // Handle error
       }
     };
+
+    console.log(progress)
   
     return (
       <div className='flex m-5 w-[98vw] h-full justify-around'>
         <div className="w-[350px] h-[250px]">
-        <InputFile id='upload-video' onChange={setSelectedFile} label={'Select Your Video'}/>
-        <InputFile id='upload-thumbnail' onChange={()=>{}} label={'Select Thubmbail for this video '}/>
+        <InputFile id='upload-video' onChange={setSelectedFile} file={selectedFile} label={'Select Your Video'}/>
+        <InputFile id='upload-thumbnail' file={selectedThumbnail} onChange={setselectedThumbnail} label={'Select Thubmbail for this video '}/>
         </div>
 
         <div className="w-[40vw] h-full">
         <InputBox id={'upload-title'} label={'Select title for this video '} />
         <Premium />
-
-        <button onClick={handleUpload}>Upload</button>
+        {
+          progress===0?
+         null
+          :
+        
+          <Progress progress={progress} />
+          
+        }
+       
+        <Button label={'Upload'} onClick={handleUpload}/>
 
 
         </div>

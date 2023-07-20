@@ -2,19 +2,25 @@ import { useEffect, useState } from "react";
 import { getTokenAddress } from "../../services/web3/creator/creator";
 import InputBox from "./inputBox";
 import Link from 'next/link'
+import { useAccount } from "wagmi";
+import { RainbowKitCustomConnectButton } from "../scaffold-eth";
 
 
 
 function Premium(){
     const [tokenAddress,setTokenAddress]=useState('');
     const [premiumVisible,setPremiumVisible]=useState(0);
+
+    const {isConnected,address}=useAccount()
     useEffect(()=>{
         async function getAdd(){
             const addr =await getTokenAddress();
             setTokenAddress(addr);
         }
-
-        getAdd();
+        if(isConnected){
+            getAdd();
+        }
+      
 
       
 
@@ -36,7 +42,17 @@ function Premium(){
     </div>
 
     {
+
         premiumVisible?(
+
+            !isConnected?
+
+            <div className="mt-3">
+                <RainbowKitCustomConnectButton />
+            </div>
+
+            :
+
 
         tokenAddress===''?
         <div>
@@ -44,7 +60,7 @@ function Premium(){
             You dont have your Token Contract
             </p>
            
-             <Link href={'/profile'}  class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
+             <Link href={`/profile?creator=${address}`}  class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
         
         Create Token Contract
       </Link>
