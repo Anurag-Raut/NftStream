@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 
 
-export default function VideoCard({image,title,id,creator,live}){
+export default function VideoCard({image,title,id,creator,live,premiumTokens}){
     // console.log(id,creator);
     const [profileData,setProfileData]=useState({});
     
@@ -43,6 +43,7 @@ export default function VideoCard({image,title,id,creator,live}){
            
             <h5 className="w-full text-left ml-3">
                 <p className="font-bold m-0">{title}</p>
+                <div className="flex justify-between">
                 {
                     profileData.channelName?
                     <p className="m-0 text-gray-400 ">{profileData.channelName}</p>
@@ -50,6 +51,26 @@ export default function VideoCard({image,title,id,creator,live}){
                     <p className="m-0 text-gray-400 ">{creator.slice(0,6)+'...'}</p>
 
                 }
+                <div className="flex items-start">
+                <p className="m-0 mr-2 text-gray-400">{Number(premiumTokens)*0.001}  eth</p>
+                {
+
+                   
+
+                    live?
+                    <div className="bg-red-700 w-[50px] font-bold rounded-lg h-[25px] flex justify-center">Live</div>
+                    :
+                    null
+                    }
+
+
+
+
+                </div>
+               
+
+                </div>
+               
               
             </h5>
 
