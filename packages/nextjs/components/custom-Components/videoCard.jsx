@@ -23,7 +23,7 @@ export default function VideoCard({image,title,id,creator,live,premiumTokens}){
     },[])
 
     return(
-        <div  className="  w-[330px] h-[220px] m-10  break-words">
+        <div  className="  w-[330px] h-[200px] m-10  break-words">
             <Link href={`/view/${id}?live=${live}`} >
                 {/* <p className="bg-red-600 w-[45px] font-bold rounded-lg  ">Live</p> */}
             <img  className="w-full h-full rounded-lg" src={image} alt="" />
