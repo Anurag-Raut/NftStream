@@ -89,16 +89,19 @@ console.log(tokenAddress,'tokenAddress', contracts[80001][0].contracts.Creator.a
       });
 
       useEffect(()=>{
-        if(balance && balance>=Number(videoData.premiumTokens)){
+        if(balance && Number(balance) >=Number(videoData.premiumTokens)){
             setVisible(true);
         }
-        else if(!balance){
+        else if(videoData.premiumTokens==='0'){
+            console.log('hellou',balance)
             setVisible(true);
         }
         else{
+            console.log('nuuuuuu')
+            
             setVisible(false);
         }
-      },[balance])
+      },[balance,videoData])
 
       console.log(balance,'balance',videoData.premiumTokens)
       
@@ -120,7 +123,7 @@ console.log(tokenAddress,'tokenAddress', contracts[80001][0].contracts.Creator.a
                        <ReactPlayer width={'62vw'} height={'75vh'} muted={mute} autoplay={true} url={url} className='m-2'  playing={true} controls={true} onBufferEnd={() => {
                         setMuted(false)
                     }} /> : 
-                   <Modal RemainingBalance={videoData.premiumTokens-Number(balance)} tokenAddress={tokenAddress} address={address} />
+                   <Modal videoData={videoData} RemainingBalance={videoData.premiumTokens-Number(balance)} tokenAddress={tokenAddress} address={address} />
           
 
                    

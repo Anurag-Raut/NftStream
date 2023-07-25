@@ -1,7 +1,7 @@
 import { useState } from "react"
 import {useScaffoldContractWrite} from '../../../hooks/scaffold-eth/useScaffoldContractWrite'
 import Toggle from "./toggle";
-export default function Modal ({RemainingBalance,address,tokenAddress}){
+export default function Modal ({RemainingBalance,address,tokenAddress,videoData}){
 const [open,setOpen]=useState(false);
 const handleToggle = () => setOpen((prev) => !prev);
 
@@ -20,27 +20,42 @@ const { writeAsync, isLoading, isMining } = useScaffoldContractWrite({
     console.log("Transaction blockHash", txnReceipt.blockHash);
   },
 });
+console.log(videoData)
 
 
     return (
         <>
-        <div className="container">
-        <h1 className="text-2xl">Not enough tokens</h1>
-        {/* opens the modal */}
+        <div className="container w-[62vw] h-[33vw] relative ">
+          <img src={videoData.thumbnail} className=" w-full h-full "  alt="" />
+          <div className="absolute  inset-0 bg-black opacity-60">
+          </div>
+
+            <div className="absolute top-[33vh] left-[26vw]  ">
+        <div className="w-[200px]">
+        <h1 className="text-2xl ">Not enough tokens</h1>
+
         <button className="btn btn-primary" onClick={handleToggle}>
-          Buy Tokens
+        Buy Tokens
         </button>
+
+        </div>
+           
       <Toggle open={open} handleToggle={handleToggle}>
           <h3>
-            remainingBalance : {RemainingBalance}
+            Number of Tokens needed : {RemainingBalance}
           </h3>
           <div className="modal-action">
             {/* closes the modal */}
-            <button onClick={()=>writeAsync()} className="btn btn-primary" >
+            <button onClick={()=>writeAsync()} className="btn z-10 btn-primary" >
               Buy Tokens
             </button>
           </div>
         </Toggle>
+
+          </div>
+       
+        {/* opens the modal */}
+       
       </div>
         </>
     )
