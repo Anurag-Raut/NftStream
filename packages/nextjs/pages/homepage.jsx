@@ -29,20 +29,28 @@ const HomePage = ({creator}) => {
    
   },[creator])
   return (
-    <div class="grid w-full grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4">
 
-    {
-      videos.map((video)=>{
+<div className="grid  w-full justify-items-center grid-cols-1 justify-center sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 xl:grid-cols-3 gap-4">
 
-        return (
-      
-          <VideoCard key={video._id} id={video._id} creator={video.creator} image={video?.thumbnail} live={video.live} title={video?.title} premiumTokens={video.premiumTokens} />
-        )
 
-      })
-    }
+{
+  videos.map((video)=>{
 
-    </div>
+    return (
+  
+      <VideoCard key={video._id} id={video._id} creator={video.creator} image={video?.thumbnail} live={video.live} title={video?.title} premiumTokens={video.premiumTokens} />
+    )
+
+  })
+}
+
+
+
+
+</div>
+
+
+   
   );
 };
 
