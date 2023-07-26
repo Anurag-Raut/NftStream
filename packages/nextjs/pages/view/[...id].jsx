@@ -92,7 +92,7 @@ console.log(tokenAddress,'tokenAddress', contracts[80001][0].contracts.Creator.a
         if(balance && Number(balance) >=Number(videoData.premiumTokens)){
             setVisible(true);
         }
-        else if(videoData.premiumTokens==='0'){
+        else if(videoData?.premiumTokens===0){
             console.log('hellou',balance)
             setVisible(true);
         }
@@ -115,8 +115,7 @@ console.log(tokenAddress,'tokenAddress', contracts[80001][0].contracts.Creator.a
         <div className=' '>
            
               
-                <div  className='flex ml-3 mt-0  flex justify-between
-                '>
+                <div  className='flex ml-3 mt-0  flex justify-between'>
                     <>
                     {
                           visible?
