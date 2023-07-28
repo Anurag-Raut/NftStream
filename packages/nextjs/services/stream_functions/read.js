@@ -73,7 +73,7 @@ const generateSdpFragment = (offerData, candidates) => {
 
 class WHEPClient {
 	constructor(streamId) {
-        console.log(streamId,'sd')
+        // console.log(streamId,'sd')
 		this.pc = null;
 		this.restartTimeout = null;
         this.eTag = '';

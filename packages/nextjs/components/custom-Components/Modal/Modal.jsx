@@ -20,7 +20,7 @@ const { writeAsync, isLoading, isMining } = useScaffoldContractWrite({
     console.log("Transaction blockHash", txnReceipt.blockHash);
   },
 });
-console.log(videoData)
+// console.log(videoData)
 
 
     return (

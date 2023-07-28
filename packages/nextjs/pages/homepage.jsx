@@ -15,12 +15,12 @@ const HomePage = ({creator}) => {
   useEffect(()=>{
 
     async function getItems(){
-      console.log(creator,'creeeaaatorrr');
+      // console.log(creator,'creeeaaatorrr');
       let _items= await fetchFromDB(1,10,creator);
 
       let items=_items?.data?.result
    
-         setVideos([...videos,  ...items]);
+         setVideos([ ...items]);
     }
     
     

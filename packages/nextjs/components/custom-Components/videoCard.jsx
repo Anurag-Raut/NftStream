@@ -14,7 +14,7 @@ export default function VideoCard({image,title,id,creator,live,premiumTokens}){
         const pdata=await getProfileDetails(creator);
         if(pdata ){
             setProfileData(pdata)
-            console.log(pdata)
+            // console.log(pdata)
         }
 
     }

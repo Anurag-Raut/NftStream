@@ -51,7 +51,7 @@ async function addVideoToDb(publishId,live,owner,thumbnail,title){
 
 
 async function fetchFromDB(currentPage,pageSize=10,creator,live){
-    console.log(creator,'creatorrrrrrrrrrrrr')
+    // console.log(creator,'creatorrrrrrrrrrrrr')
     const payload={
         creator:creator,
         currentPage:currentPage,
@@ -100,7 +100,7 @@ async function subscribe(creator,subscriber){
 }
 
 async function getVideoById(id){
-    console.log(id,'iddddddddddddddddddddddddddddddddd')
+    // console.log(id,'iddddddddddddddddddddddddddddddddd')
     try{
 
         const result=await axios.post('https://streamvault.site:3499/getVideoDetails',{id:id});
@@ -121,14 +121,14 @@ async function getVideoById(id){
 
 
 const getProfileDetails =async (creatorAddress)=>{
-    console.log('og hellooo')
+    // console.log('og hellooo')
 
     try{
 
         const res=await axios.post('https://streamvault.site:3499/getProfileDetails',{creatorAddress:creatorAddress});
        
         const result={...res.data.result,totalCount:res.data.totalCount}
-        console.log(result,'result');
+        // console.log(result,'result');
         return result ;
   
 

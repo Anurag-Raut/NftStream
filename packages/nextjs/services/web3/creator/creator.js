@@ -17,13 +17,13 @@ async function getTokenAddress(){
     const provider = new ethers.BrowserProvider(window.ethereum);
    
     const address = await provider.send("eth_requestAccounts", []);
-    console.log(address[0])
+    // console.log(address[0])
     
    
   
     const contract = new web3.eth.Contract(Factory?.abi, factoryContractAddress, { from:address[0] });
     const _tokenAddress=await contract.methods.CreatorAddress(address[0]).call();
-    console.log(_tokenAddress);
+    // console.log(_tokenAddress);
     if(_tokenAddress==='0x0000000000000000000000000000000000000000'){
      return ''
     }
@@ -35,7 +35,7 @@ async function getTokenAddress(){
 
   }
   catch(error){
-    console.log(error)
+    // console.log(error)
     notification.error('Connect to metamask');
   }
  
@@ -56,7 +56,7 @@ async function getTokenAddressByAddress(_address){
 
   const contract = new web3.eth.Contract(Factory?.abi, factoryContractAddress, { from:_address });
   const _tokenAddress=await contract.methods.CreatorAddress(_address).call();
-  console.log(_tokenAddress);
+  // console.log(_tokenAddress);
   if(_tokenAddress==='0x0000000000000000000000000000000000000000'){
    return ''
   }
@@ -74,7 +74,7 @@ async function getBalance(address){
       return 0;
     }
 
-    console.log(address,'adddddddddddddd')
+    // console.log(address,'adddddddddddddd')
     const web3 = new Web3(window.ethereum);
     const provider = new ethers.BrowserProvider(window.ethereum);
     const signer = provider.getSigner();
@@ -97,7 +97,7 @@ async function getBalance(address){
       
 
             const address = await provider.send("eth_requestAccounts", []);
-            console.log(address[0])
+            // console.log(address[0])
 
         
 
@@ -105,12 +105,12 @@ async function getBalance(address){
     const contract = new web3.eth.Contract(Factory.abi, factoryContractAddress, { from:address[0] });
 
     const gasEstimate = await contract.methods.newCreator().estimateGas();
-    console.log('Gas Estimate:', gasEstimate);
-    console.log('sgagasg');
+    // console.log('Gas Estimate:', gasEstimate);
+    // console.log('sgagasg');
    
 
     const result = await contract.methods.newCreator().send({ gas: gasEstimate });
-    console.log(result);
+    // console.log(result);
 
 
     const _addr=await contract.methods.CreatorAddress(address[0]).call();

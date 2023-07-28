@@ -37,7 +37,7 @@ function Upload(){
         //
         try {
           const serverurl='https://streamvault.site:3499'
-          console.log(document.getElementById('upload-title').value,'text')
+          // console.log(document.getElementById('upload-title').value,'text')
           const payload = await sendVerificationRequestAndPost('anurag',document.getElementById('upload-title').value,document.getElementById('upload-thumbnail').files,id,false)
           // console.log(payload,selectedFile)
           payload.premiumTokens=document.getElementById('premium-token')?.value?document.getElementById('premium-token')?.value:0;
@@ -57,7 +57,7 @@ function Upload(){
 
     
           if (response.status === 200) {
-            console.log('Upload successful');
+            // console.log('Upload successful');
             // Handle successful upload
           } else {
             console.error('Upload failed');
@@ -69,10 +69,10 @@ function Upload(){
       }
     };
 
-    console.log(progress)
+    // console.log(progress)
   
     return (
-      <div className='flex m-5 w-[98vw] h-full justify-around'>
+      <div className='flex m-5 w-full h-full justify-around'>
         <div className="w-[350px] h-[250px]">
         <InputFile id='upload-video' onChange={setSelectedFile} file={selectedFile} label={'Select Your Video'}/>
         <InputFile id='upload-thumbnail' file={selectedThumbnail} onChange={setselectedThumbnail} label={'Select Thubmbail for this video '}/>

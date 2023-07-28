@@ -22,14 +22,14 @@ export default function Sidebar({Home}){
 
         async function getSubs(){
           const res=await axios.post('https://streamvault.site:3499/getAllSubscribedChannels',{subscriber:address})
-          console.log(res,'rizz');
+          // console.log(res,'rizz');
           const result=res.data.result;
           for(let i=0;i<result.length;i++){
             const profiledata=await getProfileDetails(result[i].creator
               )
             result[i]={...result[i],...profiledata}
           }
-          console.log(result,'rix')
+          // console.log(result,'rix')
           setSubscribed(result)
         }
         if(address){
@@ -37,39 +37,103 @@ export default function Sidebar({Home}){
           getSubs();
         }
     },[address])
+    let instance = Sidenav.getInstance(document.getElementById("sidenav-2"));
+    useEffect(()=>{
+      if(typeof document !== 'undefined'){
+        initTE({ Sidenav });
+        instance = Sidenav.getInstance(document.getElementById("sidenav-2"));
+      }
+     
+
+    },[])
    
      
-    useEffect(() => {
-        if (typeof document !== 'undefined') {
-          initTE({ Sidenav });
-          const instance = Sidenav.getInstance(document.getElementById("sidenav-2"));
-            // console.log(instance,'wattttttttttteeeeeerrrrrrrrr')
-        //  instance.hide();
-            // if(router.pathname!=='/'){
-            //     // console.log('dononoonnnnonnnnoneee')
-            //     instance.hide();
-            // }
-            // if(router.pathname==='/' && window.innerWidth<900 ){
-            //     instance.hide()
-            // }
-          const handleWindowResize = () => {
+    // useEffect(() => {
+    
           
-            const width =  window.innerWidth
+    //       // const instance = Sidenav.getInstance(document.getElementById("sidenav-2"));
+    //         // console.log(instance,'wattttttttttteeeeeerrrrrrrrr')
+    //     //  instance.hide();
+           
+    //       const handleWindowResize = () => {
+          
+    //         const width =  window.innerWidth
          
-            const mode = (width > 900 && router?.pathname==='/' ) ? 'slide' : 'over';
-            instance.changeMode(mode);
+    //         const mode = (width > 900 && router?.pathname==='/' ) ? 'slide' : 'over';
+    //         instance.changeMode(mode);
             
-          };
+    //       };
       
-          handleWindowResize(); // Initial mode based on the current width
+    //       handleWindowResize(); // Initial mode based on the current width
       
-          window.addEventListener('resize', handleWindowResize);
+    //       window.addEventListener('resize', handleWindowResize);
       
-          return () => {
-            window.removeEventListener('resize', handleWindowResize);
-          };
+    //       return () => {
+    //         window.removeEventListener('resize', handleWindowResize);
+    //       };
+        
+    //   }, [router?.pathname]);
+
+
+      useEffect(() => {
+        // Listen for route changes and call handleRouteChange
+        const handleRouteChange = (url) => {
+          handleModeOnPathChange(url);
+          console.log(url)
+
+          if(url!=='/'){
+            console.log('dononoonnnnonnnnoneee')
+            instance.hide();
         }
-      }, [router?.pathname]);
+        else if(url==='/' && window.innerWidth<900 ){
+            instance.hide()
+        }
+        else{
+          instance.show()
+        }
+
+
+         
+        };
+
+        const handleWindowResize = () => {
+        
+          
+          const width =  window.innerWidth
+          
+            const mode= (width > 900 && router.pathname==='/' ) ? 'slide' : 'over';
+          
+        
+          
+          console.log(mode,router.pathname ,width);
+          instance.changeMode(mode);
+          
+        };
+
+        const handleModeOnPathChange=(url)=>{
+
+          const width =  window.innerWidth
+          
+          const mode= (width > 900 && url==='/' ) ? 'slide' : 'over';
+        
+      
+        
+        console.log(mode,url ,width);
+        instance.changeMode(mode);
+
+        }
+    
+      
+
+
+        router.events.on('routeChangeComplete', handleRouteChange);
+        window.addEventListener('resize', handleWindowResize);
+        // Remove the event listener when the component is unmounted
+        return () => {
+          router.events.off('routeChangeComplete', handleRouteChange);
+          window.removeEventListener('resize', handleWindowResize);
+        };
+      }, [router.events]);
   
 
 

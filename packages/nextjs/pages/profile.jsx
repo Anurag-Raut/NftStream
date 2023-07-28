@@ -23,7 +23,7 @@ function Profile() {
   let imgage;
   const router = useRouter();
   const { creator } = router.query;
-  console.log(creator);
+  // console.log(creator);
 
   useEffect(() => {
     async function getAddress() {
@@ -47,7 +47,7 @@ function Profile() {
     async function get() {
       try {
         const result = await axios.post("https://streamvault.site:3499/isSubscribe", { creator, subscriber: address });
-        console.log(result, "rrrrrrrrrrrreeeeeeeeeeessssssssssss");
+        // console.log(result, "rrrrrrrrrrrreeeeeeeeeeessssssssssss");
 
         setSubscibe(result.data.result);
       } catch (error) {

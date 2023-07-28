@@ -17,11 +17,11 @@ function Chat({id}){
         const results = await Promise.all(messages.map(async item => {
             // Await the asynchronous function inside the map
             const data = await getProfileDetails(item.senderId);
-            console.log(data,'data');
+            // console.log(data,'data');
             return {...data,...item};
           }));
 
-          console.log(results)
+        //   console.log(results)
             
         
         setQueue([...results])
@@ -49,11 +49,11 @@ function Chat({id}){
 
 	})
     useEffect(() => {
-        console.log('hello')
+        // console.log('hello')
         
         scrollableDivRef?.current?.scrollIntoView({ behavior: 'smooth' });
       }, [queue]);
-      console.log(queue)
+    //   console.log(queue)
 
     return(
 

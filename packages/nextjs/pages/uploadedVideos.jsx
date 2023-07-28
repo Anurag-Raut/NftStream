@@ -13,7 +13,7 @@ export default function uploadedFile(){
         async function get(){
 
             const res=await fetchFromDB(1,50,address,false);
-            console.log(res,'res')
+            // console.log(res,'res')
             const result=res.data.result;
             setUploadedVideos(result);
         }
@@ -21,7 +21,7 @@ export default function uploadedFile(){
         get();
 
     },[])
-    console.log(uploadedVideos)
+    // console.log(uploadedVideos)
     return (
         <div>
 
