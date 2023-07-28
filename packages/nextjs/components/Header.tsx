@@ -35,34 +35,8 @@ export const Header = () => {
     useCallback(() => setIsDrawerOpen(false), []),
   );
 
-  const navLinks = (
-    <>
-      <li>
-        <NavLink href="/">Home</NavLink>
-      </li>
-      <li>
-        <NavLink href="/debug">
-          <BugAntIcon className="h-4 w-4" />
-          Debug Contracts
-        </NavLink>
-      </li>
-      <li>
-        <NavLink href="/example-ui">
-          <SparklesIcon className="h-4 w-4" />
-          Example UI
-        </NavLink>
-      </li>
-      <li>
-        <NavLink href="/blockexplorer">
-          <MagnifyingGlassIcon className="h-4 w-4" />
-          Block Explorer
-        </NavLink>
-      </li>
-    </>
-  );
-
   return (
-    <div className="sticky top-0 lg:static navbar bg-base-100 min-h-0 flex-shrink-0 justify-between z-20 shadow-secondary px-0 sm:px-2">
+    <div className="fixed top-0 z-10  navbar bg-base-100 min-h-0 flex-shrink-0 justify-between z-20 shadow-secondary px-0 sm:px-2">
       <div className="navbar-start w-auto lg:w-1/2">
         <div className=" dropdown" ref={burgerMenuRef}>
           <label

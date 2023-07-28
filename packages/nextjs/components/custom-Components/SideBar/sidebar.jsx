@@ -45,13 +45,13 @@ export default function Sidebar({Home}){
           const instance = Sidenav.getInstance(document.getElementById("sidenav-2"));
             // console.log(instance,'wattttttttttteeeeeerrrrrrrrr')
         //  instance.hide();
-            if(router.pathname!=='/'){
-                // console.log('dononoonnnnonnnnoneee')
-                instance.hide();
-            }
-            if(router.pathname==='/' && window.innerWidth<900 ){
-                instance.hide()
-            }
+            // if(router.pathname!=='/'){
+            //     // console.log('dononoonnnnonnnnoneee')
+            //     instance.hide();
+            // }
+            // if(router.pathname==='/' && window.innerWidth<900 ){
+            //     instance.hide()
+            // }
           const handleWindowResize = () => {
           
             const width =  window.innerWidth
@@ -82,7 +82,7 @@ export default function Sidebar({Home}){
 <nav
   id="sidenav-2"
 
-  className="fixed left-0 top-15 z-[1035] h-screen w-60 -translate-x-full overflow-hidden bg-base-100 shadow-[0_4px_12px_0_rgba(0,0,0,0.07),_0_2px_4px_rgba(0,0,0,0.05)] data-[te-sidenav-hidden='false']:translate-x-0 dark:bg-base-100"
+  className="fixed left-0 top-[60px] z-[10] h-screen w-60 -translate-x-full overflow-hidden bg-base-100 shadow-[0_4px_12px_0_rgba(0,0,0,0.07),_0_2px_4px_rgba(0,0,0,0.05)] data-[te-sidenav-hidden='false']:translate-x-0 dark:bg-base-100"
   data-te-sidenav-init
   data-te-sidenav-hidden="false"
   data-te-sidenav-mode="side"
