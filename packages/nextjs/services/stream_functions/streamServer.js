@@ -253,9 +253,9 @@ app.post('/isSubscribe',async (req,res)=>{
 
 app.post('/getAllSubscribedChannels',async (req,res)=>{
   const {subscriber}= req.body;
-  console.log(subscriber);
+  console.log(subscriber,'hello');
 
-  const result=await getAllSubscribedCannel(subscriber);
+  const result=await getAllSubscribedChannel(subscriber);
   res.json({result});
   
 
@@ -338,7 +338,7 @@ else{
 
 }
 
-async function getAllSubscribedCannel(subscriber){
+async function getAllSubscribedChannel(subscriber){
 
   
   let myColl = subDB.collection(subscriber);
