@@ -58,6 +58,9 @@ app.post('/publish',async (req,res)=>{
   if(premiumTokens===null){
     premiumTokens=0;
   }
+  else{
+    premiumTokens=Number(premiumTokens)
+  }
   const isVerified = verifySignature(creator, message, signature);
   
   if (!isVerified) {
@@ -133,6 +136,9 @@ app.post('/upload',upload.single('video'), (req, res) => {
   const {publishId,live,creator,thumbnail,title ,signature,message,premiumTokens,tokenAddress} =JSON.parse(req.body.payload);
   if(premiumTokens===null){
     premiumTokens=0;
+  }
+  else{
+    premiumTokens=Number(premiumTokens)
   }
   
   const isVerified = verifySignature(creator, message, signature);
