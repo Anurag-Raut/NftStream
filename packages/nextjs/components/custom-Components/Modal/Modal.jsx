@@ -46,7 +46,10 @@ console.log(videoData)
           </h3>
           <div className="modal-action">
             {/* closes the modal */}
-            <button onClick={()=>writeAsync()} className="btn z-10 btn-primary" >
+            <button onClick={()=>{setOpen(false)}}  className="bg-red-700 hover:bg-red-800 btn z-10 btn-primary" >
+              Cancel
+            </button>
+            <button onClick={()=>{writeAsync();setOpen(false)}} className="btn z-10 btn-primary" >
               Buy Tokens
             </button>
           </div>
