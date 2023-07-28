@@ -40,7 +40,8 @@ function Upload(){
           console.log(document.getElementById('upload-title').value,'text')
           const payload = await sendVerificationRequestAndPost('anurag',document.getElementById('upload-title').value,document.getElementById('upload-thumbnail').files,id,false)
           // console.log(payload,selectedFile)
-          payload.premiumTokens=document.getElementById('premium-token')?.value;
+          payload.premiumTokens=document.getElementById('premium-token')?.value?document.getElementById('premium-token')?.value:0;
+
           payload.tokenAddress=tokenAddress;
           formData.append('video', selectedFile);
           formData.append('payload', JSON.stringify(payload));

@@ -559,6 +559,12 @@ const payload = {
         payload.premiumTokens=Number(premiumTokens);
 
       }
+      else{
+        
+            payload.premiumTokens=Number(0);
+    
+          
+      }
       if(tokenAddress){
         payload.tokenAddress=tokenAddress;
       }
