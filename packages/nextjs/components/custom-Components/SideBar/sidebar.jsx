@@ -21,6 +21,9 @@ export default function Sidebar({Home}){
     useEffect(()=>{
 
         async function getSubs(){
+          if(!address){
+            return;
+          }
           const res=await axios.post('https://streamvault.site:3499/getAllSubscribedChannels',{subscriber:address})
           // console.log(res,'rizz');
           const result=res.data.result;

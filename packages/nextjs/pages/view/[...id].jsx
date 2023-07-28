@@ -132,7 +132,7 @@ console.log(url,'urllll')
                     <>
                     {
                           visible?
-                       <ReactPlayer width={'62vw'} height={'75vh'} muted={true} autoPlay={true} url={url} className='m-2'  controls={true} /> : 
+                       <ReactPlayer width={'62vw'} height={'75vh'} muted={true} autoPlay={true} playsinline={true} url={url} className='m-2' playing={true}  controls={true} /> : 
                    <Modal videoData={videoData} RemainingBalance={videoData.premiumTokens-Number(balance)} tokenAddress={tokenAddress} address={address} /> 
                     }
                     

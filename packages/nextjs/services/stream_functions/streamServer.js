@@ -188,7 +188,7 @@ app.post('/upload',upload.single('video'), (req, res) => {
 app.post('/getProfileDetails',async (req,res)=>{
 
   const {creatorAddress}=req.body;
-  console.log(creatorAddress,'hehehheheh')
+  // console.log(creatorAddress,'hehehheheh')
 
   
   let myColl = db.collection('Profile');
@@ -214,7 +214,7 @@ res.json({ result, totalCount });
 app.post('/subscribe',async (req,res)=>{
 
   const {creator,subscriber,subscribe}=req.body;
-  console.log(subscribe)
+  // console.log(subscribe)
   let result;
   if(subscribe===1){
     result=await subscribeFunc(creator,subscriber)
@@ -234,7 +234,7 @@ app.post('/subscribe',async (req,res)=>{
 app.post('/isSubscribe',async (req,res)=>{
 
   const {creator,subscriber}=req.body;
-  console.log(creator,subscriber)
+  // console.log(creator,subscriber)
 
   let myColl = subDB.collection(subscriber);
   if(!myColl){
@@ -253,6 +253,7 @@ app.post('/isSubscribe',async (req,res)=>{
 
 app.post('/getAllSubscribedChannels',async (req,res)=>{
   const {subscriber}= req.body;
+  console.log(subscriber);
 
   const result=await getAllSubscribedCannel(subscriber);
   res.json({result});
@@ -261,7 +262,7 @@ app.post('/getAllSubscribedChannels',async (req,res)=>{
 
 })
 
-console.log(result,'ressssss');
+// console.log(result,'ressssss');
 if(result){
   res.status(200).json({result:true})
 } 
@@ -424,7 +425,7 @@ async function addVideoToDb(publishId,live,creator,thumbnail,title,uploaded,prem
   if(!db){
       connectDB();
   }
-  console.log(premiumTokens,'premiumTokens')
+  // console.log(premiumTokens,'premiumTokens')
 
   let thumbnail_image_url;
 
@@ -477,7 +478,7 @@ async function addVideoToDb(publishId,live,creator,thumbnail,title,uploaded,prem
 
 
 async function deleteFromDB(id){
-console.log(id);
+// console.log(id);
 try{
 
   if(!db){
@@ -490,7 +491,7 @@ try{
     const filter = { _id: id };
     const result = await myColl.deleteOne(filter);
     if(result){
-      console.log('deleted');
+      // console.log('deleted');
     }
 
 
@@ -506,7 +507,7 @@ catch(error){
 
 async function fetchFromDB(creator,live,currentPage,pageSize=10){
 
-console.log(creator,'creatorrrrr');
+// console.log(creator,'creatorrrrr');
   try{
 
 
