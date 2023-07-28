@@ -19,7 +19,8 @@ const { createClient } = require('web3.storage');
 const ReactPlayer = dynamic(() => import('react-player/lazy'), { ssr: false });
 function View(){
     const { address, isConnecting, isDisconnected } = useAccount();
-    console.log(address,'address')
+    const [url,setUrl]=useState('')
+    // console.log(address,'address')
     // const [ID,setID]=useState
     const router=useRouter();
     const [visible,setVisible]=useState(0);
@@ -28,57 +29,69 @@ function View(){
     
     const [mute,setMuted]=useState(true);
     
-	
-    const {id,live,creator} = router.query
-    console.log(id)
+    const {id,live} = router.query
+    
 
-    let ID='';
-    if(id){
-        ID=id[0]+'/'+id[1];
+    
+   const {creator}=router.query;
+let ID='';
+if(id){
+    ID=id[0]+'/'+id[1];
+}
+console.log(url,'urllll')
+    async function add(){
+       
+        if(!id){
+            return
+        }
+        if(live==='true' && id){
+           setUrl(`https://streamvault.site:8000/${id[0]}/${id[1]}/stream.m3u8`);
+        }
+        else if(id){
+            setUrl(`https://streamvault.site/${id[1]}/${id[1]}.m3u8`);
+        }
+      
+        if(id){
+            ID=id[0]+'/'+id[1];
+        }
+        // console.log(id,"IDDDDDDDD");
+      
+        const videoData=await getVideoById(ID);
+      
+        const data=videoData?.data?.result;
+        if(!data){
+            return
+        }
+        // console.log(data,'data');
+          const _addr= await getTokenAddressByAddress(data?.creator);
+          setTokenAddress(_addr);
+          setVideoData(data);
+        const balance= await getBalance(_addr);
+        // console.log(balance);
+        if(balance && balance>=Number(videoData.premiumTokens)){
+            setVisible(true);
+        }
+
+        
     }
-    // ID=_id[0]+_id[1];
-    console.log(ID);
-    var url='';
-    if(live==='true' && id){
-        url = `https://streamvault.site:8000/${ID}/${'stream'}.m3u8`;
-    }
-    else if(id){
-        url = `https://streamvault.site/${id[1]}/${id[1]}.m3u8`;
-    }
-    console.log(videoData,url);
+
 
     useState(()=>{
-       
-        async function add(){
-            if(id){
-                ID=id[0]+'/'+id[1];
-            }
-            // console.log(ID,"IDDDDDDDD");
-          
-            const videoData=await getVideoById(ID);
-          
-            const data=videoData?.data?.result;
-            if(!data){
-                return
-            }
-            console.log(data,'data');
-              const _addr= await getTokenAddressByAddress(data?.creator);
-              setTokenAddress(_addr);
-              setVideoData(data);
-            const balance= await getBalance(_addr);
-            console.log(balance);
-            if(balance && balance>=Number(videoData.premiumTokens)){
-                setVisible(true);
-            }
+   
+        add();
 
-            
-        }
-       
-        add()
-       
-    },[creator,id])
+    },[creator,address,router.events,ID])
 
-console.log(tokenAddress,'tokenAddress', contracts[80001][0].contracts.Creator.abi)
+    useEffect(()=>{
+        router.events.on('routeChangeComplete', add());
+
+        // Remove the event listener when the component is unmounted
+        return () => {
+          router.events.off('routeChangeComplete', add());
+        };
+    },[router.events,ID])
+
+// console.log(tokenAddress,'tokenAddress', contracts[80001][0].contracts.Creator.abi)
    
     const { data: balance } = useScaffoldContractRead({
         contractName: "Creator",
@@ -93,17 +106,17 @@ console.log(tokenAddress,'tokenAddress', contracts[80001][0].contracts.Creator.a
             setVisible(true);
         }
         else if(videoData?.premiumTokens===0){
-            console.log('hellou',balance)
+            // console.log('hellou',balance)
             setVisible(true);
         }
         else{
-            console.log('nuuuuuu')
+            // console.log('nuuuuuu')
             
             setVisible(false);
         }
       },[balance,videoData])
 
-      console.log(balance,'balance',videoData.premiumTokens)
+    //   console.log(balance,'balance',videoData.premiumTokens)
       
   
 
@@ -119,14 +132,9 @@ console.log(tokenAddress,'tokenAddress', contracts[80001][0].contracts.Creator.a
                     <>
                     {
                           visible?
-                       <ReactPlayer width={'62vw'} height={'75vh'} muted={mute} autoplay={true} url={url} className='m-2'  playing={true} controls={true} onBufferEnd={() => {
-                        setMuted(false)
-                    }} /> : 
-                   <Modal videoData={videoData} RemainingBalance={videoData.premiumTokens-Number(balance)} tokenAddress={tokenAddress} address={address} />
-          
-
-                   
-            }
+                       <ReactPlayer width={'62vw'} height={'75vh'} muted={true} autoPlay={true} url={url} className='m-2'  controls={true} /> : 
+                   <Modal videoData={videoData} RemainingBalance={videoData.premiumTokens-Number(balance)} tokenAddress={tokenAddress} address={address} /> 
+                    }
                     
                     
                     
