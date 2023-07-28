@@ -54,7 +54,7 @@ let db;
 
 
 app.post('/publish',async (req,res)=>{
-  const {publishId,live,creator,thumbnail,title ,signature,message,premiumTokens,tokenAddress} = req.body;
+  let {publishId,live,creator,thumbnail,title ,signature,message,premiumTokens,tokenAddress} = req.body;
   if(premiumTokens===null){
     premiumTokens=0;
   }
@@ -133,7 +133,7 @@ app.post('/getVideoDetails',async (req,res)=>{
 
 
 app.post('/upload',upload.single('video'), (req, res) => {
-  const {publishId,live,creator,thumbnail,title ,signature,message,premiumTokens,tokenAddress} =JSON.parse(req.body.payload);
+  let {publishId,live,creator,thumbnail,title ,signature,message,premiumTokens,tokenAddress} =JSON.parse(req.body.payload);
   if(premiumTokens===null){
     premiumTokens=0;
   }

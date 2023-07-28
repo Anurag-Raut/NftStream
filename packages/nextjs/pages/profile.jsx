@@ -175,7 +175,7 @@ function Profile() {
           </div>
 
           <h1>
-            {" "}
+       
             <span className="text-2xl font-bold">Total videos :</span> {profileData.totalCount}{" "}
           </h1>
 
