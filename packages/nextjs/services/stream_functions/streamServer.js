@@ -183,6 +183,17 @@ app.post('/upload',upload.single('video'), (req, res) => {
     
 });
 
+app.post('/getSubChan',async (req,res)=>{
+  const {subscriber}= req.body;
+  console.log(subscriber,'hello');
+
+  const result=await getAllSubscribedChannel(subscriber);
+  res.json({result});
+  
+
+
+})
+
 
 
 app.post('/getProfileDetails',async (req,res)=>{
@@ -251,16 +262,7 @@ app.post('/isSubscribe',async (req,res)=>{
 
 })
 
-app.post('/getAllSubscribedChannels',async (req,res)=>{
-  const {subscriber}= req.body;
-  console.log(subscriber,'hello');
 
-  const result=await getAllSubscribedChannel(subscriber);
-  res.json({result});
-  
-
-
-})
 
 // console.log(result,'ressssss');
 if(result){
