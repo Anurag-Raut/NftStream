@@ -95,20 +95,9 @@ export default function Sidebar({Home}){
         data-te-sidenav-link-ref>
         <span
           class="mr-4 [&>svg]:h-4 [&>svg]:w-4 [&>svg]:text-gray-400 dark:[&>svg]:text-gray-300">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="h-4 w-4">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" />
-          </svg>
+         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16"> <path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/> <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/> </svg>
         </span>
-        <span>Home</span>
+        <span className="text-lg font-bold">Home</span>
       </Link>
     </li>
 
@@ -119,24 +108,30 @@ export default function Sidebar({Home}){
         data-te-sidenav-link-ref>
         <span
           class="mr-4 [&>svg]:h-4 [&>svg]:w-4 [&>svg]:text-gray-400 dark:[&>svg]:text-gray-300">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="h-4 w-4">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" />
+          <svg 
+            width="24" 
+            height="24" 
+            viewBox="0 0 24 24" 
+            
+            fill="white"
+            stroke="#212b36" 
+            stroke-width="2" 
+            stroke-linecap="round" 
+            stroke-linejoin="round" 
+       
+          >
+            <circle cx="12" cy="8" r="5" />
+            <path d="M3,21 h18 C 21,12 3,12 3,21"/>
           </svg>
         </span>
-        <span>Profile</span>
+        <span className="text-lg font-bold">Profile</span>
       </Link>
     </li>
+    <hr
+  class="my-2 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100" />
+
     
-    <li class="relative font-bold ml-10 ">
+    <li class="relative font-bold ml-10 mt-2 mb-2 ">
       Subscribed Channels
        
     </li>
@@ -152,14 +147,14 @@ export default function Sidebar({Home}){
           class="mr-4 [&>svg]:h-4 [&>svg]:w-4 [&>svg]:text-gray-400 dark:[&>svg]:text-gray-300">
             {
               item?.channelImage?
-                <img src={item.channelImage} className="rounded-full w-[37px] h-[37px]" alt="" />
+                <img src={item.channelImage} className="rounded-full w-[35px] h-[35px]" alt="" />
               :
                 <BlockieAvatar address={item?.creatorAddress} />
 
             }
          
         </span>
-        <span>{item?.channelName?item?.channelName:item?.creatorAddress?.slice(0,6)+'...'}</span>
+        <span className=" text-lg">{item?.channelName?item?.channelName:item?.creatorAddress?.slice(0,6)+'...'}</span>
         </Link>
           </li>
         )
