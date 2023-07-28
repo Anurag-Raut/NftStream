@@ -1558,6 +1558,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ducanh2912/react-hls-player@npm:^3.3.5":
+  version: 3.3.5
+  resolution: "@ducanh2912/react-hls-player@npm:3.3.5"
+  peerDependencies:
+    hls.js: 1.x
+    react: ">=16.8.0"
+  checksum: 308c619e6412881dd5642a2323768b6b34576a38552ec94d12862d94ae7f92d61ae89186e3193046daa2d910b890470fc17c90e0938a3037163cc37e7b70a3e4
+  languageName: node
+  linkType: hard
+
 "@edge-runtime/format@npm:2.0.1":
   version: 2.0.1
   resolution: "@edge-runtime/format@npm:2.0.1"
@@ -10504,7 +10514,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eventemitter3@npm:^4.0.7":
+"eventemitter3@npm:^4.0.3, eventemitter3@npm:^4.0.7":
   version: 4.0.7
   resolution: "eventemitter3@npm:4.0.7"
   checksum: 1875311c42fcfe9c707b2712c32664a245629b42bb0a5a84439762dd0fd637fc54d078155ea83c2af9e0323c9ac13687e03cfba79b03af9f40c89b4960099374
@@ -12179,6 +12189,16 @@ __metadata:
   version: 1.0.8
   resolution: "hey-listen@npm:1.0.8"
   checksum: 6bad60b367688f5348e25e7ca3276a74b59ac5a09b0455e6ff8ab7d4a9e38cd2116c708a7dcd8a954d27253ce1d8717ec891d175723ea739885b828cf44e4072
+  languageName: node
+  linkType: hard
+
+"hls.js@npm:^0.14.17":
+  version: 0.14.17
+  resolution: "hls.js@npm:0.14.17"
+  dependencies:
+    eventemitter3: ^4.0.3
+    url-toolkit: ^2.1.6
+  checksum: 0b9a9650092c92462b452d72a6ce9544359364a35692578b0c36ba2585e0d133de11f081f3dba21866447be60d7834eb182c370df53d3c0849f17b3b111461e3
   languageName: node
   linkType: hard
 
@@ -17489,6 +17509,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-hls-player@npm:^3.0.7":
+  version: 3.0.7
+  resolution: "react-hls-player@npm:3.0.7"
+  dependencies:
+    hls.js: ^0.14.17
+  peerDependencies:
+    react: ^16.13.1
+    react-dom: ^16.13.1
+  checksum: 8398f67eee4731ca5f88cb4ddf74808caee95d1422e5939d678004a207e8f55921b0191c0f9d08749c8bf398a40c98b9f1a0ba26780a265c150a83116c7696a9
+  languageName: node
+  linkType: hard
+
 "react-hot-toast@npm:^2.4.0":
   version: 2.4.1
   resolution: "react-hot-toast@npm:2.4.1"
@@ -18496,6 +18528,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "se-2@workspace:."
   dependencies:
+    "@ducanh2912/react-hls-player": ^3.3.5
     "@openzeppelin/contracts": ^4.9.2
     "@pinata/sdk": ^2.1.0
     "@types/bluebird": ^3
@@ -18525,6 +18558,7 @@ __metadata:
     multer: ^1.4.5-lts.1
     nodemon: ^2.0.22
     react: ^18.2.0
+    react-hls-player: ^3.0.7
     react-player: ^2.12.0
     socket.io: ^4.7.1
     socket.io-client: ^4.7.1
@@ -20781,6 +20815,13 @@ __metadata:
   version: 2.0.8
   resolution: "url-template@npm:2.0.8"
   checksum: 4183fccd74e3591e4154134d4443dccecba9c455c15c7df774f1f1e3fa340fd9bffb903b5beec347196d15ce49c34edf6dec0634a95d170ad6e78c0467d6e13e
+  languageName: node
+  linkType: hard
+
+"url-toolkit@npm:^2.1.6":
+  version: 2.2.5
+  resolution: "url-toolkit@npm:2.2.5"
+  checksum: c784040bd4dbd78647a62218b6b8c1abd9a2f7fd8adce1851daf21dc2d98e2a5d69b78a628ec07dcfa112c16a112a182e109b7c872b6e8a1e4a1547b49b81f7b
   languageName: node
   linkType: hard
 

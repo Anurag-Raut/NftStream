@@ -24,7 +24,7 @@ export default function Sidebar({Home}){
           if(!address){
             return;
           }
-          const res=await axios.post('https://streamvault.site:3499/getAllSubscribedChannels',{subscriber:address})
+          const res=await axios.post('https://streamvault.site:3499/getSubChan',{subscriber:address})
           // console.log(res,'rizz');
           const result=res.data.result;
           for(let i=0;i<result.length;i++){

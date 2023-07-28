@@ -48,6 +48,7 @@
     "usehooks-ts@^2.7.2": "patch:usehooks-ts@npm:^2.7.2#./.yarn/patches/usehooks-ts-npm-2.7.2-fceffe0e43.patch"
   },
   "dependencies": {
+    "@ducanh2912/react-hls-player": "^3.3.5",
     "@openzeppelin/contracts": "^4.9.2",
     "@pinata/sdk": "^2.1.0",
     "amqplib": "^0.10.3",
@@ -66,6 +67,7 @@
     "multer": "^1.4.5-lts.1",
     "nodemon": "^2.0.22",
     "react": "^18.2.0",
+    "react-hls-player": "^3.0.7",
     "react-player": "^2.12.0",
     "socket.io": "^4.7.1",
     "socket.io-client": "^4.7.1",
