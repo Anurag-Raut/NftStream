@@ -14,12 +14,15 @@ import Toggle from '../../components/custom-Components/Modal/toggle';
 import Modal from '../../components/custom-Components/Modal/Modal';
 import {useScaffoldContractRead} from '../../hooks/scaffold-eth/useScaffoldContractRead';
 import WebRTCVideoPlayer from '../../components/custom-Components/videoPlayer'
+import HlsVideoPlayer from '../../components/custom-Components/videoPlayer';
+
 const { File } = require('web3.storage');
 const { createClient } = require('web3.storage');
 
 
 const ReactPlayer = dynamic(() => import('react-player'), { ssr: false });
 function View(){
+  
     const { address, isConnecting, isDisconnected } = useAccount();
     const [url,setUrl]=useState('')
     // console.log(address,'address')
@@ -127,14 +130,15 @@ console.log(url,'urllll')
   
 
     return (
-        <div className=' '>
+        <div className=' h-full min-h-screen '>
            
               
                 <div  className='flex ml-3 mt-0  flex justify-between'>
                     <>
                     {
                           visible?
-                       <ReactPlayer hlsVersion={'1.4.3'}  url={url} autoPlay={true} muted={mute}  width={'62vw'} height={'75vh'}  className='m-2'  controls={true} /> : 
+                          <HlsVideoPlayer width={'62vw'} height={'75vh'} url={url} />:
+                    //    <ReactPlayer hlsVersion={'1.4.3'}  url={url} autoPlay={true} muted={mute}  width={'62vw'} height={'75vh'}  className='m-2'  controls={true} /> : 
                    <Modal videoData={videoData} RemainingBalance={videoData.premiumTokens-Number(balance)} tokenAddress={tokenAddress} address={address} /> 
                     }
                     

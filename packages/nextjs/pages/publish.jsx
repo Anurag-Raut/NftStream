@@ -13,6 +13,7 @@ import axios from "axios";
 import uniqid from "uniqid";
 import { useLocalStorage } from "usehooks-ts";
 import { useAccount } from "wagmi";
+import HlsVideoPlayer from "../components/custom-Components/videoPlayer";
 
 const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false });
 
@@ -85,7 +86,7 @@ function Publish() {
   }, []);
 
   return (
-    <div>
+    <div className="min-h-[77vh] h-full">
       {
         live?
         <div className="bg-red-700 w-[60px] font-bold rounded-lg h-[25px]">Live</div>
@@ -98,15 +99,13 @@ function Publish() {
   
       <div>
         {OBS ? (
-          <ReactPlayer
-            width={"45vw"}
-            height={"55vh"}
-            muted={true}
-            autoplay={true}
+          <HlsVideoPlayer
+            width={"50vw"}
+            height={"65vh"}
+           
             url={`https://streamvault.site:8000/${address}/${id}/stream.m3u8`}
-            className="m-2"
-            playing={true}
-            controls={true}
+           
+           
           />
         ) : (
           <video id="publish-video" autoPlay controls className="h-[55vh] min-w-[45vw]">
