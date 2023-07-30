@@ -22,12 +22,13 @@
 }
 
 body {
-  min-height: 100vh;
+  /* min-height: 100%; */
   background-color: black;
 
 }
 html{
  background-color: black;
+ height: fit-content;
 }
 
 body {

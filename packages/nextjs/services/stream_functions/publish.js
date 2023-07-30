@@ -192,6 +192,10 @@ const editAnswer = (answer, videoCodec, audioCodec, videoBitrate, audioBitrate, 
         if (section.startsWith('video')) {
             sections[i] = setVideoBitrate(setCodec(section, videoCodec), videoBitrate);
         } 
+        else if (section.startsWith('audio')) {
+            console.log('audioooooo')
+            sections[i] = setAudioBitrate(setCodec(section, audioCodec), audioBitrate, audioVoice);
+        }
     }
 
     return sections.join('m=');
@@ -303,9 +307,9 @@ class Transmitter {
             sdp: editAnswer(
                 answer.sdp,
                 'h264/90000',
-                'OPUS',
-                '20000',
-                32,
+                'opus/48000',
+                '10000',
+                '32',
                 true,
             ),
         });

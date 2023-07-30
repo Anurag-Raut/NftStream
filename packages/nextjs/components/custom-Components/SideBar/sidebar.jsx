@@ -234,7 +234,7 @@ export default function Sidebar({Home}){
 
 
 
-<div class="p-5 !pl-[260px] text-center" id="content">
+<div class="p-5 h-full !pl-[260px] text-center" id="content">
  
   {
     Home

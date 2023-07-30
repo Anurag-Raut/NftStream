@@ -1,4 +1,4 @@
-// @ts-check
+const withImages = require('next-images');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -11,4 +11,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withImages(nextConfig);

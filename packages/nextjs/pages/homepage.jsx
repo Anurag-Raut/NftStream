@@ -30,7 +30,7 @@ const HomePage = ({creator}) => {
   },[creator])
   return (
 
-<div className="grid  w-full justify-items-center grid-cols-1 justify-center sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 xl:grid-cols-3 gap-4">
+<div className="grid h-full  w-full justify-items-center grid-cols-1 justify-center sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 xl:grid-cols-3 gap-4">
 
 
 {

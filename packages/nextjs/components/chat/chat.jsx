@@ -5,6 +5,10 @@ import {BlockieAvatar} from '../../components/scaffold-eth'
 import { getProfileDetails } from '../../services/stream_functions/mongo';
 import Link from 'next/link';
 
+
+import sendIcon from "./sendIcon.svg";
+
+
 function Chat({id}){
     const {address}=useAccount();
 
@@ -89,14 +93,15 @@ function Chat({id}){
 
             </div>
 
-                <form action="" className='w-1/2'>
+                <form action="" className='w-1/2 flex'>
            
-            <div class=" ">    
+            <div class=" flex ">    
                
-                <input type="text" id="message-textbox" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                <input type="text" id="message-textbox" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 " />
             </div>
-
-            <button id="chat-button" className="" onClick={(e)=>{e.preventDefault();sendChat(document.getElementById('message-textbox').value,address,id)}}>send</button>
+            <img src={sendIcon} onClick={(e)=>{e.preventDefault();sendChat(document.getElementById('message-textbox').value,address,id);document.getElementById('message-textbox').value=''}} className='w-[50px] cursor-pointer ' alt="Follow us on Twitter" />
+       
+            {/* <button id="chat-button" className="" onClick={(e)=>{e.preventDefault();sendChat(document.getElementById('message-textbox').value,address,id)}}>send</button> */}
          
             </form>
       

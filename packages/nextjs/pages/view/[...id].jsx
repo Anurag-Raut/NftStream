@@ -12,7 +12,8 @@ import { getTokenAddressByAddress,getBalance } from '../../services/web3/creator
 import {getVideoById} from '../../services/stream_functions/mongo'
 import Toggle from '../../components/custom-Components/Modal/toggle';
 import Modal from '../../components/custom-Components/Modal/Modal';
-import {useScaffoldContractRead} from '../../hooks/scaffold-eth/useScaffoldContractRead'
+import {useScaffoldContractRead} from '../../hooks/scaffold-eth/useScaffoldContractRead';
+import WebRTCVideoPlayer from '../../components/custom-Components/videoPlayer'
 const { File } = require('web3.storage');
 const { createClient } = require('web3.storage');
 
@@ -133,7 +134,7 @@ console.log(url,'urllll')
                     <>
                     {
                           visible?
-                       <ReactPlayer url={url} width={'62vw'} height={'75vh'} autoPlay={true}  className='m-2' playing={true}  controls={true} /> : 
+                       <ReactPlayer hlsVersion={'1.4.3'}  url={url} autoPlay={true} muted={mute}  width={'62vw'} height={'75vh'}  className='m-2'  controls={true} /> : 
                    <Modal videoData={videoData} RemainingBalance={videoData.premiumTokens-Number(balance)} tokenAddress={tokenAddress} address={address} /> 
                     }
                     
