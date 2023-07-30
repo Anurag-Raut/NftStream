@@ -15,6 +15,10 @@ import Modal from '../../components/custom-Components/Modal/Modal';
 import {useScaffoldContractRead} from '../../hooks/scaffold-eth/useScaffoldContractRead';
 import WebRTCVideoPlayer from '../../components/custom-Components/videoPlayer'
 import HlsVideoPlayer from '../../components/custom-Components/videoPlayer';
+import Link from 'next/link';
+import { BlockieAvatar } from '../../components/scaffold-eth';
+import Button from '../../components/custom-Components/button';
+import SubbscribeComponent from '../../components/custom-Components/subscribe';
 
 const { File } = require('web3.storage');
 const { createClient } = require('web3.storage');
@@ -22,11 +26,11 @@ const { createClient } = require('web3.storage');
 
 const ReactPlayer = dynamic(() => import('react-player'), { ssr: false });
 function View(){
+    const [isSubscribe, setSubscibe] = useState(0);
   
     const { address, isConnecting, isDisconnected } = useAccount();
     const [url,setUrl]=useState('')
-    // console.log(address,'address')
-    // const [ID,setID]=useState
+  
     const router=useRouter();
     const [visible,setVisible]=useState(0);
     const [videoData,setVideoData]=useState({});
@@ -135,12 +139,46 @@ console.log(url,'urllll')
               
                 <div  className='flex ml-3 mt-0  flex justify-between'>
                     <>
+                    <div className='flex flex-col contents-left'>
+
                     {
                           visible?
-                          <HlsVideoPlayer width={'50vw'} height={'500px'} url={url} />:
+                          <HlsVideoPlayer width={'60vw'} height={'500px'} url={url} />:
                     //    <ReactPlayer hlsVersion={'1.4.3'}  url={url} autoPlay={true} muted={mute}  width={'62vw'} height={'75vh'}  className='m-2'  controls={true} /> : 
                    <Modal videoData={videoData} RemainingBalance={videoData.premiumTokens-Number(balance)} tokenAddress={tokenAddress} address={address} /> 
                     }
+
+                    <h1 className=' ml-5 text-3xl w-full flex items-left font-bold break-words'>{videoData?.title}</h1>
+                    <div className='flex justify-between w-full'>
+                        <Link  className='w-fit' href={`/profile?creator=${videoData?.creator}`}  >
+                        {
+                            videoData?.channelImage?
+                            <img  src={videoData?.channelImage} className='w-[40px] h-[40px] rounded-full ' alt="" />
+                            :
+                            <BlockieAvatar address={videoData?.creator} />
+                        }
+                        <div className='flex w-full justify-between'> 
+
+                        <div>
+                        {videoData?.creator?.slice(0,13)+'...'}
+                     
+                        </div>
+                       
+
+
+
+
+                        </div>
+                       
+                       
+                            </Link>
+                            <SubbscribeComponent creator={videoData?.creator} />
+
+                    </div>
+
+
+                    </div>
+                   
                     
                     
                     

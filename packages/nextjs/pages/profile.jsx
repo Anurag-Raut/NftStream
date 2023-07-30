@@ -12,6 +12,7 @@ import HomePage from "./homepage";
 import axios from "axios";
 import { ethers } from "ethers";
 import { useAccount, useBalance } from "wagmi";
+import SubbscribeComponent from "../components/custom-Components/subscribe";
 
 function Profile() {
   const { address } = useAccount();
@@ -97,7 +98,7 @@ function Profile() {
   }
 
   return (
-    <div className="w-full h-full flex flex-col items-start m-2">
+    <div className="w-full h-full min-h-screen flex flex-col items-start m-2">
       <h1 className="text-4xl font-bold mb-6"> Profile Details</h1>
       <div className=" flex ml-9">
         <label
@@ -184,22 +185,7 @@ function Profile() {
             <span className="text-2xl font-bold">Subscribers :</span>{" "}
             {profileData?.totalSubs ? profileData?.totalSubs : 0}{" "}
           </h1>
-          {!isSubscribe ? (
-            <Button
-              label={"Subscribe"}
-              onClick={() => {
-                Subscribe();
-              }}
-            />
-          ) : (
-            <Button
-              color={"red"}
-              label={"UnSubscribe"}
-              onClick={() => {
-                UnSubscribe();
-              }}
-            />
-          )}
+          <SubbscribeComponent creator={creator}/>
         </div>
       </div>
       {creator === address ? (

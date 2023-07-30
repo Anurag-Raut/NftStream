@@ -118,6 +118,7 @@ export default function Sidebar({Home}){
           const width =  window.innerWidth
           
           const mode= (width > 900 && url==='/' ) ? 'slide' : 'over';
+          console.log(mode);
         
       
         
