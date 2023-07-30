@@ -137,7 +137,7 @@ console.log(url,'urllll')
                     <>
                     {
                           visible?
-                          <HlsVideoPlayer width={'62vw'} height={'75vh'} url={url} />:
+                          <HlsVideoPlayer width={'50vw'} height={'500px'} url={url} />:
                     //    <ReactPlayer hlsVersion={'1.4.3'}  url={url} autoPlay={true} muted={mute}  width={'62vw'} height={'75vh'}  className='m-2'  controls={true} /> : 
                    <Modal videoData={videoData} RemainingBalance={videoData.premiumTokens-Number(balance)} tokenAddress={tokenAddress} address={address} /> 
                     }

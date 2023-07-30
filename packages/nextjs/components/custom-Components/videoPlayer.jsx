@@ -1,44 +1,79 @@
+import React from 'react';
+import videojs from 'video.js';
+import 'video.js/dist/video-js.css';
 
-import { useReadLocalStorage } from "usehooks-ts";
-import {useIsMounted} from 'usehooks-ts'
-import Hls from 'hls.js';
-import { useEffect } from "react";
+export const HlsVideoPlayer = ({url,autoplay,width,height,controls}) => {
+  const videoRef = React.useRef(null);
+  const playerRef = React.useRef(null);
 
-const HlsVideoPlayer = ({url,width,height}) => {
-    const isMounted=useIsMounted();
-  const videoRef = useReadLocalStorage(null);
-  function Load(){
-  
-    var video = document.getElementById('HlsVideoPlayer');
-    // const video = videoRef?.current;
 
-    if (Hls.isSupported()) {
-      const hls = new Hls();
-      console.log('hello');
-      hls.loadSource(url);
-      hls.attachMedia(video);
-      video.muted=0;
 
-    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      video.src = url;
+  const onReady = (player) => {
+     playerRef.current = player;
+ 
+     // You can handle player events here, for example:
+     player.on('waiting', () => {
+       videojs.log('player is waiting');
+     });
+ 
+     player.on('dispose', () => {
+       videojs.log('player will dispose');
+     });
+   };
+  const options = {
+    autoplay: autoplay?autoplay: true,
+    controls: controls?controls:true,
+    responsive: true,
+    fluid: true,
+    sources: [{
+      src: url,
+      type: 'application/vnd.apple.mpegurl'
+    }],
+    liveui: true,
+  };;
+
+  React.useEffect(() => {
+
+    // Make sure Video.js player is only initialized once
+    if (!playerRef.current) {
+      // The Video.js player needs to be _inside_ the component el for React 18 Strict Mode. 
+      const videoElement = document.createElement("video-js");
+
+      // videoElement.classList.add('vjs-big-play-centered');
+      videoRef.current.appendChild(videoElement);
+
+      const player = playerRef.current = videojs(videoElement, options, () => {
+        videojs.log('player is ready');
+        onReady && onReady(player);
+      });
+
+    // You could update an existing player in the `else` block here
+    // on prop change, for example:
+    } else {
+      const player = playerRef.current;
+
+      player.autoplay(options.autoplay);
+      player.src(options.sources);
     }
+  }, [options, videoRef]);
 
-  }
+  // Dispose the Video.js player when the functional component unmounts
+  React.useEffect(() => {
+    const player = playerRef.current;
 
-  useEffect(()=>{
-    Load();
-  },[isMounted])
-
-  console.log(width);
-
-  
+    return () => {
+      if (player && !player.isDisposed()) {
+        player.dispose();
+        playerRef.current = null;
+      }
+    };
+  }, [playerRef]);
 
   return (
-    <div className="h-fit w-fit">
-      <video autoPlay className={`w-[${width}] h-[${height}]`} id='HlsVideoPlayer' ref={videoRef} controls />
-    
+    <div    data-vjs-player className={`w-[${width}] h-[${height}]`}>
+      <div style={{ width: width}} ref={videoRef} />
     </div>
   );
-};
+}
 
 export default HlsVideoPlayer;
