@@ -31,7 +31,7 @@ const Home = () => {
   },[])
 
   return (
-    <div className="flex h-full">
+    <div className="flex min-h-screen h-full">
     <HomePage />
 
     
