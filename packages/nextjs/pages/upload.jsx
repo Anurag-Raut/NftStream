@@ -72,7 +72,7 @@ function Upload(){
     // console.log(progress)
   
     return (
-      <div className='flex m-5 w-full h-full justify-around'>
+      <div className='flex m-5 w-full min-h-screen h-full justify-around'>
         <div className="w-[350px] h-[250px]">
         <InputFile id='upload-video' onChange={setSelectedFile} file={selectedFile} label={'Select Your Video'}/>
         <InputFile id='upload-thumbnail' file={selectedThumbnail} onChange={setselectedThumbnail} label={'Select Thubmbail for this video '}/>
