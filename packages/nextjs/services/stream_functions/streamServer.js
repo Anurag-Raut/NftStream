@@ -307,6 +307,9 @@ return false;
 }
 
 async function subscribeFunc(creator,subscriber){
+  if(!subscriber){
+    return ;
+  }
   let myColl = subDB.collection(subscriber);
   if(!myColl){
       myColl=subDB.createCollection(subscriber);  
@@ -341,8 +344,9 @@ else{
 }
 
 async function getAllSubscribedChannel(subscriber){
-
-  
+  if(!subscriber){
+    return;
+  }
   let myColl = subDB.collection(subscriber);
   if(!myColl){
       myColl=subDB.createCollection(subscriber);  

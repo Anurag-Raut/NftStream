@@ -49,16 +49,15 @@ function Upload(){
             onUploadProgress: (progressEvent) => {
               const percentage = Math.round((progressEvent.loaded * 100) / progressEvent.total);
               setProgress(percentage);
-              // console.log(`Upload Progress: ${percentage}%`);
+           
             },
           });
 
-          // const dbResponse=await axios.post(serverurl+'/saveToDB',payload);
+        
 
     
           if (response.status === 200) {
-            // console.log('Upload successful');
-            // Handle successful upload
+   
           } else {
             console.error('Upload failed');
             // Handle upload failure

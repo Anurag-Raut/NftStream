@@ -92,12 +92,13 @@ console.log(url,'urllll')
     },[creator,address,router.events,ID])
 
     useEffect(()=>{
-        router.events.on('routeChangeComplete', add());
+        // router.events.on('routeChangeComplete', add());
 
-        // Remove the event listener when the component is unmounted
-        return () => {
-          router.events.off('routeChangeComplete', add());
-        };
+        // // Remove the event listener when the component is unmounted
+        // return () => {
+        //   router.events.off('routeChangeComplete', add());
+        // };
+        add()
     },[router.events,ID])
 
 // console.log(tokenAddress,'tokenAddress', contracts[80001][0].contracts.Creator.abi)

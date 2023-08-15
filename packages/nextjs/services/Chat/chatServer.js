@@ -33,6 +33,9 @@ io.on('connection',(socket)=>{
     socket.on('join',async ({room})=>{
         console.log(room,'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh');
         await socket.join(room);
+        if(!room){
+            return;
+        }
         let myColl = db.collection(room);
         if(!myColl){
             myColl=db.createCollection(room);  
@@ -49,7 +52,9 @@ io.on('connection',(socket)=>{
     socket.on('sendRequest', async ({message,senderId,roomId})=>{
 
         try{
-
+            if(!roomId){
+                return;
+            }
             console.log(roomId,'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',db);
             let myColl = db.collection(roomId);
             if(!myColl){
