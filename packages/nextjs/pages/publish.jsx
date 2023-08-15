@@ -86,7 +86,7 @@ function Publish() {
   }, []);
 
   return (
-    <div className="min-h-[77vh] h-full">
+    <div className="min-h-screen h-full  ">
       {
         live?
         <div className="bg-red-700 w-[60px] font-bold rounded-lg h-[25px]">Live</div>

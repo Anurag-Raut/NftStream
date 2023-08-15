@@ -25,8 +25,11 @@ export default function SubbscribeComponent({creator}){
             notification.error(error.message);
           }
         }
-        get();
-      }, [creator]);
+        if(address){
+            get();
+        }
+
+      }, [creator,address]);
     
       async function Subscribe() {
         try {

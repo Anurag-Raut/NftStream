@@ -16,15 +16,7 @@ export const Footer = () => {
     <div className="h-0 p-5  lg:mb-0">
       <div>
         <div className="fixed flex justify-between items-center w-full z-20 p-4 bottom-0 left-0 pointer-events-none">
-          <div className="flex space-x-2 pointer-events-auto">
-            {nativeCurrencyPrice > 0 && (
-              <div className="btn btn-primary btn-sm font-normal cursor-auto">
-                <CurrencyDollarIcon className="h-4 w-4 mr-0.5" />
-                <span>{nativeCurrencyPrice}</span>
-              </div>
-            )}
-            {getTargetNetwork().id === hardhat.id && <Faucet />}
-          </div>
+          
           <SwitchTheme className="pointer-events-auto" />
         </div>
       </div>

@@ -46,6 +46,9 @@ function Profile() {
   }, [creator]);
   useEffect(() => {
     async function get() {
+      if(!address){
+        return;
+      }
       try {
         const result = await axios.post("https://streamvault.site:3499/isSubscribe", { creator, subscriber: address });
         // console.log(result, "rrrrrrrrrrrreeeeeeeeeeessssssssssss");
@@ -55,8 +58,9 @@ function Profile() {
         notification.error(error.message);
       }
     }
+  
     get();
-  }, [creator]);
+  }, [creator,address]);
 
   async function Subscribe() {
     try {
@@ -122,7 +126,7 @@ function Profile() {
             ) : profileData.channelImage ? (
               <img className="w-[18vw] h-[18vw] rounded-full	mb-3" src={profileData.channelImage} alt="" />
             ) : (
-              <BlockieAvatar address={address} size={"50"} />
+              <BlockieAvatar address={profileData.creatorAddress} size={"50"} />
             )}
           </div>
 
