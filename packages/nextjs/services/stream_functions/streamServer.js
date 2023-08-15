@@ -310,6 +310,7 @@ async function subscribeFunc(creator,subscriber){
   if(!subscriber){
     return ;
   }
+  console.log(subscriber);
   let myColl = subDB.collection(subscriber);
   if(!myColl){
       myColl=subDB.createCollection(subscriber);  
@@ -347,6 +348,7 @@ async function getAllSubscribedChannel(subscriber){
   if(!subscriber){
     return;
   }
+  console.log(subscriber);
   let myColl = subDB.collection(subscriber);
   if(!myColl){
       myColl=subDB.createCollection(subscriber);  
