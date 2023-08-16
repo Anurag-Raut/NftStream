@@ -19,7 +19,7 @@ const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false });
 
 let id = uniqid();
 function Publish() {
-  const { address } = useAccount();
+  const { address,isConnected } = useAccount();
   const [live,setLive]=useState(0);
   const [thumbnail, setThumbnail] = useState(null);
   const [OBS, setOBS] = useState(0);
@@ -72,10 +72,8 @@ function Publish() {
 
   useEffect(() => {
     const handleWindowClose = async () => {
-      // Perform any cleanup or actions before the window is closed
       Delete();
-      // Run your desired function here
-      // ...
+
     };
 
     window.addEventListener("beforeunload", handleWindowClose);
@@ -143,6 +141,9 @@ function Publish() {
                 <Button
                   label={"Preview"}
                   onClick={() => {
+                    !isConnected?
+                    notification.info("Please connect to metamask")
+                    :
                     init(document.getElementById("videoId").value, document.getElementById("audioId").value, setStream);
                   }}
                 />
@@ -157,17 +158,29 @@ function Publish() {
                 <Button
                   label={"Go Live"}
                   onClick={async () => {
-                    const _id = await publish(
-                      stream,
-                      document.getElementById("PublishId")?.value,
-                      document?.getElementById("thumbnail")?.files,
-                      id,
-                      document.getElementById("premium-token")?.value,
-                      tokenAddress,
-                      OBS,
-                    );
-                    setLive(1)
-                    setID(_id);
+                    if (!isConnected) {
+                      notification.info("Please connect to metamask");
+                    } else {
+                      try {
+                        const _id = await publish(
+                          stream,
+                          document.getElementById("PublishId")?.value,
+                          document?.getElementById("thumbnail")?.files,
+                          id,
+                          document.getElementById("premium-token")?.value,
+                          tokenAddress,
+                          OBS
+                        );
+                        if(_id){
+                          setLive(1);
+                          setID(_id);
+                        }
+                       
+                      } catch (error) {
+                        console.error("Error publishing stream:", error);
+                        // Handle error (e.g., show error notification)
+                      }
+                    }
                   }}
                 />
               )}

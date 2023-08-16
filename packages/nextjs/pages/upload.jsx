@@ -9,8 +9,10 @@ import { getTokenAddress } from "../services/web3/creator/creator";
 import { notification } from "../utils/scaffold-eth/notification";
 import Button from "../components/custom-Components/button";
 import Progress from "../components/custom-Components/progess";
+import { useAccount } from "wagmi";
 
 function Upload(){
+  const {address,isConnected}=useAccount()
   const [progress,setProgress]=useState(0);
     const [selectedFile, setSelectedFile] = useState(null);
     const [tokenAddress,setTokenAddress]=useState('')
@@ -31,6 +33,10 @@ function Upload(){
     // console.log(selectedFile);
  
     const handleUpload = async() => {
+      if(!isConnected){
+        notification.error('Please connect your wallet')
+        return;
+      }
       const formData = new FormData();
       
       var id=uniqid();
