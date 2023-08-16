@@ -38,7 +38,7 @@ const HomePage = ({creator}) => {
 
     return (
   
-      <VideoCard key={video._id} id={video._id} creator={video.creator} image={video?.thumbnail} live={video.live} title={video?.title} premiumTokens={video.premiumTokens} />
+      <VideoCard key={video._id} id={video._id} creator={video.creator} image={video?.thumbnail} live={video.live} title={video?.title} premiumTokens={video.premiumTokens} preUrl={video?.url} />
     )
 
   })

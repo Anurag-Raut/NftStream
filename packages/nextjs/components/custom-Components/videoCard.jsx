@@ -3,7 +3,7 @@ import Link from "next/link";
 import { BlockieAvatar } from "../scaffold-eth";
 import { getProfileDetails } from "~~/services/stream_functions/mongo";
 
-export default function VideoCard({ image, title, id, creator, live, premiumTokens }) {
+export default function VideoCard({ image, title, id, creator, live, premiumTokens,preUrl }) {
   // console.log(id,creator);
   const [profileData, setProfileData] = useState({});
 
