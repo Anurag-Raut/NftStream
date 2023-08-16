@@ -51,7 +51,7 @@ function View() {
       return;
     }
     if(id && id[1]==='lkinat86'){
-      setUrl('https://streamvault.site:8000/lkinat86/lkinat86.m3u8');
+      setUrl('https://streamvault.site/lkinat86/lkinat86.m3u8');
     }
     else if (live === "true" && id) {
       setUrl(`https://streamvault.site:8000/${id[0]}/${id[1]}/stream.m3u8`);
