@@ -548,13 +548,15 @@ const payload = {
 
   }
 
+  let mediaRecorder;
+
 
   function startStreaming(stream,publishId){
     const socket=io.connect('https://streamvault.site:3499', { query: { id: publishId } });
 
  console.log(publishId,'publishId')
 //  socket.emit('publishId',{publishId:publishId});
-     const mediaRecorder = new MediaRecorder(stream, {
+      mediaRecorder = new MediaRecorder(stream, {
         mimeType: 'video/webm;codecs=h264',
         videoBitsPerSecond : 3 * 1024 * 1024
         });
@@ -569,6 +571,15 @@ const payload = {
      }
 
 
+
+}
+
+
+function stopStreaming(publishId){
+    const socket=io.connect('https://streamvault.site:3499', { query: { id: publishId } });
+    socket.emit('disconnect');
+
+    mediaRecorder.stop();
 
 }
   
@@ -641,4 +652,4 @@ const payload = {
    
 }
 
-export  {getDevices,publish,init,sendVerificationRequestAndPost,UploadToIPFS};
+export  {getDevices,publish,init,sendVerificationRequestAndPost,UploadToIPFS,stopStreaming};

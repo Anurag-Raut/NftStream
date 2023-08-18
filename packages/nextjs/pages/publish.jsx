@@ -6,7 +6,7 @@ import Button from "../components/custom-Components/button";
 import InputBox from "../components/custom-Components/inputBox";
 import Premium from "../components/custom-Components/premiumContent";
 import { Select } from "../components/custom-Components/select";
-import { getDevices, init, publish } from "../services/stream_functions/publish";
+import { getDevices, init, publish, stopStreaming } from "../services/stream_functions/publish";
 import { getTokenAddress } from "../services/web3/creator/creator";
 import { notification } from "../utils/scaffold-eth/notification";
 import axios from "axios";
@@ -60,6 +60,8 @@ function Publish() {
   // console.log(stream);
   const Delete = async () => {
     const storedValue = localStorage.getItem("ID");
+    stopStreaming( JSON.parse(storedValue) );
+    console.log(JSON.parse(storedValue),'delete Id ')
     // console.log('helllooooooooooooooo')
 
     // console.log(JSON.parse(storedValue),'sdvsdvsfvsvsfsdfsdfwesdf wedf wef ')
