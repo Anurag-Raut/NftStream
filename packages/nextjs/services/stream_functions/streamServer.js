@@ -64,56 +64,65 @@ let db;
 
 
 io.on('connection', (socket) => {
-  console.log('A client connected.',socket.handshake.query.id);
+  console.log('A client connected.', socket.handshake.query.id);
 
-
-  // socket.on('publishId', ({publishId}) => {
-  //   console.log(publishId);
-  //   socket.data.id = publishId;
-    
-  // })
-
-
-  
-  const rtmpUrl = `rtmp://localhost:1935/live/${socket.handshake.query.id}`; // Replace with your RTMP server URL
-  
+  const rtmpUrl = `rtmp://localhost:1935/live/${socket.handshake.query.id}`;
   const ffmpegCommand = [
     'ffmpeg',
-    '-i', 'pipe:0',         // Read from standard input
-    '-c:v', 'libx264',     // Video codec
-    '-c:a', 'aac',         // Audio codec (replace with the appropriate codec)
-    '-preset', 'ultrafast',// Preset for encoding speed (adjust as needed)
-    '-f', 'flv',           // Output format
-    rtmpUrl                // Output RTMP URL
+    '-i', 'pipe:0',
+    '-c:v', 'libx264',
+    // '-c:a', 'libo',  // Use AAC audio codec
+    // '-b:a', '128k',  // Adjust audio bitrate if needed
+    '-preset', 'superfast',
+    '-f', 'flv',
+    rtmpUrl
   ];
   
+  
+  
+  
+  
+
   const ffmpegProcess = exec(ffmpegCommand.join(' '), (error, stdout, stderr) => {
     if (error) {
       console.error('FFmpeg error:', error);
     }
+    console.log('FFmpeg stderr:', stderr);
   });
 
   socket.on('stream', ({ id, data }) => {
-    // Check if the id is valid for starting FFmpeg process
-      console.log(rtmpUrl)
-    console.log(id,'iddddddddd',data);
-    ffmpegProcess.stdin.write(data);
-   
-    
-  
+    try {
+      if (!ffmpegProcess.stdin.writable) {
+        console.error('FFmpeg stdin is not writable.');
+        return;
+      }
+      console.log(rtmpUrl);
+      console.log(id, 'iddddddddd', data);
+      ffmpegProcess.stdin.write(data);
+    } catch (error) {
+      console.error('Socket stream error:', error);
+    }
   });
-  // socket.on('stream', (data) => {
-  //   // console.log(data);
-  //   ffmpegProcess.stdin.write(data);
-  // });
 
   socket.on('disconnect', () => {
     console.log('A client disconnected.');
-    ffmpegProcess.stdin.end();
+    try {
+      if (ffmpegProcess.stdin.writable) {
+        ffmpegProcess.stdin.end();
+      } else {
+        console.warn('FFmpeg stdin is not writable on disconnect.');
+      }
+    } catch (error) {
+      console.error('FFmpeg process end error:', error);
+    }
   });
 
+  // Handle socket errors
+  socket.on('error', (error) => {
+    console.error('Socket error:', error);
+    // You can perform error handling logic here
+  });
 });
-
 
 
 

@@ -415,6 +415,7 @@ const onPublish = (_video,_audio,setStream) => {
 
         navigator.mediaDevices.getUserMedia({ video, audio })
         .then((stream)=>{
+            console.log(stream,'strea')
             setStream(stream);
             document.getElementById('publish-video').srcObject = stream;
      
@@ -549,17 +550,22 @@ const payload = {
   }
 
   let mediaRecorder;
+  let socket;
 
 
   function startStreaming(stream,publishId){
-    const socket=io.connect('https://streamvault.site:3499', { query: { id: publishId } });
+   
+     socket=io.connect('https://streamvault.site:3499', { query: { id: publishId } });
+    // let combined = new MediaStream([...stream.getTracks()]);
 
  console.log(publishId,'publishId')
 //  socket.emit('publishId',{publishId:publishId});
-      mediaRecorder = new MediaRecorder(stream, {
-        mimeType: 'video/webm;codecs=h264',
-        videoBitsPerSecond : 3 * 1024 * 1024
-        });
+ mediaRecorder = new MediaRecorder(stream, {
+    mimeType: 'video/webm; codecs=h264,opus',
+    // Audio bitrate (adjust as needed)
+    audioBitsPerSecond: 128000,
+    videoBitsPerSecond: 2500000,
+  });
  
    
      mediaRecorder.start(1000);
@@ -579,6 +585,7 @@ function stopStreaming(publishId){
    
 
     mediaRecorder.stop();
+    socket.disconnect();
 
 }
   
