@@ -550,7 +550,7 @@ const payload = {
 
 
   function startStreaming(stream,publishId){
-    const socket=io.connect('http://localhost:3500', { query: { id: publishId } });
+    const socket=io.connect('https://streamvault.site:3499', { query: { id: publishId } });
 
  console.log(publishId,'publishId')
 //  socket.emit('publishId',{publishId:publishId});
