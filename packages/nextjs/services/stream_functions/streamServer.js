@@ -185,7 +185,7 @@ app.post('/getVideos',async (req,res)=>{
 app.post('/getVideoDetails',async (req,res)=>{
   const {id } = req.body;
 
-  let myColl = db.collection('videos');
+  let myColl = db.collection('Videos');
   const filter = { _id: id };
     const result = await myColl.findOne(filter);
 
@@ -282,7 +282,7 @@ app.post('/getProfileDetails',async (req,res)=>{
     _id:creatorAddress})
 // console.log(result,'result');
 
-const collection = db.collection('videos');
+const collection = db.collection('Videos');
 
 const query = { creator: creatorAddress };
 
@@ -511,9 +511,9 @@ async function addVideoToDb(publishId,live,creator,thumbnail,title,uploaded,prem
   let thumbnail_image_url;
 
 
-  let myColl = db.collection('videos');
+  let myColl = db.collection('Videos');
   if(!myColl){
-      myColl=db.createCollection('videos');  
+      myColl=db.createCollection('Videos');  
   }
 
 
@@ -568,7 +568,7 @@ try{
 
 
 
-    let myColl = db.collection('videos');
+    let myColl = db.collection('Videos');
     const filter = { _id: id };
     const result = await myColl.deleteOne(filter);
     if(result){
@@ -600,9 +600,9 @@ async function fetchFromDB(creator,live,currentPage,pageSize=10){
 
 // Calculate the skip value based on the page size and current page
       const skip = pageSize * (currentPage - 1);
-      let myColl = db.collection('videos');
+      let myColl = db.collection('Videos');
       if(!myColl){
-          myColl=db.createCollection('videos');  
+          myColl=db.createCollection('Videos');  
       }
       const query={};
       if(creator){
