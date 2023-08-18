@@ -7,8 +7,19 @@ const axios = require('axios');
 
 const fs = require('fs');
 const path = require('path');
-const {HLSconversion} = require('../JobQueue/queue')
-const multer =require('multer')
+const {HLSconversion} = require('../JobQueue/queue');
+const multer =require('multer');
+const http = require('http');
+const socketIo = require('socket.io');
+const { exec } = require('child_process');
+const server = http.createServer(app);
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
+});
+
 app.use(cors());
 const { MongoClient, ServerApiVersion, Timestamp } = require('mongodb');
 
@@ -50,6 +61,58 @@ const client = new MongoClient(uri, {
   }
 });
 let db;
+
+
+io.on('connection', (socket) => {
+  console.log('A client connected.',socket.handshake.query.id);
+
+
+  // socket.on('publishId', ({publishId}) => {
+  //   console.log(publishId);
+  //   socket.data.id = publishId;
+    
+  // })
+
+
+  
+  const rtmpUrl = `rtmp://localhost:1935/live/${socket.handshake.query.id}`; // Replace with your RTMP server URL
+  
+  const ffmpegCommand = [
+    'ffmpeg',
+    '-i', 'pipe:0',         // Read from standard input
+    '-c:v', 'libx264',     // Video codec
+    '-preset', 'ultrafast',// Preset for encoding speed (adjust as needed)
+    '-f', 'flv',           // Output format
+    rtmpUrl                // Output RTMP URL
+  ];
+  
+  const ffmpegProcess = exec(ffmpegCommand.join(' '), (error, stdout, stderr) => {
+    if (error) {
+      console.error('FFmpeg error:', error);
+    }
+  });
+
+  socket.on('stream', ({ id, data }) => {
+    // Check if the id is valid for starting FFmpeg process
+      console.log(rtmpUrl)
+    console.log(id,'iddddddddd',data);
+    ffmpegProcess.stdin.write(data);
+   
+    
+  
+  });
+  // socket.on('stream', (data) => {
+  //   // console.log(data);
+  //   ffmpegProcess.stdin.write(data);
+  // });
+
+  socket.on('disconnect', () => {
+    console.log('A client disconnected.');
+    ffmpegProcess.stdin.end();
+  });
+
+});
+
 
 
 
@@ -580,6 +643,6 @@ async function fetchFromDB(creator,live,currentPage,pageSize=10){
 // Start the server
 const port = 3500;
 connectDB();
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
 });

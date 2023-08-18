@@ -65,6 +65,12 @@ export default function Sidebar({ Home }) {
       instance.changeMode(mode);
     };
 
+    const handleReload = () => {
+      const currentPath = router.pathname;
+      handleModeOnPathChange(currentPath);
+    };
+
+
     const handleModeOnPathChange = url => {
       const width = window.innerWidth;
 
@@ -77,10 +83,12 @@ export default function Sidebar({ Home }) {
 
     router.events.on("routeChangeComplete", handleRouteChange);
     window.addEventListener("resize", handleWindowResize);
+    window.addEventListener("load", handleReload);
 
     return () => {
       router.events.off("routeChangeComplete", handleRouteChange);
       window.removeEventListener("resize", handleWindowResize);
+      window.removeEventListener("load", handleReload); 
     };
   }, [router.events]);
 
@@ -91,7 +99,7 @@ export default function Sidebar({ Home }) {
         className="fixed left-0 top-[60px] z-[10] h-screen w-60 -translate-x-full overflow-hidden bg-base-100 shadow-[0_4px_12px_0_rgba(0,0,0,0.07),_0_2px_4px_rgba(0,0,0,0.05)] data-[te-sidenav-hidden='false']:translate-x-0 dark:bg-base-100"
         data-te-sidenav-init
         data-te-sidenav-hidden="false"
-        data-te-sidenav-mode="side"
+        data-te-sidenav-mode="over"
         data-te-sidenav-content="#content"
       >
         <ul class="relative m-0 list-none px-[0.2rem]" data-te-sidenav-menu-ref>

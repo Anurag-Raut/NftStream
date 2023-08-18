@@ -12,9 +12,11 @@ const ethers = require('ethers');
 const INITIALIZING = 0;
 const DEVICE = 1;
 const TRANSMITTING = 2;
+const io=require('socket.io-client');
 
 let state = INITIALIZING;
 
+// socket.setMaxListeners(Infinity);
 
 const restartPause = 2000;
 
@@ -530,7 +532,7 @@ const payload = {
   async function publishHelper(payload){
     console.log(payload,'payload')
     let url;
-   url='https://streamvault.site:3499/publish';
+   url='http://localhost:3500/publish';
     
       try {
           const response=await axios.post(url, payload)
@@ -545,6 +547,30 @@ const payload = {
    
 
   }
+
+
+  function startStreaming(stream,publishId){
+    const socket=io.connect('https://streamvault.site:3499', { query: { id: publishId } });
+
+ console.log(publishId,'publishId')
+//  socket.emit('publishId',{publishId:publishId});
+     const mediaRecorder = new MediaRecorder(stream, {
+        mimeType: 'video/webm;codecs=h264',
+        videoBitsPerSecond : 3 * 1024 * 1024
+        });
+ 
+   
+     mediaRecorder.start(1000);
+     mediaRecorder.ondataavailable= (event) => {
+         console.log(event);
+         if (event.data.size > 0) {
+            socket.emit('stream', {data:event.data,id:publishId});
+         }
+     }
+
+
+
+}
   
 
   async function publish(stream, title, thumbnail, id,premiumTokens,tokenAddress,OBS) {
@@ -584,7 +610,7 @@ const payload = {
         return;
       }
       if(!OBS){
-        onTransmit(stream, `${address}/${id}`);
+        startStreaming(stream, `${id}`);
       }
   
       
