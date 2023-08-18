@@ -54,7 +54,7 @@ function View() {
       setUrl('https://streamvault.site/lkinat86/lkinat86.m3u8');
     }
     else if (live === "true" && id) {
-      setUrl(`https://streamvault.site:8000/${id[1]}.m3u8`);
+      setUrl(`https://streamvault.site:8000/hls/${id[1]}.m3u8`);
     } else if (id) {
       setUrl(`https://streamvault.site/${id[1]}/${id[1]}.m3u8`);
     }
