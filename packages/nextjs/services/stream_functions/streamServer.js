@@ -81,6 +81,7 @@ io.on('connection', (socket) => {
     'ffmpeg',
     '-i', 'pipe:0',         // Read from standard input
     '-c:v', 'libx264',     // Video codec
+    '-c:a', 'aac',         // Audio codec (replace with the appropriate codec)
     '-preset', 'ultrafast',// Preset for encoding speed (adjust as needed)
     '-f', 'flv',           // Output format
     rtmpUrl                // Output RTMP URL
