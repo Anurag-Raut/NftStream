@@ -576,8 +576,7 @@ const payload = {
 
 
 function stopStreaming(publishId){
-    const socket=io.connect('https://streamvault.site:3499', { query: { id: publishId } });
-    socket.emit('disconnect');
+   
 
     mediaRecorder.stop();
 
