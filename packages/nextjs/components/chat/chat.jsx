@@ -57,6 +57,7 @@ function Chat({ id }) {
       <p className="text-xl">Live Chat</p>
       <div className="h-full w-[30vw] no-scrollbar overflow-x-hidden break-words  ">
         {queue?.map(data => {
+          console.log(data.channelName)
           return (
             <div key={data._id} className="flex mb-3">
               <Link className="w-[70px]" href={`/profile?creator=${data.senderId}`}>
@@ -67,7 +68,7 @@ function Chat({ id }) {
                 )}
               </Link>
               <h5 className="text-purple-500 text-lg">
-                {data.channelName ? data.channelName : data?.senderId?.slice(0, 5) + "..."}
+                {data.senderId ? data.senderId.slice(0, 7) + "..." : 'anon' }
               </h5>
 
               <h5 className="w-full break-words flex "> : {data.message}</h5>

@@ -533,7 +533,7 @@ const payload = {
   async function publishHelper(payload){
     console.log(payload,'payload')
     let url;
-   url='http://localhost:3500/publish';
+   url='https://streamvault.site:3499/publish';
     
       try {
           const response=await axios.post(url, payload)
