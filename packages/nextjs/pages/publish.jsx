@@ -61,9 +61,10 @@ function Publish() {
   // console.log(stream);
   const Delete = async () => {
     const storedValue = localStorage.getItem("ID");
-    stopStreaming( JSON.parse(storedValue) );
+    stopStreaming( stream);
     console.log(JSON.parse(storedValue),'delete Id ')
     // console.log('helllooooooooooooooo')
+    setStream(null);
 
     // console.log(JSON.parse(storedValue),'sdvsdvsfvsvsfsdfsdfwesdf wedf wef ')
     try {

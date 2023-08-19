@@ -221,11 +221,17 @@ const payload = {
 }
 
 
-function stopStreaming(publishId){
+function stopStreaming(stream){
    
 
     mediaRecorder.stop();
     socket.disconnect();
+    if (stream) {
+        const tracks = stream.getTracks();
+        tracks.forEach(track => track.stop());
+      }
+    document.getElementById('publish-video').srcObject = null;
+
 
 }
   
