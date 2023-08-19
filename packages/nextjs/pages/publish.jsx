@@ -25,8 +25,8 @@ function Publish() {
   const [OBS, setOBS] = useState(0);
   const [ID, setID] = useLocalStorage("ID", "");
   const [stream, setStream] = useState(null);
-  const [audioDevices, setAudioDevices] = useState(["screen"]);
-  const [videoDevices, setVideoDevices] = useState(["none"]);
+  const [audioDevices, setAudioDevices] = useState([{deviceId:'none',label:'none'}]);
+  const [videoDevices, setVideoDevices] = useState([{deviceId:'screen',label:'screen'}]);
   const [tokenAddress, setTokenAddress] = useState("");
 
   useEffect(() => {
@@ -46,11 +46,12 @@ function Publish() {
   useEffect(() => {
     async function get() {
       const { audioDevices, videoDevices } = await getDevices();
+      console.log(audioDevices, videoDevices);
       if (audioDevices) {
-        setAudioDevices([...audioDevices, "none"]);
+        setAudioDevices([...audioDevices, {deviceId:'none',label:'none'}]);
       }
       if (videoDevices) {
-        setVideoDevices([...videoDevices, "screen"]);
+        setVideoDevices([...videoDevices, {deviceId:'screen',label:'screen'}]);
       }
     }
     get();

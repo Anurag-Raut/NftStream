@@ -10,7 +10,7 @@ export function Select({label,options,id}){
         {
             options.map((data)=>{
 
-                return( <option value={data}>{data}</option>);
+                return( <option value={data.deviceId}>{data.label}</option>);
             })
         }
        

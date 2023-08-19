@@ -69,11 +69,12 @@ io.on('connection', (socket) => {
   const rtmpUrl = `rtmp://localhost:1935/live/${socket.handshake.query.id}`;
   const ffmpegCommand = [
     'ffmpeg',
-    '-i', 'pipe:0',
+    '-i', 'pipe:0',  // Audio input via pipe
+    // '-i', 'pipe:0',  // Video input via pipe
+    '-c:a', 'aac',
     '-c:v', 'libx264',
-    // '-c:a', 'libo',  // Use AAC audio codec
-    // '-b:a', '128k',  // Adjust audio bitrate if needed
-    '-preset', 'superfast',
+    '-b:a', '128k',
+    // '-preset', 'superfast',
     '-f', 'flv',
     rtmpUrl
   ];
