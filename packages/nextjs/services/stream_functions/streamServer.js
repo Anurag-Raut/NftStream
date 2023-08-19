@@ -11,7 +11,7 @@ const {HLSconversion} = require('../JobQueue/queue');
 const multer =require('multer');
 const http = require('http');
 const socketIo = require('socket.io');
-const { exec } = require('child_process');
+const { exec, spawn } = require('child_process');
 const server = http.createServer(app);
 const io = require("socket.io")(server, {
   cors: {
@@ -62,34 +62,43 @@ const client = new MongoClient(uri, {
 });
 let db;
 
+ 
+
 
 io.on('connection', (socket) => {
   console.log('A client connected.', socket.handshake.query.id);
 
-  const rtmpUrl = `rtmp://localhost:1935/live/${socket.handshake.query.id}`;
-  const ffmpegCommand = [
-    'ffmpeg',
-    '-i', 'pipe:0',
-    '-c:v', 'libx264',
-    // '-c:a', 'libo',  // Use AAC audio codec
-    // '-b:a', '128k',  // Adjust audio bitrate if needed
-    '-preset', 'superfast',
-    '-f', 'flv',
-    rtmpUrl
-  ];
-  
-  
-  
-  
-  
+  const rtmpUrl = `rtmp://localhost:1935/live/test`;
+ 
+const ffmpegCommand = [
+  'ffmpeg',
+  '-i', 'pipe:0',  // Audio input via pipe
+  // '-i', 'pipe:0',  // Video input via pipe
+  '-c:a', 'aac',
+  '-c:v', 'libx264',
+  '-b:a', '128k',
+  // '-preset', 'superfast',
+  '-f', 'flv',
+  rtmpUrl
+];
 
-  const ffmpegProcess = exec(ffmpegCommand.join(' '), (error, stdout, stderr) => {
-    if (error) {
-      console.error('FFmpeg error:', error);
-    }
-    console.log('FFmpeg stderr:', stderr);
-  });
+const ffmpegProcess = spawn(ffmpegCommand[0], ffmpegCommand.slice(1));
+ffmpegProcess.stdout.on('data', (data) => {
+  console.log(`FFmpeg stdout: ${data}`);
+});
+ffmpegProcess.stderr.on('data', (data) => {
+  console.error(`FFmpeg stderr: ${data}`);
+});
 
+
+
+ffmpegProcess.on('error', (error) => {
+  console.error(`FFmpeg process error: ${error}`);
+});
+
+ffmpegProcess.on('close', (code) => {
+  console.log(`FFmpeg process exited with code ${code}`);
+});
   socket.on('stream', ({ id, data }) => {
     try {
       if (!ffmpegProcess.stdin.writable) {

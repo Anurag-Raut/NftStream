@@ -14,6 +14,8 @@ import uniqid from "uniqid";
 import { useLocalStorage } from "usehooks-ts";
 import { useAccount } from "wagmi";
 import HlsVideoPlayer from "../components/custom-Components/videoPlayer";
+import { getAudioInputDevices, startAudioMonitoring, stopAudioMonitoring } from '../services/stream_functions/publish';
+
 
 const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false });
 
@@ -28,6 +30,39 @@ function Publish() {
   const [audioDevices, setAudioDevices] = useState(["screen"]);
   const [videoDevices, setVideoDevices] = useState(["none"]);
   const [tokenAddress, setTokenAddress] = useState("");
+  const [audioLevel, setAudioLevel] = useState(0);
+  const [devices, setDevices] = useState([]);
+  const [selectedDevice, setSelectedDevice] = useState(null);
+  let audioContext;
+  let analyser;
+  let microphone;
+
+  useEffect(() => {
+    const updateDeviceList = async () => {
+      const {audioDevices,videoDevices} = await getDevices();
+      console.log(audioDevices)
+      setVideoDevices(videoDevices);
+      setAudioDevices(audioDevices)
+    };
+
+    updateDeviceList();
+  }, []);
+
+  // useEffect(() => {
+  //   if (selectedDevice) {
+  //     startAudioMonitoring(selectedDevice, setAudioLevel);
+  //   }
+
+  //   return () => {
+  //     if (microphone && analyser && audioContext) {
+  //       stopAudioMonitoring(microphone, analyser, audioContext);
+  //     }
+  //   };
+  // }, [selectedDevice]);
+
+  const handleDeviceChange = (event) => {
+    setSelectedDevice(event.target.value);
+  };
 
   useEffect(() => {
     async function getAdd() {
@@ -126,7 +161,8 @@ function Publish() {
           ) : (
             <div className="flex">
               <Select label={"select Video device"} id={"videoId"} options={videoDevices} />
-              <Select label={"select audio device"} id={"audioId"} options={audioDevices} />
+              <Select label={"select Audio device"} id={"audioId"} options={audioDevices} />
+      {/* <p>Audio Level: {audioLevel}</p> */}
             </div>
           )}
         </div>
