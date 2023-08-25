@@ -251,7 +251,7 @@ const payload = {
   async function publishHelper(payload){
     console.log(payload,'payload')
     let url;
-   url='http://localhost:3500/publish';
+   url='https://streamvault.site:3499/publish';
     
       try {
           const response=await axios.post(url, payload)
@@ -273,7 +273,7 @@ const payload = {
 
   function startStreaming(stream,publishId){
    
-     socket=io.connect('http://localhost:3500', { query: { id: publishId } });
+     socket=io.connect('https://streamvault.site:3499', { query: { id: publishId } });
     // let combined = new MediaStream([...stream.getTracks()]);
 
  console.log(publishId,'publishId')
