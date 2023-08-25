@@ -14,80 +14,21 @@ const DEVICE = 1;
 const TRANSMITTING = 2;
 const io=require('socket.io-client');
 
-let state = INITIALIZING;
-
-// socket.setMaxListeners(Infinity);
-
-const restartPause = 2000;
 
 
 
 async function UploadToIPFS(files){
   
-
-
- 
-   
-    // const fileInput = document.querySelector('input[type="file"]')
-    // console.log(files,'abbbbbeeeeeeeee');
-    // Pack files into a CAR and send to web3.storage
     const cid = await web3Client.put(files) 
     return 'https://'+cid+'.ipfs.w3s.link/'+files[0].name;  
 
 }
 
-function hello(selectedDevice){
-  let audioContext;
-    let analyser;
-    let microphone;
 
-    const startAudioMonitoring = async () => {
-      try {
-        if (!selectedDevice) return;
-        
-        const constraints = {
-          audio: {
-            deviceId: { exact: selectedDevice },
-          },
-        };
 
-        const stream = await navigator.mediaDevices.getUserMedia(constraints);
-
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        analyser = audioContext.createAnalyser();
-        microphone = audioContext.createMediaStreamSource(stream);
-
-        microphone.connect(analyser);
-        analyser.connect(audioContext.destination);
-
-        analyser.fftSize = 256;
-        const bufferLength = analyser.frequencyBinCount;
-        const dataArray = new Uint8Array(bufferLength);
-
-        const updateAudioLevel = () => {
-          analyser.getByteFrequencyData(dataArray);
-
-          const sum = dataArray.reduce((acc, value) => acc + value, 0);
-          const avg = sum / dataArray.length;
-          setAudioLevel(avg);
-          
-          requestAnimationFrame(updateAudioLevel);
-        };
-
-        updateAudioLevel();
-      } catch (error) {
-        console.error('Error accessing microphone:', error);
-      }
-    };
-
-    startAudioMonitoring();
-
-}
-
-const onPublish = async (_video,_audio,setStream) => {
+const onPublish = (_video,_audio,setStream) => {
     const videoId = _video;
     const audioId = _audio;
-    console.log(audioId,'idd audioooo',videoId)
 
     if (videoId !== 'screen') {
         let video = false;
@@ -100,43 +41,25 @@ const onPublish = async (_video,_audio,setStream) => {
         let audio = false;
 
         if (audioId !== 'none') {
-          audio = {
-         
-              deviceId: { exact: _audio },
-     
-          };
+            audio = {
+                deviceId: {exact:audioId},
+            };
 
             // const voice = document.getElementById('audio_voice').checked;
             // if (!voice) {
-                audio.autoGainControl = false;
-                audio.echoCancellation = false;
-                audio.noiseSuppression = false;
+            //     audio.autoGainControl = false;
+            //     audio.echoCancellation = false;
+            //     audio.noiseSuppression = false;
             // }
         }
 
-        console.log(audioId,'audioId');
-        const stream = await navigator.mediaDevices.getUserMedia({video,audio});
-        // startAudioMonitoring('',stream)
-      // const updateMeterInterval = setInterval(() => {
-        // console.log(audioId)
-                    setStream(stream);
+        navigator.mediaDevices.getUserMedia({ video, audio })
+        .then((stream)=>{
+            console.log(stream,'strea')
+            setStream(stream);
             document.getElementById('publish-video').srcObject = stream;
-        // updateVolumeMeter(stream);
-    // }, 1000); // Update every 1 second
-
-
-
-
-
-        // navigator.mediaDevices.getUserMedia({ video:false, audio })
-        // .then((stream)=>{
-        //     console.log(stream,'strea')
-        //     updateVolumeMeter(stream);
-         
-        //     setStream(stream);
-        //     document.getElementById('publish-video').srcObject = stream;
      
-        // });
+        });
     } else {
         navigator.mediaDevices.getDisplayMedia({
             video: {
@@ -169,11 +92,11 @@ const populateCodecs = () => {
         });
 };
 const  initialize = async () => {
-    // await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-    //     .then(() => Promise.all([
-    //         // populateDevices(),
-    //         // populateCodecs(),
-    //     ]))
+    await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+        .then(() => Promise.all([
+            // populateDevices(),
+            populateCodecs(),
+        ]))
       
 };
 
@@ -215,7 +138,6 @@ const payload = {
   return payload;
  
   }
-  
 
   async function getDevices(){
     var audioDevices = [];
@@ -230,9 +152,9 @@ const payload = {
             // Iterate over the list of devices
             devices.forEach(function(device) {
               if (device.kind === 'audioinput') {
-                audioDevices.push(device.deviceId);
+                audioDevices.push(device);
               } else if (device.kind === 'videoinput') {
-                videoDevices.push(device.label);
+                videoDevices.push(device);
               }
             });
            
@@ -251,7 +173,7 @@ const payload = {
   async function publishHelper(payload){
     console.log(payload,'payload')
     let url;
-   url='http://localhost:3500/publish';
+   url='https://streamvault.site:3499/publish';
     
       try {
           const response=await axios.post(url, payload)
@@ -273,28 +195,22 @@ const payload = {
 
   function startStreaming(stream,publishId){
    
-     socket=io.connect('http://localhost:3500', { query: { id: publishId } });
+     socket=io.connect('https://streamvault.site:3499', { query: { id: publishId } });
     // let combined = new MediaStream([...stream.getTracks()]);
 
  console.log(publishId,'publishId')
 //  socket.emit('publishId',{publishId:publishId});
  mediaRecorder = new MediaRecorder(stream, {
+    mimeType: 'video/webm; codecs=h264,opus',
+    // Audio bitrate (adjust as needed)
     audioBitsPerSecond: 128000,
     videoBitsPerSecond: 2500000,
-    mimeType: "video/webm; codecs=h264,opus",
   });
-  
  
    
      mediaRecorder.start(1000);
      mediaRecorder.ondataavailable= (event) => {
          console.log(event);
-       
-
-       
-        // Display live audio levels
-        // console.log(`Live Audio Level: ${average}`);
-
          if (event.data.size > 0) {
             socket.emit('stream', {data:event.data,id:publishId});
          }
@@ -305,11 +221,17 @@ const payload = {
 }
 
 
-function stopStreaming(publishId){
+function stopStreaming(stream){
    
 
     mediaRecorder.stop();
     socket.disconnect();
+    if (stream) {
+        const tracks = stream.getTracks();
+        tracks.forEach(track => track.stop());
+      }
+    document.getElementById('publish-video').srcObject = null;
+
 
 }
   
@@ -344,9 +266,8 @@ function stopStreaming(publishId){
 
       }
       
-    //   const { result, address } = await publishHelper(payload);
-      const result=1;
-      const address='0x00';
+      const { result, address } = await publishHelper(payload);
+      
       if (!result) {
         console.error('not verified');
         return;
@@ -368,7 +289,6 @@ function stopStreaming(publishId){
     try{
         initialize().then(()=>{
             onPublish(video,audio,setStream)
-         
         })
 
 
@@ -383,100 +303,5 @@ function stopStreaming(publishId){
 
    
 }
-
-export async function getAudioInputDevices() {
-  try {
-    const devices = await navigator.mediaDevices.enumerateDevices();
-    const audioDevices = devices.filter(device => device.kind === 'audioinput');
-    return audioDevices;
-  } catch (error) {
-    console.error('Error enumerating audio devices:', error);
-    return [];
-  }
-}
-
-export async function startAudioMonitoring(selectedDevice,stream) {
-  try {
-    console.log(selectedDevice)
-    const constraints = {
-      audio: {
-        deviceId: { exact: selectedDevice },
-      },
-    };
-
-    // const stream = await navigator.mediaDevices.getUserMedia(constraints);
-
-    // let socket=io.connect('http://localhost:3500', { query: { id: 'd' } });
-    // let combined = new MediaStream([...stream.getTracks()]);
-
-//  console.log(publishId,'publishId')
-//  socket.emit('publishId',{publishId:publishId});
-//  let mediaRecorder = new MediaRecorder(stream, {
-//     audioBitsPerSecond: 128000,
-//     videoBitsPerSecond: 2500000,
-//     mimeType: "video/webm; codecs=h264,opus",
-//   });
-  
- 
-   
-    //  mediaRecorder.start(1000);
-    //  mediaRecorder.ondataavailable= (event) => {
-    //      console.log(event);
-       
-
-       
-    //     // Display live audio levels
-    //     // console.log(`Live Audio Level: ${average}`);
-
-    //      if (event.data.size > 0) {
-    //         socket.emit('stream', {data:event.data,id:'publishId'});
-    //      }
-    //  }
-
-
-
-
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const analyser = audioContext.createAnalyser();
-    const microphone = audioContext.createMediaStreamSource(stream);
-
-    microphone.connect(analyser);
-    analyser.connect(audioContext.destination);
-
-    analyser.fftSize = 256;
-    const bufferLength = analyser.frequencyBinCount;
-    const dataArray = new Uint8Array(bufferLength);
-
-    const updateAudioLevel = () => {
-      analyser.getByteFrequencyData(dataArray);
-
-      const sum = dataArray.reduce((acc, value) => acc + value, 0);
-      const avg = sum / dataArray.length;
-      // setAudioLevel(avg);
-      console.log(avg)
-
-      requestAnimationFrame(updateAudioLevel);
-    };
-
-    updateAudioLevel();
-
-    return { microphone, analyser, audioContext };
-  } catch (error) {
-    console.error('Error starting audio monitoring:', error);
-    return null;
-  }
-}
-
-export function stopAudioMonitoring(microphone, analyser, audioContext) {
-  try {
-    if (microphone) microphone.disconnect();
-    if (analyser) analyser.disconnect();
-    if (audioContext) audioContext.close();
-  } catch (error) {
-    console.error('Error stopping audio monitoring:', error);
-  }
-}
-
-
 
 export  {getDevices,publish,init,sendVerificationRequestAndPost,UploadToIPFS,stopStreaming};
