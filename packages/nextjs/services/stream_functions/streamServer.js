@@ -3,7 +3,7 @@ const ethers = require('ethers');
 const cors=require('cors');
 const app = express();
 app.use(express.json());
-const axios = require('axios');
+const {Readable} =require('stream')
 
 const fs = require('fs');
 const path = require('path');
@@ -24,6 +24,7 @@ app.use(cors());
 const { MongoClient, ServerApiVersion, Timestamp } = require('mongodb');
 
 const { Web3Storage  ,getFilesFromPath ,File } = require('web3.storage');
+const { Readable } = require('stream');
 
 // const busboy = require('connect-busboy');
 
@@ -64,75 +65,55 @@ let db;
 
  
 
-
 io.on('connection', (socket) => {
-  console.log('A client connected.', socket.handshake.query.id);
+  // Code for handling a client connection
 
-  const rtmpUrl = `rtmp://localhost:1935/live/test`;
- 
-const ffmpegCommand = [
-  'ffmpeg',
-  '-i', 'pipe:0',  // Audio input via pipe
-  // '-i', 'pipe:0',  // Video input via pipe
-  '-c:a', 'aac',
-  '-c:v', 'libx264',
-  '-b:a', '128k',
-  // '-preset', 'superfast',
-  '-f', 'flv',
-  rtmpUrl
-];
+  const readStream = new Readable();
+  readStream._read = () => {};  // Placeholder for _read function
 
-const ffmpegProcess = spawn(ffmpegCommand[0], ffmpegCommand.slice(1));
-ffmpegProcess.stdout.on('data', (data) => {
-  console.log(`FFmpeg stdout: ${data}`);
-});
-ffmpegProcess.stderr.on('data', (data) => {
-  console.error(`FFmpeg stderr: ${data}`);
-});
+  const rtmpUrl = `rtmp://localhost:1935/live/${socket.handshake.query.id}`;
+  const ffmpegArgs = [
+    '-i', 'pipe:0',  // Audio input via pipe
+    '-c:a', 'aac',
+    '-c:v', 'libx264',
+    '-b:a', '128k',
+    '-f', 'flv',
+    rtmpUrl
+  ];
 
+  const ffmpegProcess = spawn('ffmpeg', ffmpegArgs);
 
+  ffmpegProcess.on('error', (error) => {
+    // Handle FFmpeg process startup error
+    console.error('FFmpeg process startup error:', error);
+  });
 
-ffmpegProcess.on('error', (error) => {
-  console.error(`FFmpeg process error: ${error}`);
-});
+  ffmpegProcess.on('exit', (code, signal) => {
+    // Handle FFmpeg process exit
+    console.log(`FFmpeg process exited with code ${code} and signal ${signal}`);
+  });
 
-ffmpegProcess.on('close', (code) => {
-  console.log(`FFmpeg process exited with code ${code}`);
-});
   socket.on('stream', ({ id, data }) => {
-    try {
-      if (!ffmpegProcess.stdin.writable) {
-        console.error('FFmpeg stdin is not writable.');
-        return;
-      }
-      console.log(rtmpUrl);
-      console.log(id, 'iddddddddd', data);
-      ffmpegProcess.stdin.write(data);
-    } catch (error) {
-      console.error('Socket stream error:', error);
-    }
+    // Push data into the readStream
+    readStream.push(data);
   });
 
   socket.on('disconnect', () => {
-    console.log('A client disconnected.');
-    try {
-      if (ffmpegProcess.stdin.writable) {
-        ffmpegProcess.stdin.end();
-      } else {
-        console.warn('FFmpeg stdin is not writable on disconnect.');
-      }
-    } catch (error) {
-      console.error('FFmpeg process end error:', error);
+    // Code to handle client disconnection
+    if (ffmpegProcess.stdin.writable) {
+      ffmpegProcess.stdin.end();
+    } else {
+      console.warn('FFmpeg stdin is not writable on disconnect.');
     }
   });
 
-  // Handle socket errors
+  readStream.pipe(ffmpegProcess.stdin);  // Pipe the readStream to FFmpeg stdin
+
   socket.on('error', (error) => {
+    // Code to handle socket errors
     console.error('Socket error:', error);
-    // You can perform error handling logic here
   });
 });
-
 
 
 app.post('/publish',async (req,res)=>{
