@@ -72,7 +72,7 @@ io.on('connection', (socket) => {
   readStream._read = () => {};  // Placeholder for _read function
 
   const rtmpUrl = `rtmp://localhost:1935/live/${socket.handshake.query.id}`;
-  const folderPath = `/var/www/${socket.handshake.query.id}`;
+  const folderPath = `/mnt/hls/${socket.handshake.query.id}`;
   if (!fs.existsSync(folderPath)) {
     fs.mkdirSync(folderPath, { recursive: true });
   }
@@ -84,7 +84,7 @@ io.on('connection', (socket) => {
     '-b:a', '128k',
     '-f', 'hls',              // Output format changed to HLS
     '-hls_time', '1',        // Segment duration (in seconds)
-    '-hls_list_size', '6',    // Number of segments in the playlist
+    '-hls_list_size', '10',    // Number of segments in the playlist
     '-hls_flags', 'delete_segments', // Delete old segments
     `${folderPath}/${socket.handshake.query.id}.m3u8` 
   ];
