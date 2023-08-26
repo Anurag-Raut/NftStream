@@ -73,20 +73,17 @@ io.on('connection', (socket) => {
 
   const rtmpUrl = `rtmp://localhost:1935/live/${socket.handshake.query.id}`;
   const folderPath = `/mnt/hls/${socket.handshake.query.id}`;
-  if (!fs.existsSync(folderPath)) {
-    fs.mkdirSync(folderPath, { recursive: true });
-  }
+  // if (!fs.existsSync(folderPath)) {
+  //   fs.mkdirSync(folderPath, { recursive: true });
+  // }
 
   const ffmpegArgs = [
     '-i', 'pipe:0',  // Audio input via pipe
     '-c:a', 'aac',
     '-c:v', 'libx264',
     '-b:a', '128k',
-    '-f', 'hls',              // Output format changed to HLS
-    '-hls_time', '1',        // Segment duration (in seconds)
-    '-hls_list_size', '10',    // Number of segments in the playlist
-    '-hls_flags', 'delete_segments', // Delete old segments
-    `${folderPath}/${socket.handshake.query.id}.m3u8` 
+    '-f', 'flv',              // Output format changed to HLS
+    rtmpUrl
   ];
 
   const ffmpegProcess = spawn('ffmpeg', ffmpegArgs);
