@@ -24,6 +24,7 @@ import HomePage from "../homepage";
 const { File } = require("web3.storage");
 const { createClient } = require("web3.storage");
 
+
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 function View() {
   const [isSubscribe, setSubscibe] = useState(0);
